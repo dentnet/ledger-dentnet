@@ -28,10 +28,10 @@ extern "C" {
 #define HDPATH_3_DEFAULT     (0u)
 #define HDPATH_4_DEFAULT     (0u)
 
-#define MENU_MAIN_APP_LINE1                 "Polkadot"
+#define MENU_MAIN_APP_LINE1                 "DENTNet"
 #define MENU_MAIN_APP_LINE2                 "Ready"
-#define MENU_MAIN_APP_LINE2_SECRET          "DOT RECOVERY"
-#define APPVERSION_LINE1                    "Polkadot"
+#define MENU_MAIN_APP_LINE2_SECRET          "DNX RECOVERY"
+#define APPVERSION_LINE1                    "DENTNet"
 #define APPVERSION_LINE2                    "v" APPVERSION
 
 #ifdef __cplusplus
