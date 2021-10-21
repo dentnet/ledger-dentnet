@@ -30,7 +30,7 @@ extern "C" {
 
 #define MENU_MAIN_APP_LINE1                 "DENTNet"
 #define MENU_MAIN_APP_LINE2                 "Ready"
-#define MENU_MAIN_APP_LINE2_SECRET          "DNX RECOVERY"
+#define MENU_MAIN_APP_LINE2_SECRET          "D/X RECOVERY"
 #define APPVERSION_LINE1                    "DENTNet"
 #define APPVERSION_LINE2                    "v" APPVERSION
 
