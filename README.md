@@ -1,15 +1,12 @@
-# Ledger Polkadot app
+# Ledger DENTNet app
+
+Forked from [ledger-polkadot](https://github.com/Zondax/ledger-polkadot)
+
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![GithubActions](https://github.com/zondax/ledger-polkadot/actions/workflows/main.yaml/badge.svg)](https://github.com/Zondax/ledger-polkadot/blob/main/.github/workflows/main.yaml)
 
 -------------------
 
-![zondax](docs/zondax.jpg)
-
-_Please visit our website at [zondax.ch](zondax.ch)_
-
-------------------
-This project contains the Kusama app (https://kusama.network/) for Ledger Nano S and X.
+This project contains the DENTNet app (https://www.dentnet.io/) for Ledger Nano S and X.
 
 - Ledger Nano S/X BOLOS app
 - Specs / Documentation
@@ -26,7 +23,7 @@ Please:
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
 
-# Polkadot  8.9100.x
+# DENTNet 8.9100.x
 
 ## System
 
