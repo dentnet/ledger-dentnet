@@ -89,7 +89,7 @@ describe('Standard', function () {
       expect(resp.return_code).toEqual(0x9000)
       expect(resp.error_message).toEqual('No errors')
 
-      const expected_address = '166wVhuQsKFeb7bd1faydHgVvX1bZU2rUuY7FJmWApNz2fQY'
+      const expected_address = 'dxALTDtpsS9vX7rX6JkD7quhH6APCMjx1tp67DZkEtDVteF67'
       const expected_pk = 'e1b4d72d27b3e91b9b6116555b4ea17138ddc12ca7cdbab30e2e0509bd848419'
 
       expect(resp.address).toEqual(expected_address)
@@ -118,7 +118,7 @@ describe('Standard', function () {
       expect(resp.return_code).toEqual(0x9000)
       expect(resp.error_message).toEqual('No errors')
 
-      const expected_address = '166wVhuQsKFeb7bd1faydHgVvX1bZU2rUuY7FJmWApNz2fQY'
+      const expected_address = 'dxALTDtpsS9vX7rX6JkD7quhH6APCMjx1tp67DZkEtDVteF67'
       const expected_pk = 'e1b4d72d27b3e91b9b6116555b4ea17138ddc12ca7cdbab30e2e0509bd848419'
 
       expect(resp.address).toEqual(expected_address)
