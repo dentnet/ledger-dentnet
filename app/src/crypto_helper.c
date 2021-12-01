@@ -14,6 +14,11 @@
 *  limitations under the License.
 ********************************************************************************/
 
+/*
+ * Modified by DENT Wireless to add support for multi-byte address types in
+ * ss58 encoding.
+ */
+
 #include "crypto_helper.h"
 #include "base58.h"
 
@@ -48,7 +53,7 @@ int ss58hash(const unsigned char *in, unsigned int inLen,
 #endif
 
 uint8_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len,
-                                uint8_t addressType, const uint8_t *pubkey) {
+                                uint16_t addressType, const uint8_t *pubkey) {
     if (buffer == NULL || buffer_len < SS58_ADDRESS_MAX_LEN) {
         return 0;
     }
@@ -57,17 +62,25 @@ uint8_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len,
     }
     MEMZERO(buffer, buffer_len);
 
-    uint8_t unencoded[35];
+    uint8_t unencoded[36];
     uint8_t hash[64];
+    uint8_t addressTypeLen = 1;
 
-    unencoded[0] = addressType;                  // address type
-    memcpy(unencoded + 1, pubkey, 32);           // account id
-    ss58hash((uint8_t *) unencoded, 33, hash, 64);
-    unencoded[33] = hash[0];
-    unencoded[34] = hash[1];
+    if (addressType < 64) {
+        unencoded[0] = (uint8_t)addressType;                  // address type
+    } else {
+        unencoded[0] = ((addressType & 0b0000000011111100) >> 2) | 0b01000000;
+        unencoded[1] = (addressType >> 8) | ((addressType & 0b0000000000000011) << 6);
+        addressTypeLen = 2;
+    } 
+
+    memcpy(unencoded + addressTypeLen, pubkey, 32);           // account id
+    ss58hash((uint8_t *) unencoded, 32 + addressTypeLen, hash, 64);
+    unencoded[32+addressTypeLen] = hash[0];
+    unencoded[33+addressTypeLen] = hash[1];
 
     size_t outLen = buffer_len;
-    encode_base58(unencoded, 35, buffer, &outLen);
+    encode_base58(unencoded, 34 + addressTypeLen, buffer, &outLen);
 
     return outLen;
 }

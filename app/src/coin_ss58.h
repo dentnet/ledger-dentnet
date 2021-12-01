@@ -24,7 +24,7 @@ extern "C" {
 #define COIN_ADDR_TYPE_EDGEWARE         7
 #define COIN_ADDR_TYPE_KULUPU           16
 #define COIN_ADDR_TYPE_DOTHEREUM        20
-#define COIN_ADDR_TYPE_DENTNET          42 // temp, to be 13900
+#define COIN_ADDR_TYPE_DENTNET          9807
 
 #ifdef __cplusplus
 }

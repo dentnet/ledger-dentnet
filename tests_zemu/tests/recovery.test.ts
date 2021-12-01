@@ -63,22 +63,22 @@ describe('Standard', function () {
       await sim.start({ ...defaultOptions, model: m.name })
       const app = newPolkadotApp(sim.getTransport())
 
-      const polkadot_expected_address = '166wVhuQsKFeb7bd1faydHgVvX1bZU2rUuY7FJmWApNz2fQY'
-      const polkadot_expected_pk = 'e1b4d72d27b3e91b9b6116555b4ea17138ddc12ca7cdbab30e2e0509bd848419'
-      const kusama_expected_address = '16nK5XEGrPHjSwzHAdkKabmwu6L2t1RGW6drYyGgS84UZDRy'
-      const kusama_expected_pk = 'ffbc10f71d63e0da1b9e7ee2eb4037466551dc32b9d4641aafd73a65970fae42'
+      const dentnet_expected_address = 'dxALTDtpsS9vX7rX6JkD7quhH6APCMjx1tp67DZkEtDVteF67'
+      const dentnet_expected_pk = 'e1b4d72d27b3e91b9b6116555b4ea17138ddc12ca7cdbab30e2e0509bd848419'
+      const recovery_expected_address = 'dxB1poi9jRDxbygukTiNToDnj4jhdgHLRv1BrXEFR9XBPAnXd'
+      const recovery_expected_pk = 'ffbc10f71d63e0da1b9e7ee2eb4037466551dc32b9d4641aafd73a65970fae42'
 
       let resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000)
       console.log(resp)
-      expect(resp.address).toEqual(polkadot_expected_address)
-      expect(resp.pubKey).toEqual(polkadot_expected_pk)
+      expect(resp.address).toEqual(dentnet_expected_address)
+      expect(resp.pubKey).toEqual(dentnet_expected_pk)
 
       await activateSecretMode(sim)
 
       resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000)
       console.log(resp)
-      expect(resp.address).toEqual(kusama_expected_address)
-      expect(resp.pubKey).toEqual(kusama_expected_pk)
+      expect(resp.address).toEqual(recovery_expected_address)
+      expect(resp.pubKey).toEqual(recovery_expected_pk)
     } finally {
       await sim.close()
     }
