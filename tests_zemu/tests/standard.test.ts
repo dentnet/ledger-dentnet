@@ -14,14 +14,15 @@
  *  limitations under the License.
  ******************************************************************************* */
 
-import Zemu, { DEFAULT_START_OPTIONS } from '@zondax/zemu'
+import Zemu, {DEFAULT_START_OPTIONS} from '@zondax/zemu'
 import { newPolkadotApp } from '@zondax/ledger-substrate'
-import { APP_SEED, models, txBasic, txNomination } from './common'
+import {APP_SEED, models, setKeys, txBasic, txNomination} from './common'
 
 // @ts-ignore
 import ed25519 from 'ed25519-supercop'
 // @ts-ignore
-import { blake2bFinal, blake2bInit, blake2bUpdate } from 'blakejs'
+import {blake2bFinal, blake2bInit, blake2bUpdate} from 'blakejs'
+import Transport from '@ledgerhq/hw-transport'
 
 const defaultOptions = {
   ...DEFAULT_START_OPTIONS,
@@ -30,17 +31,23 @@ const defaultOptions = {
   X11: false,
 }
 
-jest.setTimeout(60000)
+jest.setTimeout(180000)
 
 beforeAll(async () => {
   await Zemu.checkAndPullImage()
 })
 
+const newDentnetApp = (transport: Transport) => {
+  const app = newPolkadotApp(transport);
+  (<any>app).slip0044 = 0x800002de
+  return app;
+}
+
 describe('Standard', function () {
   test.each(models)('can start and stop container', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      await sim.start({ ...defaultOptions, model: m.name })
+      await sim.start({...defaultOptions, model: m.name})
     } finally {
       await sim.close()
     }
@@ -49,7 +56,7 @@ describe('Standard', function () {
   test.each(models)('main menu', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      await sim.start({ ...defaultOptions, model: m.name })
+      await sim.start({...defaultOptions, model: m.name})
       await sim.navigateAndCompareSnapshots('.', `${m.prefix.toLowerCase()}-mainmenu`, [1, 0, 0, 5, -5])
     } finally {
       await sim.close()
@@ -59,8 +66,8 @@ describe('Standard', function () {
   test.each(models)('get app version', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      await sim.start({ ...defaultOptions, model: m.name })
-      const app = newPolkadotApp(sim.getTransport())
+      await sim.start({...defaultOptions, model: m.name})
+      const app = newDentnetApp(sim.getTransport())
       const resp = await app.getVersion()
 
       console.log(resp)
@@ -79,8 +86,8 @@ describe('Standard', function () {
   test.each(models)('get address', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      await sim.start({ ...defaultOptions, model: m.name })
-      const app = newPolkadotApp(sim.getTransport())
+      await sim.start({...defaultOptions, model: m.name})
+      const app = newDentnetApp(sim.getTransport())
 
       const resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000)
 
@@ -89,8 +96,8 @@ describe('Standard', function () {
       expect(resp.return_code).toEqual(0x9000)
       expect(resp.error_message).toEqual('No errors')
 
-      const expected_address = 'dxALTDtpsS9vX7rX6JkD7quhH6APCMjx1tp67DZkEtDVteF67'
-      const expected_pk = 'e1b4d72d27b3e91b9b6116555b4ea17138ddc12ca7cdbab30e2e0509bd848419'
+      const expected_address = 'dx5r2B9tU5LLvZCkBdfBtM7Nk3vu54fsvWyLb6niJ4tKy1X8r'
+      const expected_pk = '1b14b80690da0751fca3c3758bbe2ee057f255886d12d7a397fc23799a53ba93'
 
       expect(resp.address).toEqual(expected_address)
       expect(resp.pubKey).toEqual(expected_pk)
@@ -102,8 +109,8 @@ describe('Standard', function () {
   test.each(models)('show address', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      await sim.start({ ...defaultOptions, model: m.name })
-      const app = newPolkadotApp(sim.getTransport())
+      await sim.start({...defaultOptions, model: m.name})
+      const app = newDentnetApp(sim.getTransport())
 
       const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true)
       // Wait until we are not in the main menu
@@ -118,8 +125,8 @@ describe('Standard', function () {
       expect(resp.return_code).toEqual(0x9000)
       expect(resp.error_message).toEqual('No errors')
 
-      const expected_address = 'dxALTDtpsS9vX7rX6JkD7quhH6APCMjx1tp67DZkEtDVteF67'
-      const expected_pk = 'e1b4d72d27b3e91b9b6116555b4ea17138ddc12ca7cdbab30e2e0509bd848419'
+      const expected_address = 'dx5r2B9tU5LLvZCkBdfBtM7Nk3vu54fsvWyLb6niJ4tKy1X8r'
+      const expected_pk = '1b14b80690da0751fca3c3758bbe2ee057f255886d12d7a397fc23799a53ba93'
 
       expect(resp.address).toEqual(expected_address)
       expect(resp.pubKey).toEqual(expected_pk)
@@ -131,8 +138,8 @@ describe('Standard', function () {
   test.each(models)('show address - reject', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      await sim.start({ ...defaultOptions, model: m.name })
-      const app = newPolkadotApp(sim.getTransport())
+      await sim.start({...defaultOptions, model: m.name})
+      const app = newDentnetApp(sim.getTransport())
 
       const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true)
       // Wait until we are not in the main menu
@@ -153,8 +160,8 @@ describe('Standard', function () {
   test.each(models)('sign basic normal', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      await sim.start({ ...defaultOptions, model: m.name })
-      const app = newPolkadotApp(sim.getTransport())
+      await sim.start({...defaultOptions, model: m.name})
+      const app = newDentnetApp(sim.getTransport())
       const pathAccount = 0x80000000
       const pathChange = 0x80000000
       const pathIndex = 0x80000000
@@ -169,7 +176,7 @@ describe('Standard', function () {
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
 
-      await sim.compareSnapshotsAndAccept('.', `${m.prefix.toLowerCase()}-sign_basic_normal`, m.name === 'nanos' ? 5 : 5)
+      await sim.compareSnapshotsAndAccept('.', `${m.prefix.toLowerCase()}-sign_basic_normal`, m.name === 'nanos' ? 6 : 6)
 
       const signatureResponse = await signatureRequest
       console.log(signatureResponse)
@@ -194,8 +201,8 @@ describe('Standard', function () {
   test.each(models)('sign basic expert', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      await sim.start({ ...defaultOptions, model: m.name })
-      const app = newPolkadotApp(sim.getTransport())
+      await sim.start({...defaultOptions, model: m.name})
+      const app = newDentnetApp(sim.getTransport())
       const pathAccount = 0x80000000
       const pathChange = 0x80000000
       const pathIndex = 0x80000000
@@ -216,7 +223,7 @@ describe('Standard', function () {
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
 
-      await sim.compareSnapshotsAndAccept('.', `${m.prefix.toLowerCase()}-sign_basic_expert`, 11)
+      await sim.compareSnapshotsAndAccept('.', `${m.prefix.toLowerCase()}-sign_basic_expert`, 12)
 
       const signatureResponse = await signatureRequest
       console.log(signatureResponse)
@@ -238,16 +245,16 @@ describe('Standard', function () {
     }
   })
 
-  test.each(models)('sign large nomination', async function (m) {
+  test.each(models)('set keys', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      await sim.start({ ...defaultOptions, model: m.name })
-      const app = newPolkadotApp(sim.getTransport())
+      await sim.start({...defaultOptions, model: m.name})
+      const app = newDentnetApp(sim.getTransport())
       const pathAccount = 0x80000000
       const pathChange = 0x80000000
       const pathIndex = 0x80000000
 
-      const txBlob = Buffer.from(txNomination, 'hex')
+      const txBlob = Buffer.from(setKeys, 'hex')
 
       const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex)
       const pubKey = Buffer.from(responseAddr.pubKey, 'hex')
@@ -257,7 +264,7 @@ describe('Standard', function () {
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
 
-      await sim.compareSnapshotsAndAccept('.', `${m.prefix.toLowerCase()}-sign_large_nomination`, m.name === 'nanos' ? 18 : 11)
+      await sim.compareSnapshotsAndAccept('.', `${m.prefix.toLowerCase()}-set-keys`, m.name === 'nanos' ? 13 : 10)
 
       const signatureResponse = await signatureRequest
       console.log(signatureResponse)
@@ -279,3 +286,4 @@ describe('Standard', function () {
     }
   })
 })
+

@@ -20,6 +20,7 @@ import { APP_SEED, txBasic, txNomination } from './common'
 
 // @ts-ignore
 import { blake2bFinal, blake2bInit, blake2bUpdate } from 'blakejs'
+import Transport from '@ledgerhq/hw-transport'
 
 const addon = require('../../tests_tools/neon/native')
 
@@ -33,19 +34,24 @@ const defaultOptions = {
   X11: false,
 }
 
-jest.setTimeout(60000)
+jest.setTimeout(180000)
 
 beforeAll(async () => {
   await Zemu.checkAndPullImage()
 })
+
+const newDentnetApp = (transport: Transport) => {
+  const app = newPolkadotApp(transport);
+  (<any>app).slip0044 = 0x800002de
+  return app;
+}
 
 describe('SR25519', function () {
   test('get address sr25519', async function () {
     const sim = new Zemu(APP_PATH)
     try {
       await sim.start({ ...defaultOptions })
-      const app = newPolkadotApp(sim.getTransport())
-
+      const app = newDentnetApp(sim.getTransport())
       const resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000, false, 1)
 
       console.log(resp)
@@ -53,8 +59,8 @@ describe('SR25519', function () {
       expect(resp.return_code).toEqual(0x9000)
       expect(resp.error_message).toEqual('No errors')
 
-      const expected_address = 'dx5pecuP1CqR1EJ1yPASxvtPwF7A8yShxq7zoxDxEK888Af85'
-      const expected_pk = '1a08e8cba45e59c761ebe72133da0b7f4de8ce6a263690b07e3bd56dcc8d2226'
+      const expected_address = 'dx6ELZfs9PNVMCkSZj7jzdafYZH531nro8NcUcuD6dpQBozzH'
+      const expected_pk = '2c1a049ccdd5229cdffb20f50c2f358871078bcde3127aab95d36ba62786b930'
 
       expect(resp.address).toEqual(expected_address)
       expect(resp.pubKey).toEqual(expected_pk)
@@ -67,7 +73,7 @@ describe('SR25519', function () {
     const sim = new Zemu(APP_PATH)
     try {
       await sim.start({ ...defaultOptions, model: 'nanos' })
-      const app = newPolkadotApp(sim.getTransport())
+      const app = newDentnetApp(sim.getTransport())
 
       const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true, 1)
       // Wait until we are not in the main menu
@@ -81,8 +87,8 @@ describe('SR25519', function () {
       expect(resp.return_code).toEqual(0x9000)
       expect(resp.error_message).toEqual('No errors')
 
-      const expected_address = 'dx5pecuP1CqR1EJ1yPASxvtPwF7A8yShxq7zoxDxEK888Af85'
-      const expected_pk = '1a08e8cba45e59c761ebe72133da0b7f4de8ce6a263690b07e3bd56dcc8d2226'
+      const expected_address = 'dx6ELZfs9PNVMCkSZj7jzdafYZH531nro8NcUcuD6dpQBozzH'
+      const expected_pk = '2c1a049ccdd5229cdffb20f50c2f358871078bcde3127aab95d36ba62786b930'
 
       expect(resp.address).toEqual(expected_address)
       expect(resp.pubKey).toEqual(expected_pk)
@@ -95,7 +101,7 @@ describe('SR25519', function () {
     const sim = new Zemu(APP_PATH)
     try {
       await sim.start({ ...defaultOptions })
-      const app = newPolkadotApp(sim.getTransport())
+      const app = newDentnetApp(sim.getTransport())
 
       const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true, 1)
       // Wait until we are not in the main menu
@@ -116,7 +122,7 @@ describe('SR25519', function () {
     const sim = new Zemu(APP_PATH)
     try {
       await sim.start({ ...defaultOptions })
-      const app = newPolkadotApp(sim.getTransport())
+      const app = newDentnetApp(sim.getTransport())
       const pathAccount = 0x80000000
       const pathChange = 0x80000000
       const pathIndex = 0x80000000
@@ -131,7 +137,7 @@ describe('SR25519', function () {
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
 
-      await sim.compareSnapshotsAndAccept('.', 's-sign_basic_normal', 5)
+      await sim.compareSnapshotsAndAccept('.', 's-sign_basic_normal', 6)
 
       const signatureResponse = await signatureRequest
       console.log(signatureResponse)
@@ -158,7 +164,7 @@ describe('SR25519', function () {
     const sim = new Zemu(APP_PATH)
     try {
       await sim.start({ ...defaultOptions })
-      const app = newPolkadotApp(sim.getTransport())
+      const app = newDentnetApp(sim.getTransport())
       const pathAccount = 0x80000000
       const pathChange = 0x80000000
       const pathIndex = 0x80000000
@@ -179,7 +185,7 @@ describe('SR25519', function () {
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
 
-      await sim.compareSnapshotsAndAccept('.', 's-sign_basic_expert', 11)
+      await sim.compareSnapshotsAndAccept('.', 's-sign_basic_expert', 12)
 
       const signatureResponse = await signatureRequest
       console.log(signatureResponse)
@@ -206,7 +212,7 @@ describe('SR25519', function () {
     const sim = new Zemu(APP_PATH)
     try {
       await sim.start({ ...defaultOptions })
-      const app = newPolkadotApp(sim.getTransport())
+      const app = newDentnetApp(sim.getTransport())
       const pathAccount = 0x80000000
       const pathChange = 0x80000000
       const pathIndex = 0x80000000
@@ -254,45 +260,4 @@ describe('SR25519', function () {
     }
   })
 
-  test('sign large nomination', async function () {
-    const sim = new Zemu(APP_PATH)
-    try {
-      await sim.start({ ...defaultOptions })
-      const app = newPolkadotApp(sim.getTransport())
-      const pathAccount = 0x80000000
-      const pathChange = 0x80000000
-      const pathIndex = 0x80000000
-
-      const txBlob = Buffer.from(txNomination, 'hex')
-
-      const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex, false, 1)
-      const pubKey = Buffer.from(responseAddr.pubKey, 'hex')
-
-      // do not wait here.. we need to navigate
-      const signatureRequest = app.sign(pathAccount, pathChange, pathIndex, txBlob, 1)
-      // Wait until we are not in the main menu
-      await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
-
-      await sim.compareSnapshotsAndAccept('.', 's-sign_large_nomination', 18)
-
-      const signatureResponse = await signatureRequest
-      console.log(signatureResponse)
-
-      expect(signatureResponse.return_code).toEqual(0x9000)
-      expect(signatureResponse.error_message).toEqual('No errors')
-
-      // Now verify the signature
-      let prehash = txBlob
-      if (txBlob.length > 256) {
-        const context = blake2bInit(32)
-        blake2bUpdate(context, txBlob)
-        prehash = Buffer.from(blake2bFinal(context))
-      }
-      const signingcontext = Buffer.from([])
-      const valid = addon.schnorrkel_verify(pubKey, signingcontext, prehash, signatureResponse.signature.slice(1))
-      expect(valid).toEqual(true)
-    } finally {
-      await sim.close()
-    }
-  })
 })

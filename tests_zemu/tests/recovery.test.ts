@@ -63,8 +63,8 @@ describe('Standard', function () {
       await sim.start({ ...defaultOptions, model: m.name })
       const app = newPolkadotApp(sim.getTransport())
 
-      const dentnet_expected_address = 'dxALTDtpsS9vX7rX6JkD7quhH6APCMjx1tp67DZkEtDVteF67'
-      const dentnet_expected_pk = 'e1b4d72d27b3e91b9b6116555b4ea17138ddc12ca7cdbab30e2e0509bd848419'
+      const dentnet_expected_address = 'dx5r2B9tU5LLvZCkBdfBtM7Nk3vu54fsvWyLb6niJ4tKy1X8r'
+      const dentnet_expected_pk = '1b14b80690da0751fca3c3758bbe2ee057f255886d12d7a397fc23799a53ba93'
       const recovery_expected_address = 'dxB1poi9jRDxbygukTiNToDnj4jhdgHLRv1BrXEFR9XBPAnXd'
       const recovery_expected_pk = 'ffbc10f71d63e0da1b9e7ee2eb4037466551dc32b9d4641aafd73a65970fae42'
 
