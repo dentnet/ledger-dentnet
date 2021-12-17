@@ -245,6 +245,8 @@ parser_error_t _readEra(parser_context_t *c, pd_ExtrinsicEra_t *v) {
     //  https://github.com/paritytech/substrate/blob/fc3adc87dc806237eb7371c1d21055eea1702be0/core/sr-primitives/src/generic/era.rs#L117
 
     v->type = eEraImmortal;
+    v->period = 0;
+    v->phase = 0;
 
     uint8_t first;
     CHECK_ERROR(_readUInt8(c, &first))
@@ -372,7 +374,7 @@ uint16_t _detectAddressType(const parser_context_t *c) {
         }
     }
 
-    return 42;
+    return PK_ADDRESS_TYPE;
 }
 
 parser_error_t _readTx(parser_context_t *c, parser_tx_t *v) {

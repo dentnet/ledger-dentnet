@@ -76,13 +76,13 @@ ifeq ($(TARGET_NAME),TARGET_NANOX)
 DEFINES += SUBSTRATE_PARSER_FULL
 endif
 APPNAME = "DENTNet"
-APPPATH = "44'/354'"  --path "44'/434'"
+APPPATH = "44'/734'"  --path "44'/354'"
 
 else ifeq ($(COIN),DENTX_XL)
 # XL app configuration
 DEFINES += APP_STANDARD SUBSTRATE_PARSER_FULL
 APPNAME = "DENTNet-XL"
-APPPATH = "44'/354'"  --path "44'/434'"
+APPPATH = "44'/734'"  --path "44'/354'"
 
 else
 define error_message
@@ -155,6 +155,8 @@ DEFINES       += HAVE_BLE_APDU BLE_COMMAND_TIMEOUT_MS=2000
 SDK_SOURCE_PATH  += lib_blewbxx lib_blewbxx_impl
 else
 # Assume Nano S
+DEFINES       += HAVE_BAGL BAGL_WIDTH=128 BAGL_HEIGHT=32
+DEFINES       += BAGL_WIDTH_MARGIN=10
 DEFINES       += IO_SEPROXYHAL_BUFFER_SIZE_B=128
 endif
 
