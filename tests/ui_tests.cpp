@@ -61,37 +61,6 @@ public:
     };
 };
 
-
-std::vector<std::string> update_testcase(const testcase_t &tc, bool expert_mode) {
-
-    app_mode_set_expert(expert_mode);
-
-    parser_context_t ctx;
-    parser_error_t err;
-
-    uint8_t buffer[5000];
-    uint16_t bufferLen = parseHexString(buffer, sizeof(buffer), tc.blob.c_str());
-
-    parser_tx_t tx_obj;
-    err = parser_parse(&ctx, buffer, bufferLen, &tx_obj);
-
-    auto output = dumpUI(&ctx, 39, 39);
-
-    std::cout << std::endl;
-    for (const auto &i : output) {
-        std::cout << i << std::endl;
-    }
-    std::cout << std::endl << std::endl;
-
-    std::vector<std::string> expected = app_mode_expert() ? tc.expected_expert : tc.expected;
-    auto outputs = std::vector<std::string>();
-    for (size_t i = 0; i < output.size(); i++) {
-        outputs.push_back(output[i]);
-    }
-
-    return outputs;
-}
-
 // Retrieve testcases from json file
 std::vector<testcase_t> GetJsonTestCases(std::string jsonFile) {
     auto answer = std::vector<testcase_t>();
@@ -110,9 +79,6 @@ std::vector<testcase_t> GetJsonTestCases(std::string jsonFile) {
     JSONCPP_STRING errs;
     Json::parseFromStream(builder, inFile, &obj, &errs);
     std::cout << "Number of testcases: " << obj.size() << std::endl;
-
-    Json::StreamWriterBuilder writerBuilder;
-    const std::unique_ptr<Json::StreamWriter> writer(writerBuilder.newStreamWriter());
 
     for (int i = 0; i < obj.size(); i++) {
 
@@ -133,30 +99,7 @@ std::vector<testcase_t> GetJsonTestCases(std::string jsonFile) {
                 outputs,
                 outputs_expert
         });
-
-        auto testcase = testcase_t{
-                obj[i]["index"].asUInt64(),
-                obj[i]["name"].asString(),
-                obj[i]["blob"].asString(),
-                outputs,
-                outputs_expert
-        };
-
-        outputs = update_testcase(testcase, false);
-        outputs_expert = update_testcase(testcase, true);
-
-        for (int j = 0; j < obj[i]["output"].size(); j++) {
-            obj[i]["output"][j] = outputs[j];
-        }
-        for (int j = 0; j < obj[i]["output_expert"].size(); j++) {
-            obj[i]["output_expert"][j] = outputs_expert[j];
-        }
-        // obj[i]["output_expert"] = outputs_expert;
     }
-
-    std::ofstream updated_tests;
-    updated_tests.open(fullPathJsonFile + ".run");
-    writer->write(obj, &updated_tests);
 
     return answer;
 }
