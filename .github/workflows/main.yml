@@ -190,6 +190,7 @@ jobs:
         shell: bash -l {0}
         run: |
           source $HOME/.cargo/env
+          make clean
           make COIN=DENTX_XL SUBSTRATE_PARSER_FULL=1
           cp app/pkg/installer_s.sh app/pkg/installer_XL_s.sh
       - name: Set tag name var (2)
