@@ -254,6 +254,14 @@ parser_error_t _readParachainsInherentDataHeader_V9(parser_context_t* c, pd_Para
     return parser_not_supported;
 }
 
+parser_error_t _readOpaqueCall_V9(parser_context_t* c, pd_OpaqueCall_V9_t* v)
+{
+    // Encoded as Byte[], array size comes first
+    uint8_t size;
+    CHECK_ERROR(_readUInt8(c, &size))
+    return _readCall(c, &v->call);
+}
+
 parser_error_t _readPerbill_V9(parser_context_t* c, pd_Perbill_V9_t* v)
 {
     return _readUInt32(c, &v->value);
@@ -1011,6 +1019,16 @@ parser_error_t _toStringParachainsInherentDataHeader_V9(
 {
     CLEAN_AND_CHECK()
     return parser_print_not_supported;
+}
+
+parser_error_t _toStringOpaqueCall_V9(
+    const pd_OpaqueCall_V9_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount)
+{
+    return _toStringCall(&v->call, outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringPerbill_V9(

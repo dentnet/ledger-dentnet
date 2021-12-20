@@ -89,6 +89,10 @@ typedef struct {
 } pd_StatementKind_V9_t;
 
 typedef struct {
+    pd_Call_t call;
+} pd_OpaqueCall_V9_t;
+
+typedef struct {
     pd_BlockNumber_t height;
     uint32_t index;
 } pd_Timepoint_V9_t;
