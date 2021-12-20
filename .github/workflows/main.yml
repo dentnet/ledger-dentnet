@@ -190,8 +190,7 @@ jobs:
         shell: bash -l {0}
         run: |
           source $HOME/.cargo/env
-          make SUBSTRATE_PARSER_FULL=1
-          cp rust/app/pkg/installer_s.sh rust/app/pkg/installer_baking_s.sh
+          make COIN=DENTX_XL
           cp app/pkg/installer_s.sh app/pkg/installer_XL_s.sh
       - name: Set tag name var (2)
         id: vars_2
