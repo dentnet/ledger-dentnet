@@ -339,7 +339,7 @@ Please:
 | :---------- |:------------:|:--------:|:--------:|:--------|
 |Submit unsigned |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/>`SolutionOrSnapshotSize` witness <br/> | 
 |Set minimum untrusted score |    |   |   | `OptionElectionScore` maybe_next_score <br/> | 
-|Set emergency election result |    |   |   | `SupportsAccountId` supports <br/> | 
+|Set emergency election result |    | :heavy_check_mark:  | :heavy_check_mark:  | `SupportsAccountId` supports <br/> | 
 |Submit |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/>`u32` num_signed_submissions <br/> | 
 
 ## BagsList
