@@ -32,6 +32,7 @@ extern "C" {
 #define PD_CALL_BALANCES_V9 5
 #define PD_CALL_STAKING_V9 7
 #define PD_CALL_SESSION_V9 9
+#define PD_CALL_SUDO_V9 10
 #define PD_CALL_GRANDPA_V9 11
 #define PD_CALL_DEMOCRACY_V9 14
 #define PD_CALL_COUNCIL_V9 15
@@ -221,6 +222,22 @@ typedef struct {
 typedef struct {
     pd_AccountId_V9_t controller;
 } pd_staking_chill_other_V9_t;
+
+#define PD_CALL_SUDO_SET_KEY_V9 0
+typedef struct {
+    pd_LookupasStaticLookupSource_V9_t new_;
+} pd_sudo_set_key_V9_t;
+
+#define PD_CALL_SUDO_SUDO_V9 1
+typedef struct {
+    pd_Call_t call;
+} pd_sudo_sudo_V9_t;
+
+#define PD_CALL_SUDO_SUDO_UNCHECKED_WEIGHT_V9 3
+typedef struct {
+    pd_Call_t call;
+    pd_Weight_V9_t weight;
+} pd_sudo_sudo_unchecked_weight_V9_t;
 
 #define PD_CALL_GRANDPA_NOTE_STALLED_V9 2
 typedef struct {
@@ -938,6 +955,9 @@ typedef union {
     pd_staking_reap_stash_V9_t staking_reap_stash_V9;
     pd_staking_kick_V9_t staking_kick_V9;
     pd_staking_chill_other_V9_t staking_chill_other_V9;
+    pd_sudo_set_key_V9_t sudo_set_key_V9;
+    pd_sudo_sudo_V9_t sudo_sudo_V9;
+    pd_sudo_sudo_unchecked_weight_V9_t sudo_sudo_unchecked_weight_V9;
     pd_grandpa_note_stalled_V9_t grandpa_note_stalled_V9;
     pd_democracy_second_V9_t democracy_second_V9;
     pd_democracy_emergency_cancel_V9_t democracy_emergency_cancel_V9;

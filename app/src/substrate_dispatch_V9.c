@@ -326,6 +326,28 @@ __Z_INLINE parser_error_t _readMethod_staking_chill_other_V9(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_sudo_set_key_V9(
+     parser_context_t* c, pd_sudo_set_key_V9_t* m)
+ {
+     CHECK_ERROR(_readLookupasStaticLookupSource_V9(c, &m->new_))
+     return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_sudo_sudo_V9(
+     parser_context_t* c, pd_sudo_sudo_V9_t* m)
+ {
+     CHECK_ERROR(_readCall(c, &m->call))
+     return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_sudo_sudo_unchecked_weight_V9(
+     parser_context_t* c, pd_sudo_sudo_unchecked_weight_V9_t* m)
+ {
+     CHECK_ERROR(_readCall(c, &m->call))
+     CHECK_ERROR(_readWeight_V9(c, &m->weight))
+     return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_grandpa_note_stalled_V9(
     parser_context_t* c, pd_grandpa_note_stalled_V9_t* m)
 {
@@ -1312,6 +1334,10 @@ parser_error_t _readMethod_V9(
 {
     uint16_t callPrivIdx = ((uint16_t)moduleIdx << 8u) + callIdx;
 
+    char buffer[30];
+    snprintf(buffer, sizeof(buffer), "rm %d/%d/%d", callPrivIdx, moduleIdx, callIdx);
+    zemu_log(buffer);
+
     switch (callPrivIdx) {
 
     case 1280: /* module 5 call 0 */
@@ -1441,6 +1467,15 @@ parser_error_t _readMethod_V9(
         break;
     case 1816: /* module 7 call 24 */
         CHECK_ERROR(_readMethod_staking_chill_other_V9(c, &method->basic.staking_chill_other_V9))
+        break;
+    case 2560: /* module 10 call 0 */
+        CHECK_ERROR(_readMethod_sudo_sudo_V9(c, &method->basic.sudo_sudo_V9))
+        break;
+    case 2561: /* module 10 call 1 */
+        CHECK_ERROR(_readMethod_sudo_sudo_unchecked_weight_V9(c, &method->basic.sudo_sudo_unchecked_weight_V9))
+        break;
+    case 2562: /* module 10 call 2 */
+        CHECK_ERROR(_readMethod_sudo_set_key_V9(c, &method->basic.sudo_set_key_V9))
         break;
     case 2818: /* module 11 call 2 */
         CHECK_ERROR(_readMethod_grandpa_note_stalled_V9(c, &method->basic.grandpa_note_stalled_V9))
@@ -1866,6 +1901,8 @@ const char* _getMethod_ModuleName_V9(uint8_t moduleIdx)
         return STR_MO_TIMESTAMP;
     case 4:
         return STR_MO_INDICES;
+    case 10:
+        return STR_MO_SUDO;
     case 11:
         return STR_MO_GRANDPA;
     case 14:
@@ -2040,6 +2077,12 @@ const char* _getMethod_Name_V9(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_SET_STAKING_LIMITS;
     case 1816: /* module 7 call 24 */
         return STR_ME_CHILL_OTHER;
+    case 2560: /* module 10 call 0 */
+        return STR_ME_SUDO;
+    case 2561: /* module 10 call 1 */
+        return STR_ME_SUDO_UNCHECKED_WEIGHT;
+    case 2562: /* module 10 call 2 */
+        return STR_ME_SUDO_SET_KEY;
     case 2816: /* module 11 call 0 */
         return STR_ME_REPORT_EQUIVOCATION;
     case 2817: /* module 11 call 1 */
@@ -2545,6 +2588,12 @@ uint8_t _getMethod_NumItems_V9(uint8_t moduleIdx, uint8_t callIdx)
     case 1814: /* module 7 call 22 */
         return 1;
     case 1816: /* module 7 call 24 */
+        return 1;
+    case 2560: /* module 10 call 0 */
+        return 1;
+    case 2561: /* module 10 call 1 */
+        return 2;
+    case 2562: /* module 10 call 2 */
         return 1;
     case 2818: /* module 11 call 2 */
         return 2;
@@ -3137,6 +3186,29 @@ const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         switch (itemIdx) {
         case 0:
             return STR_IT_controller;
+        default:
+            return NULL;
+        }
+    case 2560: /* module 10 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_call;
+        default:
+            return NULL;
+        }
+    case 2562: /* module 10 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_new_;
+        default:
+            return NULL;
+        }
+    case 2561: /* module 10 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_call;
+        case 1:
+            return STR_IT_weight_limit;
         default:
             return NULL;
         }
@@ -4668,6 +4740,41 @@ parser_error_t _getMethod_ItemValue_V9(
         case 0: /* staking_chill_other_V9 - controller */;
             return _toStringAccountId_V9(
                 &m->basic.staking_chill_other_V9.controller,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 2560: /* module 10 call 0 */
+        switch (itemIdx) {
+        case 0: /* sudo_sudo_V9- call */;
+            return _toStringCall(
+                &m->basic.sudo_sudo_V9.call,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 2562: /* module 10 call 1 */
+        switch (itemIdx) {
+        case 0: /* sudo_set_key_V9- new */;
+            return _toStringLookupasStaticLookupSource_V9(
+                &m->basic.sudo_set_key_V9.new_,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 2561: /* module 10 call 2 */
+        switch (itemIdx) {
+        case 0: /* sudo_sudo_unchecked_weight_V9- call */
+            return _toStringCall(
+                &m->basic.sudo_sudo_unchecked_weight_V9.call,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* sudo_sudo_unchecked_weight_V9- weight */
+            return _toStringWeight_V9(
+                &m->basic.sudo_sudo_unchecked_weight_V9.weight,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -6353,6 +6460,9 @@ bool _getMethod_IsNestingSupported_V9(uint8_t moduleIdx, uint8_t callIdx)
     case 1816: // Staking:Chill other
     case 2304: // Session:Set keys
     case 2305: // Session:Purge keys
+    case 2560: // Sudo:Sudo
+    case 2562: // Sudo:Set key
+    case 2561: // Sudo:Sudo unchecked weight
     case 2818: // Grandpa:Note stalled
     case 3585: // Democracy:Second
     case 3587: // Democracy:Emergency cancel

@@ -128,6 +128,16 @@ Please:
 |Set keys | :heavy_check_mark:  | :heavy_check_mark: |   | `Keys` keys <br/>`Bytes` proof <br/> | 
 |Purge keys | :heavy_check_mark:  | :heavy_check_mark: |   |  | 
 
+## Sudo
+
+| Name        | Light | XL | Nesting | Arguments | 
+| :---------- |:------------:|:--------:|:--------:|:--------|
+| Set key |    | :heavy_check_mark: |   | `AccountId` new_ <br/> | 
+| Sudo |    | :heavy_check_mark: |   | `Call` call <br/> | 
+| Sudo as |    |  |   | `AccountId` who <br/>, `Call` call <br/> | 
+| Sudo unchecked weight |    | :heavy_check_mark: |   | `Call` call <br/> | 
+
+
 ## Grandpa
 
 | Name        | Light | XL | Nesting | Arguments | 
