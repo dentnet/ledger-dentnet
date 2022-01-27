@@ -987,6 +987,13 @@ __Z_INLINE parser_error_t _readMethod_tips_slash_tip_V9(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_epmp_set_emergency_election_result_V9(
+    parser_context_t* c, pd_epmp_set_emergency_election_result_V9_t * m)
+{
+    CHECK_ERROR(_readVecSupports_V9(c, &m->supports))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_bagslist_rebag_V9(
     parser_context_t* c, pd_bagslist_rebag_V9_t* m)
 {
@@ -1726,6 +1733,9 @@ parser_error_t _readMethod_V9(
     case 8965: /* module 35 call 5 */
         CHECK_ERROR(_readMethod_tips_slash_tip_V9(c, &method->basic.tips_slash_tip_V9))
         break;
+    case 9218: /* module 36 call 2 */
+        CHECK_ERROR(_readMethod_epmp_set_emergency_election_result_V9(c, &method->nested.epmp_set_emergency_election_result_V9))
+        break;
     case 9472: /* module 37 call 0 */
         CHECK_ERROR(_readMethod_bagslist_rebag_V9(c, &method->basic.bagslist_rebag_V9))
         break;
@@ -1931,6 +1941,8 @@ const char* _getMethod_ModuleName_V9(uint8_t moduleIdx)
         return STR_MO_BOUNTIES;
     case 35:
         return STR_MO_TIPS;
+    case 36:
+        return STR_MO_EPMP;
     case 37:
         return STR_MO_BAGSLIST;
     case 51:
@@ -2761,6 +2773,8 @@ uint8_t _getMethod_NumItems_V9(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 8965: /* module 35 call 5 */
         return 1;
+    case 9218: /* module 36 call 2 */
+        return 0;
     case 9472: /* module 37 call 0 */
         return 1;
     case 13056: /* module 51 call 0 */
@@ -3906,6 +3920,11 @@ const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         switch (itemIdx) {
         case 0:
             return STR_IT_hash;
+        default:
+            return NULL;
+        }
+    case 9218: /* module 36 call 2 */
+        switch (itemIdx) {
         default:
             return NULL;
         }
@@ -5900,6 +5919,11 @@ parser_error_t _getMethod_ItemValue_V9(
         default:
             return parser_no_data;
         }
+    case 9218: /* module 36 call 2 */
+        switch (itemIdx) {
+        default:
+            return parser_no_data;
+        }  
     case 9472: /* module 37 call 0 */
         switch (itemIdx) {
         case 0: /* bagslist_rebag_V9 - dislocated */;

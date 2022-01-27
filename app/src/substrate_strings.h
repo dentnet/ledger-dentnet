@@ -42,6 +42,7 @@ static const char* STR_MO_PROXY = "Proxy";
 static const char* STR_MO_MULTISIG = "Multisig";
 static const char* STR_MO_BOUNTIES = "Bounties";
 static const char* STR_MO_TIPS = "Tips";
+static const char* STR_MO_EPMP = "EPMultiPhase";
 static const char* STR_MO_CONFIGURATION = "Configuration";
 static const char* STR_MO_INITIALIZER = "Initializer";
 static const char* STR_MO_HRMP = "Hrmp";

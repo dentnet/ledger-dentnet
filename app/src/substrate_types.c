@@ -112,6 +112,18 @@ parser_error_t _readCompactu128(parser_context_t* c, pd_Compactu128_t* v)
     return _readCompactInt(c, v);
 }
 
+parser_error_t _readu128(parser_context_t* c, pd_Bytes_t* v)
+{
+    CHECK_INPUT()
+
+    v->_len = 16;
+    v->_ptr = c->buffer + c->offset;
+
+    CTX_CHECK_AND_ADVANCE(c, v->_len);
+
+    return parser_ok;
+}
+
 parser_error_t _readBytes(parser_context_t* c, pd_Bytes_t* v)
 {
     CHECK_INPUT()

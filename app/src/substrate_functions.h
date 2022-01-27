@@ -29,6 +29,7 @@ parser_error_t _readu8(parser_context_t* c, pd_u8_t* v);
 parser_error_t _readu16(parser_context_t* c, pd_u16_t* v);
 parser_error_t _readu32(parser_context_t* c, pd_u32_t* v);
 parser_error_t _readu64(parser_context_t* c, pd_u64_t* v);
+parser_error_t _readu128(parser_context_t* c, pd_Bytes_t* v);
 parser_error_t _readBlockNumber(parser_context_t* c, pd_BlockNumber_t* v);
 parser_error_t _readCompactu32(parser_context_t* c, pd_Compactu32_t* v);
 parser_error_t _readCompactu64(parser_context_t* c, pd_Compactu64_t* v);

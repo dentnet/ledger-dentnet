@@ -678,6 +678,11 @@ typedef struct {
     pd_Hash_t hash;
 } pd_tips_slash_tip_V9_t;
 
+#define PD_CALL_EPMP_SET_EMERGENY_ELECTION_RESULT_V9 2
+typedef struct {
+    pd_VecSupports_V9_t supports;
+} pd_epmp_set_emergency_election_result_V9_t;
+
 #define PD_CALL_BAGSLIST_REBAG_V9 0
 typedef struct {
     pd_AccountId_V9_t dislocated;
@@ -1194,6 +1199,7 @@ typedef union {
     pd_system_remark_with_event_V9_t system_remark_with_event_V9;
     pd_balances_set_balance_V9_t balances_set_balance_V9;
     pd_proxy_proxy_V9_t proxy_proxy_V9;
+    pd_epmp_set_emergency_election_result_V9_t epmp_set_emergency_election_result_V9;
     pd_multisig_as_multi_V9_t multisig_as_multi_V9;
     pd_multisig_approve_as_multi_V9_t multisig_approve_as_multi_V9;
     pd_multisig_cancel_as_multi_V9_t multisig_cancel_as_multi_V9;

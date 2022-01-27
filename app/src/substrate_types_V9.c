@@ -326,9 +326,38 @@ parser_error_t _readStatementKind_V9(parser_context_t* c, pd_StatementKind_V9_t*
     return parser_not_supported;
 }
 
-parser_error_t _readSupportsAccountId_V9(parser_context_t* c, pd_SupportsAccountId_V9_t* v)
-{
-    return parser_not_supported;
+parser_error_t _readSpNposElectionsSupportVoter(parser_context_t* c, pd_SpNposElectionsSupportVoter_V9_t* v) {
+    CHECK_ERROR(_readAccountId_V9(c, &v->account_id));
+    CHECK_ERROR(_readu128(c, &v->extended_balance))
+    return parser_ok;
+}
+
+parser_error_t _readSpNposElectionsSupport(parser_context_t* c, pd_SpNposElectionsSupport_V9_t* v) {
+    CHECK_ERROR(_readu128(c, &v->total));
+
+    pd_SpNposElectionsSupportVoter_V9_t dummy; 
+    compactInt_t clen;
+    CHECK_PARSER_ERR(_readCompactInt(c, &clen)); 
+    CHECK_PARSER_ERR(_getValue(&clen, &v->voters._len)); 
+    v->voters._ptr = c->buffer + c->offset;          
+    v->voters._lenBuffer = c->offset;           
+
+    for (uint64_t i = 0; i < v->voters._len; i++ ) {
+        CHECK_ERROR(_readSpNposElectionsSupportVoter(c, &dummy)); 
+    }
+    v->voters._lenBuffer = c->offset - v->voters._lenBuffer; 
+
+    return parser_ok;
+}
+
+parser_error_t _readSupportsAccountId_V9(parser_context_t* c, pd_SupportsAccountId_V9_t* v) {
+    CHECK_ERROR(_readAccountId_V9(c, &v->account_id));
+    CHECK_ERROR(_readSpNposElectionsSupport(c, &v->supports))
+    return parser_ok;
+}
+
+parser_error_t _readVecSupports_V9(parser_context_t* c, pd_VecSupports_V9_t* v) {
+    GEN_DEF_READVECTOR(SupportsAccountId_V9)
 }
 
 parser_error_t _readTimepoint_V9(parser_context_t* c, pd_Timepoint_V9_t* v)

@@ -373,14 +373,36 @@ typedef struct {
 } pd_SolutionOrSnapshotSize_V9_t;
 
 typedef struct {
-    // TODO: Not implemented
-    uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
+   pd_AccountId_V9_t account_id;
+   pd_Bytes_t extended_balance;
+} pd_SpNposElectionsSupportVoter_V9_t;
+
+typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+    uint64_t _lenBuffer;
+} pd_VecSpNposElectionsSupportVoters_V9_t;
+
+typedef struct {
+   pd_Bytes_t total;
+   pd_VecSpNposElectionsSupportVoters_V9_t voters;
+} pd_SpNposElectionsSupport_V9_t;
+
+typedef struct {
+   pd_AccountId_V9_t account_id;
+   pd_SpNposElectionsSupport_V9_t supports;
 } pd_SupportsAccountId_V9_t;
 
 typedef struct {
     // TODO: Not implemented
     uint8_t _NOT_IMPLEMENTED__DO_NOT_USE;
 } pd_ValidationCode_V9_t;
+
+typedef struct {
+    uint64_t _len;
+    const uint8_t* _ptr;
+    uint64_t _lenBuffer;
+} pd_VecSupports_V9_t;
 
 typedef struct {
     uint64_t _len;
