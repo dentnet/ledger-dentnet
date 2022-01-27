@@ -223,21 +223,21 @@ typedef struct {
     pd_AccountId_V9_t controller;
 } pd_staking_chill_other_V9_t;
 
-#define PD_CALL_SUDO_SET_KEY_V9 0
-typedef struct {
-    pd_LookupasStaticLookupSource_V9_t new_;
-} pd_sudo_set_key_V9_t;
-
-#define PD_CALL_SUDO_SUDO_V9 1
+#define PD_CALL_SUDO_SUDO_V9 0
 typedef struct {
     pd_Call_t call;
 } pd_sudo_sudo_V9_t;
 
-#define PD_CALL_SUDO_SUDO_UNCHECKED_WEIGHT_V9 3
+#define PD_CALL_SUDO_SUDO_UNCHECKED_WEIGHT_V9 1
 typedef struct {
     pd_Call_t call;
     pd_Weight_V9_t weight;
 } pd_sudo_sudo_unchecked_weight_V9_t;
+
+#define PD_CALL_SUDO_SET_KEY_V9 2 
+typedef struct {
+    pd_LookupasStaticLookupSource_V9_t new_;
+} pd_sudo_set_key_V9_t;
 
 #define PD_CALL_GRANDPA_NOTE_STALLED_V9 2
 typedef struct {

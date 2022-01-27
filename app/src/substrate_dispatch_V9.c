@@ -1341,10 +1341,6 @@ parser_error_t _readMethod_V9(
 {
     uint16_t callPrivIdx = ((uint16_t)moduleIdx << 8u) + callIdx;
 
-    char buffer[30];
-    snprintf(buffer, sizeof(buffer), "rm %d/%d/%d", callPrivIdx, moduleIdx, callIdx);
-    zemu_log(buffer);
-
     switch (callPrivIdx) {
 
     case 1280: /* module 5 call 0 */
@@ -3210,19 +3206,19 @@ const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 2562: /* module 10 call 1 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_new_;
-        default:
-            return NULL;
-        }
-    case 2561: /* module 10 call 2 */
+    case 2561: /* module 10 call 1 */
         switch (itemIdx) {
         case 0:
             return STR_IT_call;
         case 1:
             return STR_IT_weight_limit;
+        default:
+            return NULL;
+        }
+    case 2562: /* module 10 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_new_;
         default:
             return NULL;
         }
@@ -4774,16 +4770,6 @@ parser_error_t _getMethod_ItemValue_V9(
         default:
             return parser_no_data;
         }
-    case 2562: /* module 10 call 1 */
-        switch (itemIdx) {
-        case 0: /* sudo_set_key_V9- new */;
-            return _toStringLookupasStaticLookupSource_V9(
-                &m->basic.sudo_set_key_V9.new_,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
     case 2561: /* module 10 call 2 */
         switch (itemIdx) {
         case 0: /* sudo_sudo_unchecked_weight_V9- call */
@@ -4794,6 +4780,16 @@ parser_error_t _getMethod_ItemValue_V9(
         case 1: /* sudo_sudo_unchecked_weight_V9- weight */
             return _toStringWeight_V9(
                 &m->basic.sudo_sudo_unchecked_weight_V9.weight,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 2562: /* module 10 call 1 */
+        switch (itemIdx) {
+        case 0: /* sudo_set_key_V9- new */;
+            return _toStringLookupasStaticLookupSource_V9(
+                &m->basic.sudo_set_key_V9.new_,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
