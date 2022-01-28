@@ -128,6 +128,16 @@ Please:
 |Set keys | :heavy_check_mark:  | :heavy_check_mark: |   | `Keys` keys <br/>`Bytes` proof <br/> | 
 |Purge keys | :heavy_check_mark:  | :heavy_check_mark: |   |  | 
 
+## Sudo
+
+| Name        | Light | XL | Nesting | Arguments | 
+| :---------- |:------------:|:--------:|:--------:|:--------|
+| Set key |    | :heavy_check_mark: |   | `AccountId` new_ <br/> | 
+| Sudo |    | :heavy_check_mark: |   | `Call` call <br/> | 
+| Sudo as |    |  |   | `AccountId` who <br/>, `Call` call <br/> | 
+| Sudo unchecked weight |    | :heavy_check_mark: |   | `Call` call <br/> | 
+
+
 ## Grandpa
 
 | Name        | Light | XL | Nesting | Arguments | 
@@ -329,7 +339,7 @@ Please:
 | :---------- |:------------:|:--------:|:--------:|:--------|
 |Submit unsigned |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/>`SolutionOrSnapshotSize` witness <br/> | 
 |Set minimum untrusted score |    |   |   | `OptionElectionScore` maybe_next_score <br/> | 
-|Set emergency election result |    |   |   | `SupportsAccountId` supports <br/> | 
+|Set emergency election result |    | :heavy_check_mark:  | :heavy_check_mark:  | `SupportsAccountId` supports <br/> | 
 |Submit |    |   |   | `BoxRawSolutionSolutionOfT` raw_solution <br/>`u32` num_signed_submissions <br/> | 
 
 ## BagsList

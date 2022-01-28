@@ -98,6 +98,7 @@ parser_error_t _readTupleBalanceOfTBalanceOfTBlockNumber_V9(parser_context_t* c,
 parser_error_t _readValidationCode_V9(parser_context_t* c, pd_ValidationCode_V9_t* v);
 parser_error_t _readValidatorPrefs_V9(parser_context_t* c, pd_ValidatorPrefs_V9_t* v);
 parser_error_t _readVecAccountId_V9(parser_context_t* c, pd_VecAccountId_V9_t* v);
+parser_error_t _readVecSupports_V9(parser_context_t* c, pd_VecSupports_V9_t* v);
 parser_error_t _readVecKeyValue_V9(parser_context_t* c, pd_VecKeyValue_V9_t* v);
 parser_error_t _readVecKey_V9(parser_context_t* c, pd_VecKey_V9_t* v);
 parser_error_t _readVecLookupasStaticLookupSource_V9(parser_context_t* c, pd_VecLookupasStaticLookupSource_V9_t* v);

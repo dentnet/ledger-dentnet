@@ -326,6 +326,28 @@ __Z_INLINE parser_error_t _readMethod_staking_chill_other_V9(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_sudo_set_key_V9(
+     parser_context_t* c, pd_sudo_set_key_V9_t* m)
+ {
+     CHECK_ERROR(_readLookupasStaticLookupSource_V9(c, &m->new_))
+     return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_sudo_sudo_V9(
+     parser_context_t* c, pd_sudo_sudo_V9_t* m)
+ {
+     CHECK_ERROR(_readCall(c, &m->call))
+     return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_sudo_sudo_unchecked_weight_V9(
+     parser_context_t* c, pd_sudo_sudo_unchecked_weight_V9_t* m)
+ {
+     CHECK_ERROR(_readCall(c, &m->call))
+     CHECK_ERROR(_readWeight_V9(c, &m->weight))
+     return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_grandpa_note_stalled_V9(
     parser_context_t* c, pd_grandpa_note_stalled_V9_t* m)
 {
@@ -965,6 +987,13 @@ __Z_INLINE parser_error_t _readMethod_tips_slash_tip_V9(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_epmp_set_emergency_election_result_V9(
+    parser_context_t* c, pd_epmp_set_emergency_election_result_V9_t * m)
+{
+    CHECK_ERROR(_readVecSupports_V9(c, &m->supports))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_bagslist_rebag_V9(
     parser_context_t* c, pd_bagslist_rebag_V9_t* m)
 {
@@ -1442,6 +1471,15 @@ parser_error_t _readMethod_V9(
     case 1816: /* module 7 call 24 */
         CHECK_ERROR(_readMethod_staking_chill_other_V9(c, &method->basic.staking_chill_other_V9))
         break;
+    case 2560: /* module 10 call 0 */
+        CHECK_ERROR(_readMethod_sudo_sudo_V9(c, &method->basic.sudo_sudo_V9))
+        break;
+    case 2561: /* module 10 call 1 */
+        CHECK_ERROR(_readMethod_sudo_sudo_unchecked_weight_V9(c, &method->basic.sudo_sudo_unchecked_weight_V9))
+        break;
+    case 2562: /* module 10 call 2 */
+        CHECK_ERROR(_readMethod_sudo_set_key_V9(c, &method->basic.sudo_set_key_V9))
+        break;
     case 2818: /* module 11 call 2 */
         CHECK_ERROR(_readMethod_grandpa_note_stalled_V9(c, &method->basic.grandpa_note_stalled_V9))
         break;
@@ -1691,6 +1729,9 @@ parser_error_t _readMethod_V9(
     case 8965: /* module 35 call 5 */
         CHECK_ERROR(_readMethod_tips_slash_tip_V9(c, &method->basic.tips_slash_tip_V9))
         break;
+    case 9218: /* module 36 call 2 */
+        CHECK_ERROR(_readMethod_epmp_set_emergency_election_result_V9(c, &method->nested.epmp_set_emergency_election_result_V9))
+        break;
     case 9472: /* module 37 call 0 */
         CHECK_ERROR(_readMethod_bagslist_rebag_V9(c, &method->basic.bagslist_rebag_V9))
         break;
@@ -1866,6 +1907,8 @@ const char* _getMethod_ModuleName_V9(uint8_t moduleIdx)
         return STR_MO_TIMESTAMP;
     case 4:
         return STR_MO_INDICES;
+    case 10:
+        return STR_MO_SUDO;
     case 11:
         return STR_MO_GRANDPA;
     case 14:
@@ -1894,6 +1937,8 @@ const char* _getMethod_ModuleName_V9(uint8_t moduleIdx)
         return STR_MO_BOUNTIES;
     case 35:
         return STR_MO_TIPS;
+    case 36:
+        return STR_MO_EPMP;
     case 37:
         return STR_MO_BAGSLIST;
     case 51:
@@ -2040,6 +2085,12 @@ const char* _getMethod_Name_V9(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_SET_STAKING_LIMITS;
     case 1816: /* module 7 call 24 */
         return STR_ME_CHILL_OTHER;
+    case 2560: /* module 10 call 0 */
+        return STR_ME_SUDO;
+    case 2561: /* module 10 call 1 */
+        return STR_ME_SUDO_UNCHECKED_WEIGHT;
+    case 2562: /* module 10 call 2 */
+        return STR_ME_SUDO_SET_KEY;
     case 2816: /* module 11 call 0 */
         return STR_ME_REPORT_EQUIVOCATION;
     case 2817: /* module 11 call 1 */
@@ -2546,6 +2597,12 @@ uint8_t _getMethod_NumItems_V9(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 1816: /* module 7 call 24 */
         return 1;
+    case 2560: /* module 10 call 0 */
+        return 1;
+    case 2561: /* module 10 call 1 */
+        return 2;
+    case 2562: /* module 10 call 2 */
+        return 1;
     case 2818: /* module 11 call 2 */
         return 2;
     case 3585: /* module 14 call 1 */
@@ -2712,6 +2769,8 @@ uint8_t _getMethod_NumItems_V9(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 8965: /* module 35 call 5 */
         return 1;
+    case 9218: /* module 36 call 2 */
+        return 0;
     case 9472: /* module 37 call 0 */
         return 1;
     case 13056: /* module 51 call 0 */
@@ -3137,6 +3196,29 @@ const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         switch (itemIdx) {
         case 0:
             return STR_IT_controller;
+        default:
+            return NULL;
+        }
+    case 2560: /* module 10 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_call;
+        default:
+            return NULL;
+        }
+    case 2561: /* module 10 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_call;
+        case 1:
+            return STR_IT_weight_limit;
+        default:
+            return NULL;
+        }
+    case 2562: /* module 10 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_new_;
         default:
             return NULL;
         }
@@ -3834,6 +3916,11 @@ const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         switch (itemIdx) {
         case 0:
             return STR_IT_hash;
+        default:
+            return NULL;
+        }
+    case 9218: /* module 36 call 2 */
+        switch (itemIdx) {
         default:
             return NULL;
         }
@@ -4668,6 +4755,41 @@ parser_error_t _getMethod_ItemValue_V9(
         case 0: /* staking_chill_other_V9 - controller */;
             return _toStringAccountId_V9(
                 &m->basic.staking_chill_other_V9.controller,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 2560: /* module 10 call 0 */
+        switch (itemIdx) {
+        case 0: /* sudo_sudo_V9- call */;
+            return _toStringCall(
+                &m->basic.sudo_sudo_V9.call,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 2561: /* module 10 call 2 */
+        switch (itemIdx) {
+        case 0: /* sudo_sudo_unchecked_weight_V9- call */
+            return _toStringCall(
+                &m->basic.sudo_sudo_unchecked_weight_V9.call,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* sudo_sudo_unchecked_weight_V9- weight */
+            return _toStringWeight_V9(
+                &m->basic.sudo_sudo_unchecked_weight_V9.weight,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 2562: /* module 10 call 1 */
+        switch (itemIdx) {
+        case 0: /* sudo_set_key_V9- new */;
+            return _toStringLookupasStaticLookupSource_V9(
+                &m->basic.sudo_set_key_V9.new_,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -5793,6 +5915,11 @@ parser_error_t _getMethod_ItemValue_V9(
         default:
             return parser_no_data;
         }
+    case 9218: /* module 36 call 2 */
+        switch (itemIdx) {
+        default:
+            return parser_no_data;
+        }  
     case 9472: /* module 37 call 0 */
         switch (itemIdx) {
         case 0: /* bagslist_rebag_V9 - dislocated */;
@@ -6353,6 +6480,9 @@ bool _getMethod_IsNestingSupported_V9(uint8_t moduleIdx, uint8_t callIdx)
     case 1816: // Staking:Chill other
     case 2304: // Session:Set keys
     case 2305: // Session:Purge keys
+    case 2560: // Sudo:Sudo
+    case 2562: // Sudo:Set key
+    case 2561: // Sudo:Sudo unchecked weight
     case 2818: // Grandpa:Note stalled
     case 3585: // Democracy:Second
     case 3587: // Democracy:Emergency cancel
