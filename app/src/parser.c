@@ -20,10 +20,9 @@
 #include "app_mode.h"
 #include "parser.h"
 #include "coin.h"
-#include "coin_ss58.h"
 #include "substrate_dispatch.h"
 
-#if defined(TARGET_NANOX)
+#if defined(TARGET_NANOX) || defined(TARGET_NANOS2)
 // For some reason NanoX requires this function
 void __assert_fail(const char * assertion, const char * file, unsigned int line, const char * function){
     while(1) {};
