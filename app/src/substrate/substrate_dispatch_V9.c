@@ -1245,20 +1245,6 @@ __Z_INLINE parser_error_t _readMethod_electionprovidermultiphase_governance_fall
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_voterlist_rebag_V9(
-    parser_context_t* c, pd_voterlist_rebag_V9_t* m)
-{
-    CHECK_ERROR(_readAccountId_V9(c, &m->dislocated))
-    return parser_ok;
-}
-
-__Z_INLINE parser_error_t _readMethod_voterlist_put_in_front_of_V9(
-    parser_context_t* c, pd_voterlist_put_in_front_of_V9_t* m)
-{
-    CHECK_ERROR(_readAccountId_V9(c, &m->lighter))
-    return parser_ok;
-}
-
 #endif
 
 parser_error_t _readMethod_V9(
@@ -1719,12 +1705,6 @@ parser_error_t _readMethod_V9(
         break;
     case 9220: /* module 36 call 4 */
         CHECK_ERROR(_readMethod_electionprovidermultiphase_governance_fallback_V9(c, &method->basic.electionprovidermultiphase_governance_fallback_V9))
-        break;
-    case 9472: /* module 37 call 0 */
-        CHECK_ERROR(_readMethod_voterlist_rebag_V9(c, &method->basic.voterlist_rebag_V9))
-        break;
-    case 9473: /* module 37 call 1 */
-        CHECK_ERROR(_readMethod_voterlist_put_in_front_of_V9(c, &method->basic.voterlist_put_in_front_of_V9))
         break;
     case 10240: /* module 40 call 0 */
         CHECK_ERROR(_readMethod_preimage_note_preimage_V9(c, &method->basic.preimage_note_preimage_V9))
@@ -3781,13 +3761,6 @@ const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
             return STR_IT_maybe_max_voters;
         case 1:
             return STR_IT_maybe_max_targets;
-        default:
-            return NULL;
-        }
-    case 9472: /* module 37 call 0 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_dislocated;
         default:
             return NULL;
         }
@@ -6018,7 +5991,8 @@ bool _getMethod_IsNestingSupported_V9(uint8_t moduleIdx, uint8_t callIdx)
     case 4864: // Treasury:Propose spend
     case 4865: // Treasury:Reject proposal
     case 4866: // Treasury:Approve proposal
-    case 4867: // Treasury:Remove approval
+    case 4867: // Treasury:Spend
+    case 4868: // Treasury:Remove approval
     case 6144: // Claims:Claim
     case 6146: // Claims:Claim attest
     case 6147: // Claims:Attest
@@ -6069,8 +6043,6 @@ bool _getMethod_IsNestingSupported_V9(uint8_t moduleIdx, uint8_t callIdx)
     case 8964: // Tips:Close tip
     case 8965: // Tips:Slash tip
     case 9220: // ElectionProviderMultiPhase:Governance fallback
-    case 9472: // VoterList:Rebag
-    case 9473: // VoterList:Put in front of
     case 10240: // Preimage:Note preimage
     case 10241: // Preimage:Unnote preimage
     case 10242: // Preimage:Request preimage

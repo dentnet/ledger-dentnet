@@ -366,8 +366,3 @@ Please:
 |Set emergency election result |    |   |   | `SupportsAccountId` supports <br/> |
 |Submit |    |   |   | `BoxRawSolutionSolutionOfMinerConfig` raw_solution <br/> |
 |Governance fallback |    | :heavy_check_mark: |   | `Optionu32` maybe_max_voters <br/>`Optionu32` maybe_max_targets <br/> |
-## BagsList
-
-| Name        | Light | XL | Nesting | Arguments | 
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Rebag |    | :heavy_check_mark: |   | `AccountId` dislocated <br/> | 
