@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  (c) 2019 Zondax GmbH
+ *  (c) 2019 - 2022 Zondax GmbH
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ parser_error_t _readMethod_V9(parser_context_t* c, uint8_t moduleIdx, uint8_t ca
 const char* _getMethod_ModuleName_V9(uint8_t moduleIdx);
 
 const char* _getMethod_Name_V9(uint8_t moduleIdx, uint8_t callIdx);
+const char* _getMethod_Name_V9_ParserFull(uint16_t callPrivIdx);
 
 const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t itemIdx);
 

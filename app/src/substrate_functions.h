@@ -118,13 +118,6 @@ parser_error_t _toStringCall(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
-parser_error_t _toStringHeader(
-    const pd_Header_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
 parser_error_t _toStringVecCall(
     const pd_VecCall_t* v,
     char* outValue,

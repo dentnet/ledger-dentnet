@@ -197,10 +197,6 @@ parser_error_t _readVecCall(parser_context_t* c, pd_VecCall_t* v)
     return parser_ok;
 }
 
-parser_error_t _readBalance(parser_context_t* c, pd_Balance_t* v) {
-    GEN_DEF_READARRAY(16)
-}
-
 parser_error_t _readH256(parser_context_t* c, pd_H256_t* v) {
     GEN_DEF_READARRAY(32)
 }
