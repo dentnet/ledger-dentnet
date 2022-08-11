@@ -78,7 +78,7 @@ endif
 APPNAME = "DENTNet"
 APPPATH = "44'/734'"  --path "44'/354'"
 
-else ifeq ($(COIN),DOT_XL)
+else ifeq ($(COIN),DENTX_XL)
 # XL app configuration
 DEFINES += APP_STANDARD SUBSTRATE_PARSER_FULL
 APPNAME = "DENTNet-XL"
