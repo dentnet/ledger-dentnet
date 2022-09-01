@@ -46,12 +46,12 @@ async function activateSecretMode(sim: any) {
 
   // Activate secret features
   for (let i = 0; i < 10; i += 1) {
-    await sim.clickBoth()
+    await sim.clickBoth('', false)
   }
 
-  let reviewSteps = 7
-  if (sim.startOptions.model === 'nanox') {
-    reviewSteps = 6
+  let reviewSteps = 6
+  if (sim.startOptions.model === 'nanos') {
+    reviewSteps = 7
   }
 
   // Review warning message
@@ -63,7 +63,7 @@ async function activateSecretMode(sim: any) {
   await sim.clickBoth()
 }
 
-describe('Standard', function () {
+describe('Recovery', function () {
   test.each(models)('main secret menu (%s)', async function (m) {
     const sim = new Zemu(m.path)
     try {
@@ -77,6 +77,10 @@ describe('Standard', function () {
 
       let resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000)
       console.log(resp)
+  
+      expect(resp.return_code).toEqual(0x9000)
+      expect(resp.error_message).toEqual('No errors')
+
       expect(resp.address).toEqual(dentnet_expected_address)
       expect(resp.pubKey).toEqual(dentnet_expected_pk)
 
@@ -84,6 +88,10 @@ describe('Standard', function () {
 
       resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000)
       console.log(resp)
+
+      expect(resp.return_code).toEqual(0x9000)
+      expect(resp.error_message).toEqual('No errors')
+
       expect(resp.address).toEqual(recovery_expected_address)
       expect(resp.pubKey).toEqual(recovery_expected_pk)
     } finally {

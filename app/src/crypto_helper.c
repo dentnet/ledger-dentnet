@@ -14,15 +14,10 @@
 *  limitations under the License.
 ********************************************************************************/
 
-/*
- * Modified by DENT Wireless to add support for multi-byte address types in
- * ss58 encoding.
- */
-
 #include "crypto_helper.h"
 #include "base58.h"
 
-#if defined(TARGET_NANOS) || defined(TARGET_NANOX)
+#if defined(TARGET_NANOS) || defined(TARGET_NANOX) || defined(TARGET_NANOS2)
 #include "cx.h"
 
 int ss58hash(const unsigned char *in, unsigned int inLen,
@@ -52,8 +47,24 @@ int ss58hash(const unsigned char *in, unsigned int inLen,
 
 #endif
 
+uint8_t crypto_SS58CalculatePrefix(uint16_t addressType, uint8_t *prefixBytes) {
+    if (addressType > 16383) {
+        return 0;
+    }
+
+    if (addressType > 63) {
+        prefixBytes[0] = 0x40 | ((addressType >> 2) & 0x3F);
+        prefixBytes[1] = ((addressType & 0x3) << 6) + ((addressType >> 8) & 0x3F);
+        return 2;
+    }
+
+    prefixBytes[0] = addressType & 0x3F; // address type
+    return 1;
+}
+
 uint8_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len,
                                 uint16_t addressType, const uint8_t *pubkey) {
+    // based on https://docs.substrate.io/v3/advanced/ss58/
     if (buffer == NULL || buffer_len < SS58_ADDRESS_MAX_LEN) {
         return 0;
     }
@@ -62,25 +73,21 @@ uint8_t crypto_SS58EncodePubkey(uint8_t *buffer, uint16_t buffer_len,
     }
     MEMZERO(buffer, buffer_len);
 
-    uint8_t unencoded[36];
     uint8_t hash[64];
-    uint8_t addressTypeLen = 1;
+    uint8_t unencoded[36];
 
-    if (addressType < 64) {
-        unencoded[0] = (uint8_t)addressType;                  // address type
-    } else {
-        unencoded[0] = ((addressType & 0b0000000011111100) >> 2) | 0b01000000;
-        unencoded[1] = (addressType >> 8) | ((addressType & 0b0000000000000011) << 6);
-        addressTypeLen = 2;
-    } 
+    const uint8_t prefixSize = crypto_SS58CalculatePrefix(addressType, unencoded);
+    if (prefixSize == 0) {
+        return 0;
+    }
 
-    memcpy(unencoded + addressTypeLen, pubkey, 32);           // account id
-    ss58hash((uint8_t *) unencoded, 32 + addressTypeLen, hash, 64);
-    unencoded[32+addressTypeLen] = hash[0];
-    unencoded[33+addressTypeLen] = hash[1];
+    memcpy(unencoded + prefixSize, pubkey, 32);           // account id
+    ss58hash((uint8_t *) unencoded, 32 + prefixSize, hash, 64);
+    unencoded[32 + prefixSize] = hash[0];
+    unencoded[33 + prefixSize] = hash[1];
 
     size_t outLen = buffer_len;
-    encode_base58(unencoded, 34 + addressTypeLen, buffer, &outLen);
+    encode_base58(unencoded, 34 + prefixSize, buffer, &outLen);
 
     return outLen;
 }

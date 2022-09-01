@@ -32,7 +32,7 @@ void secret_accept() {
 
 static char *secret_message =
         "USE AT YOUR OWN RISK!! "
-        "You are about to enable the DOT recovery mode."
+        "You are about to enable recovery mode."
         "If you are not sure why you are here, reject or unplug your device immediately."
         "Activating this mode will temporarily allow you to sign transactions using Polkadot keys";
 
@@ -59,7 +59,7 @@ zxerr_t secret_enabled() {
 #ifdef APP_SECRET_MODE_ENABLED
     zemu_log("RECOVERY TRIGGERED");
     view_review_init(secret_getItem, secret_getNumItems, secret_accept);
-    view_review_show();
+    view_review_show(0x00);
 #endif
     return zxerr_ok;
 }

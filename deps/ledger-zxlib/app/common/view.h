@@ -44,6 +44,9 @@ zxerr_t secret_enabled();
 /// view_init (initializes UI)
 void view_init();
 
+/// view_initialize_show (idle view - main menu + status)
+void view_initialize_show(uint8_t item_idx, char *statusString);
+
 /// view_idle_show (idle view - main menu + status)
 void view_idle_show(uint8_t item_idx, char *statusString);
 
@@ -56,4 +59,4 @@ void view_review_init(viewfunc_getItem_t viewfuncGetItem,
                       viewfunc_getNumItems_t viewfuncGetNumItems,
                       viewfunc_accept_t viewfuncAccept);
 
-void view_review_show();
+void view_review_show(unsigned int requireReply);
