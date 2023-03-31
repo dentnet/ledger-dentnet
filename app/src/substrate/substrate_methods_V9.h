@@ -34,21 +34,14 @@ extern "C" {
 #define PD_CALL_STAKING_V9 7
 #define PD_CALL_SESSION_V9 9
 #define PD_CALL_GRANDPA_V9 11
-#define PD_CALL_DEMOCRACY_V9 14
 #define PD_CALL_COUNCIL_V9 15
 #define PD_CALL_TECHNICALCOMMITTEE_V9 16
-#define PD_CALL_PHRAGMENELECTION_V9 17
-#define PD_CALL_TECHNICALMEMBERSHIP_V9 18
 #define PD_CALL_TREASURY_V9 19
-#define PD_CALL_CLAIMS_V9 24
 #define PD_CALL_VESTING_V9 25
 #define PD_CALL_UTILITY_V9 26
 #define PD_CALL_IDENTITY_V9 28
 #define PD_CALL_PROXY_V9 29
 #define PD_CALL_MULTISIG_V9 30
-#define PD_CALL_BOUNTIES_V9 34
-#define PD_CALL_CHILDBOUNTIES_V9 38
-#define PD_CALL_TIPS_V9 35
 #define PD_CALL_ELECTIONPROVIDERMULTIPHASE_V9 36
 #define PD_CALL_VOTERLIST_V9 37
 #define PD_CALL_CONFIGURATION_V9 51
@@ -296,134 +289,6 @@ typedef struct {
     pd_BlockNumber_t best_finalized_block_number;
 } pd_grandpa_note_stalled_V9_t;
 
-#define PD_CALL_DEMOCRACY_PROPOSE_V9 0
-typedef struct {
-    pd_Hash_t proposal_hash;
-    pd_CompactBalance_t amount;
-} pd_democracy_propose_V9_t;
-
-#define PD_CALL_DEMOCRACY_SECOND_V9 1
-typedef struct {
-    pd_Compactu32_t proposal;
-    pd_Compactu32_t seconds_upper_bound;
-} pd_democracy_second_V9_t;
-
-#define PD_CALL_DEMOCRACY_VOTE_V9 2
-typedef struct {
-    pd_Compactu32_t ref_index;
-    pd_AccountVote_V9_t vote;
-} pd_democracy_vote_V9_t;
-
-#define PD_CALL_DEMOCRACY_EMERGENCY_CANCEL_V9 3
-typedef struct {
-    pd_ReferendumIndex_V9_t ref_index;
-} pd_democracy_emergency_cancel_V9_t;
-
-#define PD_CALL_DEMOCRACY_EXTERNAL_PROPOSE_V9 4
-typedef struct {
-    pd_Hash_t proposal_hash;
-} pd_democracy_external_propose_V9_t;
-
-#define PD_CALL_DEMOCRACY_EXTERNAL_PROPOSE_MAJORITY_V9 5
-typedef struct {
-    pd_Hash_t proposal_hash;
-} pd_democracy_external_propose_majority_V9_t;
-
-#define PD_CALL_DEMOCRACY_EXTERNAL_PROPOSE_DEFAULT_V9 6
-typedef struct {
-    pd_Hash_t proposal_hash;
-} pd_democracy_external_propose_default_V9_t;
-
-#define PD_CALL_DEMOCRACY_FAST_TRACK_V9 7
-typedef struct {
-    pd_Hash_t proposal_hash;
-    pd_BlockNumber_t voting_period;
-    pd_BlockNumber_t delay;
-} pd_democracy_fast_track_V9_t;
-
-#define PD_CALL_DEMOCRACY_VETO_EXTERNAL_V9 8
-typedef struct {
-    pd_Hash_t proposal_hash;
-} pd_democracy_veto_external_V9_t;
-
-#define PD_CALL_DEMOCRACY_CANCEL_REFERENDUM_V9 9
-typedef struct {
-    pd_Compactu32_t ref_index;
-} pd_democracy_cancel_referendum_V9_t;
-
-#define PD_CALL_DEMOCRACY_CANCEL_QUEUED_V9 10
-typedef struct {
-    pd_ReferendumIndex_V9_t which;
-} pd_democracy_cancel_queued_V9_t;
-
-#define PD_CALL_DEMOCRACY_DELEGATE_V9 11
-typedef struct {
-    pd_AccountId_V9_t to;
-    pd_Conviction_V9_t conviction;
-    pd_Balance_t balance;
-} pd_democracy_delegate_V9_t;
-
-#define PD_CALL_DEMOCRACY_UNDELEGATE_V9 12
-typedef struct {
-} pd_democracy_undelegate_V9_t;
-
-#define PD_CALL_DEMOCRACY_CLEAR_PUBLIC_PROPOSALS_V9 13
-typedef struct {
-} pd_democracy_clear_public_proposals_V9_t;
-
-#define PD_CALL_DEMOCRACY_NOTE_PREIMAGE_V9 14
-typedef struct {
-    pd_Bytes_t encoded_proposal;
-} pd_democracy_note_preimage_V9_t;
-
-#define PD_CALL_DEMOCRACY_NOTE_PREIMAGE_OPERATIONAL_V9 15
-typedef struct {
-    pd_Bytes_t encoded_proposal;
-} pd_democracy_note_preimage_operational_V9_t;
-
-#define PD_CALL_DEMOCRACY_NOTE_IMMINENT_PREIMAGE_V9 16
-typedef struct {
-    pd_Bytes_t encoded_proposal;
-} pd_democracy_note_imminent_preimage_V9_t;
-
-#define PD_CALL_DEMOCRACY_NOTE_IMMINENT_PREIMAGE_OPERATIONAL_V9 17
-typedef struct {
-    pd_Bytes_t encoded_proposal;
-} pd_democracy_note_imminent_preimage_operational_V9_t;
-
-#define PD_CALL_DEMOCRACY_REAP_PREIMAGE_V9 18
-typedef struct {
-    pd_Hash_t proposal_hash;
-    pd_Compactu32_t proposal_len_upper_bound;
-} pd_democracy_reap_preimage_V9_t;
-
-#define PD_CALL_DEMOCRACY_UNLOCK_V9 19
-typedef struct {
-    pd_AccountId_V9_t target;
-} pd_democracy_unlock_V9_t;
-
-#define PD_CALL_DEMOCRACY_REMOVE_VOTE_V9 20
-typedef struct {
-    pd_ReferendumIndex_V9_t index;
-} pd_democracy_remove_vote_V9_t;
-
-#define PD_CALL_DEMOCRACY_REMOVE_OTHER_VOTE_V9 21
-typedef struct {
-    pd_AccountId_V9_t target;
-    pd_ReferendumIndex_V9_t index;
-} pd_democracy_remove_other_vote_V9_t;
-
-#define PD_CALL_DEMOCRACY_ENACT_PROPOSAL_V9 22
-typedef struct {
-    pd_Hash_t proposal_hash;
-    pd_ReferendumIndex_V9_t index;
-} pd_democracy_enact_proposal_V9_t;
-
-#define PD_CALL_DEMOCRACY_CANCEL_PROPOSAL_V9 24
-typedef struct {
-    pd_Compactu32_t prop_index;
-} pd_democracy_cancel_proposal_V9_t;
-
 #define PD_CALL_COUNCIL_SET_MEMBERS_V9 0
 typedef struct {
     pd_VecAccountId_V9_t new_members;
@@ -504,68 +369,6 @@ typedef struct {
     pd_Hash_t proposal_hash;
 } pd_technicalcommittee_disapprove_proposal_V9_t;
 
-#define PD_CALL_PHRAGMENELECTION_VOTE_V9 0
-typedef struct {
-    pd_VecAccountId_V9_t votes;
-    pd_Compactu128_t amount;
-} pd_phragmenelection_vote_V9_t;
-
-#define PD_CALL_PHRAGMENELECTION_REMOVE_VOTER_V9 1
-typedef struct {
-} pd_phragmenelection_remove_voter_V9_t;
-
-#define PD_CALL_PHRAGMENELECTION_SUBMIT_CANDIDACY_V9 2
-typedef struct {
-    pd_Compactu32_t candidate_count;
-} pd_phragmenelection_submit_candidacy_V9_t;
-
-#define PD_CALL_PHRAGMENELECTION_REMOVE_MEMBER_V9 4
-typedef struct {
-    pd_LookupasStaticLookupSource_V9_t who;
-    pd_bool_t has_replacement;
-} pd_phragmenelection_remove_member_V9_t;
-
-#define PD_CALL_PHRAGMENELECTION_CLEAN_DEFUNCT_VOTERS_V9 5
-typedef struct {
-    pd_u32_t num_voters;
-    pd_u32_t num_defunct;
-} pd_phragmenelection_clean_defunct_voters_V9_t;
-
-#define PD_CALL_TECHNICALMEMBERSHIP_ADD_MEMBER_V9 0
-typedef struct {
-    pd_AccountId_V9_t who;
-} pd_technicalmembership_add_member_V9_t;
-
-#define PD_CALL_TECHNICALMEMBERSHIP_REMOVE_MEMBER_V9 1
-typedef struct {
-    pd_AccountId_V9_t who;
-} pd_technicalmembership_remove_member_V9_t;
-
-#define PD_CALL_TECHNICALMEMBERSHIP_SWAP_MEMBER_V9 2
-typedef struct {
-    pd_AccountId_V9_t remove;
-    pd_AccountId_V9_t add;
-} pd_technicalmembership_swap_member_V9_t;
-
-#define PD_CALL_TECHNICALMEMBERSHIP_RESET_MEMBERS_V9 3
-typedef struct {
-    pd_VecAccountId_V9_t members;
-} pd_technicalmembership_reset_members_V9_t;
-
-#define PD_CALL_TECHNICALMEMBERSHIP_CHANGE_KEY_V9 4
-typedef struct {
-    pd_AccountId_V9_t new_;
-} pd_technicalmembership_change_key_V9_t;
-
-#define PD_CALL_TECHNICALMEMBERSHIP_SET_PRIME_V9 5
-typedef struct {
-    pd_AccountId_V9_t who;
-} pd_technicalmembership_set_prime_V9_t;
-
-#define PD_CALL_TECHNICALMEMBERSHIP_CLEAR_PRIME_V9 6
-typedef struct {
-} pd_technicalmembership_clear_prime_V9_t;
-
 #define PD_CALL_TREASURY_PROPOSE_SPEND_V9 0
 typedef struct {
     pd_CompactBalance_t amount;
@@ -592,31 +395,6 @@ typedef struct {
 typedef struct {
     pd_Compactu32_t proposal_id;
 } pd_treasury_remove_approval_V9_t;
-
-#define PD_CALL_CLAIMS_CLAIM_V9 0
-typedef struct {
-    pd_AccountId_V9_t dest;
-    pd_EcdsaSignature_V9_t ethereum_signature;
-} pd_claims_claim_V9_t;
-
-#define PD_CALL_CLAIMS_CLAIM_ATTEST_V9 2
-typedef struct {
-    pd_AccountId_V9_t dest;
-    pd_EcdsaSignature_V9_t ethereum_signature;
-    pd_Bytes_t statement;
-} pd_claims_claim_attest_V9_t;
-
-#define PD_CALL_CLAIMS_ATTEST_V9 3
-typedef struct {
-    pd_Bytes_t statement;
-} pd_claims_attest_V9_t;
-
-#define PD_CALL_CLAIMS_MOVE_CLAIM_V9 4
-typedef struct {
-    pd_EthereumAddress_V9_t old;
-    pd_EthereumAddress_V9_t new_;
-    pd_OptionAccountId_V9_t maybe_preclaim;
-} pd_claims_move_claim_V9_t;
 
 #define PD_CALL_VESTING_VEST_V9 0
 typedef struct {
@@ -733,136 +511,6 @@ typedef struct {
     pd_OptionProxyType_V9_t force_proxy_type;
     pd_Call_t call;
 } pd_proxy_proxy_announced_V9_t;
-
-#define PD_CALL_BOUNTIES_PROPOSE_BOUNTY_V9 0
-typedef struct {
-    pd_CompactBalance_t amount;
-    pd_Bytes_t description;
-} pd_bounties_propose_bounty_V9_t;
-
-#define PD_CALL_BOUNTIES_APPROVE_BOUNTY_V9 1
-typedef struct {
-    pd_Compactu32_t bounty_id;
-} pd_bounties_approve_bounty_V9_t;
-
-#define PD_CALL_BOUNTIES_PROPOSE_CURATOR_V9 2
-typedef struct {
-    pd_Compactu32_t bounty_id;
-    pd_LookupasStaticLookupSource_V9_t curator;
-    pd_CompactBalance_t fee;
-} pd_bounties_propose_curator_V9_t;
-
-#define PD_CALL_BOUNTIES_UNASSIGN_CURATOR_V9 3
-typedef struct {
-    pd_Compactu32_t bounty_id;
-} pd_bounties_unassign_curator_V9_t;
-
-#define PD_CALL_BOUNTIES_ACCEPT_CURATOR_V9 4
-typedef struct {
-    pd_Compactu32_t bounty_id;
-} pd_bounties_accept_curator_V9_t;
-
-#define PD_CALL_BOUNTIES_AWARD_BOUNTY_V9 5
-typedef struct {
-    pd_Compactu32_t bounty_id;
-    pd_LookupasStaticLookupSource_V9_t beneficiary;
-} pd_bounties_award_bounty_V9_t;
-
-#define PD_CALL_BOUNTIES_CLAIM_BOUNTY_V9 6
-typedef struct {
-    pd_Compactu32_t bounty_id;
-} pd_bounties_claim_bounty_V9_t;
-
-#define PD_CALL_BOUNTIES_CLOSE_BOUNTY_V9 7
-typedef struct {
-    pd_Compactu32_t bounty_id;
-} pd_bounties_close_bounty_V9_t;
-
-#define PD_CALL_BOUNTIES_EXTEND_BOUNTY_EXPIRY_V9 8
-typedef struct {
-    pd_Compactu32_t bounty_id;
-    pd_Bytes_t remark;
-} pd_bounties_extend_bounty_expiry_V9_t;
-
-#define PD_CALL_CHILDBOUNTIES_ADD_CHILD_BOUNTY_V9 0
-typedef struct {
-    pd_Compactu32_t parent_bounty_id;
-    pd_CompactBalance_t amount;
-    pd_Vecu8_t description;
-} pd_childbounties_add_child_bounty_V9_t;
-
-#define PD_CALL_CHILDBOUNTIES_PROPOSE_CURATOR_V9 1
-typedef struct {
-    pd_Compactu32_t parent_bounty_id;
-    pd_Compactu32_t child_bounty_id;
-    pd_LookupasStaticLookupSource_V9_t curator;
-    pd_CompactBalance_t fee;
-} pd_childbounties_propose_curator_V9_t;
-
-#define PD_CALL_CHILDBOUNTIES_ACCEPT_CURATOR_V9 2
-typedef struct {
-    pd_Compactu32_t parent_bounty_id;
-    pd_Compactu32_t child_bounty_id;
-} pd_childbounties_accept_curator_V9_t;
-
-#define PD_CALL_CHILDBOUNTIES_UNASSIGN_CURATOR_V9 3
-typedef struct {
-    pd_Compactu32_t parent_bounty_id;
-    pd_Compactu32_t child_bounty_id;
-} pd_childbounties_unassign_curator_V9_t;
-
-#define PD_CALL_CHILDBOUNTIES_AWARD_CHILD_BOUNTY_V9 4
-typedef struct {
-    pd_Compactu32_t parent_bounty_id;
-    pd_Compactu32_t child_bounty_id;
-    pd_LookupasStaticLookupSource_V9_t beneficiary;
-} pd_childbounties_award_child_bounty_V9_t;
-
-#define PD_CALL_CHILDBOUNTIES_CLAIM_CHILD_BOUNTY_V9 5
-typedef struct {
-    pd_Compactu32_t parent_bounty_id;
-    pd_Compactu32_t child_bounty_id;
-} pd_childbounties_claim_child_bounty_V9_t;
-
-#define PD_CALL_CHILDBOUNTIES_CLOSE_CHILD_BOUNTY_V9 6
-typedef struct {
-    pd_Compactu32_t parent_bounty_id;
-    pd_Compactu32_t child_bounty_id;
-} pd_childbounties_close_child_bounty_V9_t;
-
-#define PD_CALL_TIPS_REPORT_AWESOME_V9 0
-typedef struct {
-    pd_Bytes_t reason;
-    pd_AccountId_V9_t who;
-} pd_tips_report_awesome_V9_t;
-
-#define PD_CALL_TIPS_RETRACT_TIP_V9 1
-typedef struct {
-    pd_Hash_t hash;
-} pd_tips_retract_tip_V9_t;
-
-#define PD_CALL_TIPS_TIP_NEW_V9 2
-typedef struct {
-    pd_Bytes_t reason;
-    pd_AccountId_V9_t who;
-    pd_Compactu128_t tip_value;
-} pd_tips_tip_new_V9_t;
-
-#define PD_CALL_TIPS_TIP_V9 3
-typedef struct {
-    pd_Hash_t hash;
-    pd_Compactu128_t tip_value;
-} pd_tips_tip_V9_t;
-
-#define PD_CALL_TIPS_CLOSE_TIP_V9 4
-typedef struct {
-    pd_Hash_t hash;
-} pd_tips_close_tip_V9_t;
-
-#define PD_CALL_TIPS_SLASH_TIP_V9 5
-typedef struct {
-    pd_Hash_t hash;
-} pd_tips_slash_tip_V9_t;
 
 #define PD_CALL_ELECTIONPROVIDERMULTIPHASE_GOVERNANCE_FALLBACK_V9 4
 typedef struct {
@@ -1187,30 +835,6 @@ typedef union {
     pd_sudo_sudo_V9_t sudo_sudo_V9;
     pd_sudo_sudo_unchecked_weight_V9_t sudo_sudo_unchecked_weight_V9;
     pd_grandpa_note_stalled_V9_t grandpa_note_stalled_V9;
-    pd_democracy_propose_V9_t democracy_propose_V9;
-    pd_democracy_second_V9_t democracy_second_V9;
-    pd_democracy_vote_V9_t democracy_vote_V9;
-    pd_democracy_emergency_cancel_V9_t democracy_emergency_cancel_V9;
-    pd_democracy_external_propose_V9_t democracy_external_propose_V9;
-    pd_democracy_external_propose_majority_V9_t democracy_external_propose_majority_V9;
-    pd_democracy_external_propose_default_V9_t democracy_external_propose_default_V9;
-    pd_democracy_fast_track_V9_t democracy_fast_track_V9;
-    pd_democracy_veto_external_V9_t democracy_veto_external_V9;
-    pd_democracy_cancel_referendum_V9_t democracy_cancel_referendum_V9;
-    pd_democracy_cancel_queued_V9_t democracy_cancel_queued_V9;
-    pd_democracy_delegate_V9_t democracy_delegate_V9;
-    pd_democracy_undelegate_V9_t democracy_undelegate_V9;
-    pd_democracy_clear_public_proposals_V9_t democracy_clear_public_proposals_V9;
-    pd_democracy_note_preimage_V9_t democracy_note_preimage_V9;
-    pd_democracy_note_preimage_operational_V9_t democracy_note_preimage_operational_V9;
-    pd_democracy_note_imminent_preimage_V9_t democracy_note_imminent_preimage_V9;
-    pd_democracy_note_imminent_preimage_operational_V9_t democracy_note_imminent_preimage_operational_V9;
-    pd_democracy_reap_preimage_V9_t democracy_reap_preimage_V9;
-    pd_democracy_unlock_V9_t democracy_unlock_V9;
-    pd_democracy_remove_vote_V9_t democracy_remove_vote_V9;
-    pd_democracy_remove_other_vote_V9_t democracy_remove_other_vote_V9;
-    pd_democracy_enact_proposal_V9_t democracy_enact_proposal_V9;
-    pd_democracy_cancel_proposal_V9_t democracy_cancel_proposal_V9;
     pd_council_set_members_V9_t council_set_members_V9;
     pd_council_execute_V9_t council_execute_V9;
     pd_council_propose_V9_t council_propose_V9;
@@ -1223,27 +847,11 @@ typedef union {
     pd_technicalcommittee_vote_V9_t technicalcommittee_vote_V9;
     pd_technicalcommittee_close_V9_t technicalcommittee_close_V9;
     pd_technicalcommittee_disapprove_proposal_V9_t technicalcommittee_disapprove_proposal_V9;
-    pd_phragmenelection_vote_V9_t phragmenelection_vote_V9;
-    pd_phragmenelection_remove_voter_V9_t phragmenelection_remove_voter_V9;
-    pd_phragmenelection_submit_candidacy_V9_t phragmenelection_submit_candidacy_V9;
-    pd_phragmenelection_remove_member_V9_t phragmenelection_remove_member_V9;
-    pd_phragmenelection_clean_defunct_voters_V9_t phragmenelection_clean_defunct_voters_V9;
-    pd_technicalmembership_add_member_V9_t technicalmembership_add_member_V9;
-    pd_technicalmembership_remove_member_V9_t technicalmembership_remove_member_V9;
-    pd_technicalmembership_swap_member_V9_t technicalmembership_swap_member_V9;
-    pd_technicalmembership_reset_members_V9_t technicalmembership_reset_members_V9;
-    pd_technicalmembership_change_key_V9_t technicalmembership_change_key_V9;
-    pd_technicalmembership_set_prime_V9_t technicalmembership_set_prime_V9;
-    pd_technicalmembership_clear_prime_V9_t technicalmembership_clear_prime_V9;
     pd_treasury_propose_spend_V9_t treasury_propose_spend_V9;
     pd_treasury_reject_proposal_V9_t treasury_reject_proposal_V9;
     pd_treasury_approve_proposal_V9_t treasury_approve_proposal_V9;
     pd_treasury_spend_V9_t treasury_spend_V9;
     pd_treasury_remove_approval_V9_t treasury_remove_approval_V9;
-    pd_claims_claim_V9_t claims_claim_V9;
-    pd_claims_claim_attest_V9_t claims_claim_attest_V9;
-    pd_claims_attest_V9_t claims_attest_V9;
-    pd_claims_move_claim_V9_t claims_move_claim_V9;
     pd_vesting_vest_V9_t vesting_vest_V9;
     pd_vesting_vest_other_V9_t vesting_vest_other_V9;
     pd_vesting_vested_transfer_V9_t vesting_vested_transfer_V9;
@@ -1264,28 +872,6 @@ typedef union {
     pd_proxy_anonymous_V9_t proxy_anonymous_V9;
     pd_proxy_kill_anonymous_V9_t proxy_kill_anonymous_V9;
     pd_proxy_proxy_announced_V9_t proxy_proxy_announced_V9;
-    pd_bounties_propose_bounty_V9_t bounties_propose_bounty_V9;
-    pd_bounties_approve_bounty_V9_t bounties_approve_bounty_V9;
-    pd_bounties_propose_curator_V9_t bounties_propose_curator_V9;
-    pd_bounties_unassign_curator_V9_t bounties_unassign_curator_V9;
-    pd_bounties_accept_curator_V9_t bounties_accept_curator_V9;
-    pd_bounties_award_bounty_V9_t bounties_award_bounty_V9;
-    pd_bounties_claim_bounty_V9_t bounties_claim_bounty_V9;
-    pd_bounties_close_bounty_V9_t bounties_close_bounty_V9;
-    pd_bounties_extend_bounty_expiry_V9_t bounties_extend_bounty_expiry_V9;
-    pd_childbounties_add_child_bounty_V9_t childbounties_add_child_bounty_V9;
-    pd_childbounties_propose_curator_V9_t childbounties_propose_curator_V9;
-    pd_childbounties_accept_curator_V9_t childbounties_accept_curator_V9;
-    pd_childbounties_unassign_curator_V9_t childbounties_unassign_curator_V9;
-    pd_childbounties_award_child_bounty_V9_t childbounties_award_child_bounty_V9;
-    pd_childbounties_claim_child_bounty_V9_t childbounties_claim_child_bounty_V9;
-    pd_childbounties_close_child_bounty_V9_t childbounties_close_child_bounty_V9;
-    pd_tips_report_awesome_V9_t tips_report_awesome_V9;
-    pd_tips_retract_tip_V9_t tips_retract_tip_V9;
-    pd_tips_tip_new_V9_t tips_tip_new_V9;
-    pd_tips_tip_V9_t tips_tip_V9;
-    pd_tips_close_tip_V9_t tips_close_tip_V9;
-    pd_tips_slash_tip_V9_t tips_slash_tip_V9;
     pd_electionprovidermultiphase_governance_fallback_V9_t electionprovidermultiphase_governance_fallback_V9;
     pd_voterlist_rebag_V9_t voterlist_rebag_V9;
     pd_voterlist_put_in_front_of_V9_t voterlist_put_in_front_of_V9;

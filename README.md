@@ -23,7 +23,7 @@ Please:
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
 
-# DENTNet 9.9140.x
+# DENTNet 9.9160.x
 
 ## System
 
@@ -161,36 +161,6 @@ Please:
 | :---------- |:------------:|:--------:|:--------:|:--------|
 |Heartbeat |    |   |   | `HeartbeatBlockNumber` heartbeat <br/>`AuthorityIdasRuntimeAppPublicSignature` signature <br/> | 
 
-## Democracy
-
-| Name        | Light | XL | Nesting | Arguments | 
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Propose |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`CompactBalance` amount <br/> |
-|Second |    | :heavy_check_mark: |   | `Compactu32` proposal <br/>`Compactu32` seconds_upper_bound <br/> | 
-|Vote |    | :heavy_check_mark: |   | `Compactu32` ref_index <br/>`AccountVote` vote <br/> | 
-|Emergency cancel |    | :heavy_check_mark: |   | `ReferendumIndex` ref_index <br/> | 
-|External propose |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> | 
-|External propose majority |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> | 
-|External propose default |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> | 
-|Fast track |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`BlockNumber` voting_period <br/>`BlockNumber` delay <br/> | 
-|Veto external |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> | 
-|Cancel referendum |    | :heavy_check_mark: |   | `Compactu32` ref_index <br/> | 
-|Cancel queued |    | :heavy_check_mark: |   | `ReferendumIndex` which <br/> | 
-|Delegate |    | :heavy_check_mark: |   | `AccountId` to <br/>`Conviction` conviction <br/>`Balance` balance <br/> | 
-|Undelegate |    | :heavy_check_mark: |   |  | 
-|Clear public proposals |    | :heavy_check_mark: |   |  | 
-|Note preimage |    | :heavy_check_mark: |   | `Bytes` encoded_proposal <br/> | 
-|Note preimage operational |    | :heavy_check_mark: |   | `Bytes` encoded_proposal <br/> | 
-|Note imminent preimage |    | :heavy_check_mark: |   | `Bytes` encoded_proposal <br/> | 
-|Note imminent preimage operational |    | :heavy_check_mark: |   | `Bytes` encoded_proposal <br/> | 
-|Reap preimage |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`Compactu32` proposal_len_upper_bound <br/> | 
-|Unlock |    | :heavy_check_mark: |   | `AccountId` target <br/> | 
-|Remove vote |    | :heavy_check_mark: |   | `ReferendumIndex` index <br/> | 
-|Remove other vote |    | :heavy_check_mark: |   | `AccountId` target <br/>`ReferendumIndex` index <br/> | 
-|Enact proposal |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`ReferendumIndex` index <br/> | 
-|Blacklist |    |   |   | `Hash` proposal_hash <br/>`OptionReferendumIndex` maybe_ref_index <br/> | 
-|Cancel proposal |    | :heavy_check_mark: |   | `Compactu32` prop_index <br/> | 
-
 ## Council
 
 | Name        | Light | XL | Nesting | Arguments | 
@@ -213,29 +183,6 @@ Please:
 |Close |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`Compactu32` index <br/>`Compactu64` proposal_weight_bound <br/>`Compactu32` length_bound <br/> | 
 |Disapprove proposal |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> | 
 
-## PhragmenElection
-
-| Name        | Light | XL | Nesting | Arguments | 
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Vote |    | :heavy_check_mark: |   | `VecAccountId` votes <br/>`Compactu128` amount <br/> |
-|Remove voter |    | :heavy_check_mark: |   |  | 
-|Submit candidacy |    | :heavy_check_mark: |   | `Compactu32` candidate_count <br/> | 
-|Renounce candidacy |    |   |   | `Renouncing` renouncing <br/> | 
-|Remove member |    | :heavy_check_mark: |   | `LookupasStaticLookupSource` who <br/>`bool` has_replacement <br/> | 
-|Clean defunct voters |    | :heavy_check_mark: |   | `u32` num_voters <br/>`u32` num_defunct <br/> | 
-
-## TechnicalMembership
-
-| Name        | Light | XL | Nesting | Arguments | 
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Add member |    | :heavy_check_mark: |   | `AccountId` who <br/> | 
-|Remove member |    | :heavy_check_mark: |   | `AccountId` who <br/> | 
-|Swap member |    | :heavy_check_mark: |   | `AccountId` remove <br/>`AccountId` add <br/> | 
-|Reset members |    | :heavy_check_mark: |   | `VecAccountId` members <br/> | 
-|Change key |    | :heavy_check_mark: |   | `AccountId` new_ <br/> | 
-|Set prime |    | :heavy_check_mark: |   | `AccountId` who <br/> | 
-|Clear prime |    | :heavy_check_mark: |   |  | 
-
 ## Treasury
 
 | Name        | Light | XL | Nesting | Arguments | 
@@ -245,16 +192,6 @@ Please:
 |Approve proposal |    | :heavy_check_mark: |   | `Compactu32` proposal_id <br/> | 
 |Spend |    | :heavy_check_mark: |   | `CompactBalance` amount <br/>`LookupasStaticLookupSource` beneficiary <br/> |
 |Remove approval |    | :heavy_check_mark: |   | `Compactu32` proposal_id <br/> |
-
-## Claims
-
-| Name        | Light | XL | Nesting | Arguments | 
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Claim |    | :heavy_check_mark: |   | `AccountId` dest <br/>`EcdsaSignature` ethereum_signature <br/> | 
-|Mint claim |    |   |   | `EthereumAddress` who <br/>`Balance` amount <br/>`OptionTupleBalanceOfTBalanceOfTBlockNumber` vesting_schedule <br/>`OptionStatementKind` statement <br/> | 
-|Claim attest |    | :heavy_check_mark: |   | `AccountId` dest <br/>`EcdsaSignature` ethereum_signature <br/>`Bytes` statement <br/> | 
-|Attest |    | :heavy_check_mark: |   | `Bytes` statement <br/> | 
-|Move claim |    | :heavy_check_mark: |   | `EthereumAddress` old <br/>`EthereumAddress` new_ <br/>`OptionAccountId` maybe_preclaim <br/> |
 
 ## Vesting
 
@@ -319,43 +256,6 @@ Please:
 |As multi |    | :heavy_check_mark: | :heavy_check_mark: | `u16` threshold <br/>`VecAccountId` other_signatories <br/>`OptionTimepoint` maybe_timepoint <br/>`OpaqueCall` call <br/>`bool` store_call <br/>`Weight` max_weight <br/> |
 |Approve as multi |    | :heavy_check_mark: | :heavy_check_mark: | `u16` threshold <br/>`VecAccountId` other_signatories <br/>`OptionTimepoint` maybe_timepoint <br/>`H256` call_hash <br/>`Weight` max_weight <br/> | 
 |Cancel as multi |    | :heavy_check_mark: | :heavy_check_mark: | `u16` threshold <br/>`VecAccountId` other_signatories <br/>`Timepoint` timepoint <br/>`H256` call_hash <br/> | 
-
-## Bounties
-
-| Name        | Light | XL | Nesting | Arguments | 
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Propose bounty |    | :heavy_check_mark: |   | `CompactBalance` amount <br/>`Bytes` description <br/> | 
-|Approve bounty |    | :heavy_check_mark: |   | `Compactu32` bounty_id <br/> | 
-|Propose curator |    | :heavy_check_mark: |   | `Compactu32` bounty_id <br/>`LookupasStaticLookupSource` curator <br/>`CompactBalance` fee <br/> | 
-|Unassign curator |    | :heavy_check_mark: |   | `Compactu32` bounty_id <br/> | 
-|Accept curator |    | :heavy_check_mark: |   | `Compactu32` bounty_id <br/> | 
-|Award bounty |    | :heavy_check_mark: |   | `Compactu32` bounty_id <br/>`LookupasStaticLookupSource` beneficiary <br/> | 
-|Claim bounty |    | :heavy_check_mark: |   | `Compactu32` bounty_id <br/> | 
-|Close bounty |    | :heavy_check_mark: |   | `Compactu32` bounty_id <br/> | 
-|Extend bounty expiry |    | :heavy_check_mark: |   | `Compactu32` bounty_id <br/>`Bytes` remark <br/> | 
-
-## ChildBounties
-
-| Name        | Light | XL | Nesting | Arguments |
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Add child bounty |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`CompactBalance` amount <br/>`Vecu8` description <br/> |
-|Propose curator |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/>`LookupasStaticLookupSource` curator <br/>`CompactBalance` fee <br/> |
-|Accept curator |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
-|Unassign curator |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
-|Award child bounty |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/>`LookupasStaticLookupSource` beneficiary <br/> |
-|Claim child bounty |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
-|Close child bounty |    | :heavy_check_mark: |   | `Compactu32` parent_bounty_id <br/>`Compactu32` child_bounty_id <br/> |
-
-## Tips
-
-| Name        | Light | XL | Nesting | Arguments | 
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Report awesome |    | :heavy_check_mark: |   | `Bytes` reason <br/>`AccountId` who <br/> | 
-|Retract tip |    | :heavy_check_mark: |   | `Hash` hash <br/> | 
-|Tip new |    | :heavy_check_mark: |   | `Bytes` reason <br/>`AccountId` who <br/>`Compactu128` tip_value <br/> | 
-|Tip |    | :heavy_check_mark: |   | `Hash` hash <br/>`Compactu128` tip_value <br/> | 
-|Close tip |    | :heavy_check_mark: |   | `Hash` hash <br/> | 
-|Slash tip |    | :heavy_check_mark: |   | `Hash` hash <br/> | 
 
 ## ElectionProviderMultiPhase
 
