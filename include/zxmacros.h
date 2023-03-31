@@ -44,7 +44,7 @@ extern void explicit_bzero(void *s, size_t n) __THROW __nonnull ((1));
 #include "bolos_target.h"
 #endif
 
-#if defined (TARGET_NANOS) || defined(TARGET_NANOX) || defined(TARGET_NANOS2)
+#if defined (TARGET_NANOS) || defined(TARGET_NANOX) || defined(TARGET_NANOS2) || defined(TARGET_STAX)
 #include "zxmacros_ledger.h"
 #else
 
@@ -68,7 +68,9 @@ extern void explicit_bzero(void *s, size_t n) __THROW __nonnull ((1));
 
 __Z_INLINE void strncpy_s(char *dst, const char *src, size_t dstSize) {
     MEMZERO(dst, dstSize);
-    strncpy(dst, src, dstSize - 1);
+    if(dstSize > 0) {
+        strncpy(dst, src, dstSize - 1);
+    }
 }
 
 #define sizeof_field(type, member) sizeof(((type *)0)->member)
@@ -84,7 +86,12 @@ void handle_stack_overflow();
 
 void zemu_log_stack(const char *ctx);
 
-#if (defined (TARGET_NANOS) || defined(TARGET_NANOX) || defined(TARGET_NANOS2))
+#define CHECK_PIN_VALIDATED() \
+if( os_global_pin_is_validated() != BOLOS_UX_OK ) { \
+    THROW(APDU_CODE_COMMAND_NOT_ALLOWED); \
+}
+
+#if (defined (TARGET_NANOS) || defined(TARGET_NANOX) || defined(TARGET_NANOS2) || defined(TARGET_STAX))
 #if defined(ZEMU_LOGGING)
 __Z_INLINE void zemu_log(const char *buf)
 {

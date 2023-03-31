@@ -1,5 +1,5 @@
 /*******************************************************************************
-*   (c) 2018-2020 Zondax GmbH
+*   (c) 2018 - 2022 Zondax AG
 *   (c) 2016 Ledger
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,6 +37,8 @@ typedef zxerr_t (*viewfunc_getItem_t)(int8_t displayIdx,
 
 typedef void (*viewfunc_accept_t)();
 
+typedef zxerr_t (*viewfunc_initialize_t)();
+
 #ifdef APP_SECRET_MODE_ENABLED
 zxerr_t secret_enabled();
 #endif
@@ -45,6 +47,7 @@ zxerr_t secret_enabled();
 void view_init();
 
 /// view_initialize_show (idle view - main menu + status)
+void view_initialize_init(viewfunc_initialize_t viewFuncInit);
 void view_initialize_show(uint8_t item_idx, char *statusString);
 
 /// view_idle_show (idle view - main menu + status)
@@ -54,6 +57,8 @@ void view_message_show(char *title, char *message);
 
 /// view_error (error view)
 void view_error_show();
+
+void view_custom_error_show(char *title, char *statusString);
 
 void view_review_init(viewfunc_getItem_t viewfuncGetItem,
                       viewfunc_getNumItems_t viewfuncGetNumItems,
