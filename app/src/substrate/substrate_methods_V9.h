@@ -275,7 +275,7 @@ typedef struct {
 #define PD_CALL_SUDO_SUDO_UNCHECKED_WEIGHT_V9 1
 typedef struct {
     pd_Call_t call;
-    pd_Weight_V9_t weight;
+    pd_Weight_t weight;
 } pd_sudo_sudo_unchecked_weight_V9_t;
 
 #define PD_CALL_SUDO_SET_KEY_V9 2 
@@ -316,18 +316,26 @@ typedef struct {
     pd_bool_t approve;
 } pd_council_vote_V9_t;
 
-#define PD_CALL_COUNCIL_CLOSE_V9 4
+#define PD_CALL_COUNCIL_CLOSE_OLD_WEIGHT_V9 6
 typedef struct {
     pd_Hash_t proposal_hash;
     pd_Compactu32_t index;
     pd_Compactu64_t proposal_weight_bound;
     pd_Compactu32_t length_bound;
-} pd_council_close_V9_t;
+} pd_council_close_old_weight_V9_t;
 
 #define PD_CALL_COUNCIL_DISAPPROVE_PROPOSAL_V9 5
 typedef struct {
     pd_Hash_t proposal_hash;
 } pd_council_disapprove_proposal_V9_t;
+
+#define PD_CALL_COUNCIL_CLOSE_V9 6
+typedef struct {
+    pd_Hash_t proposal_hash;
+    pd_Compactu32_t index;
+    pd_Weight_t proposal_weight_bound;
+    pd_Compactu32_t length_bound;
+} pd_council_close_V9_t;
 
 #define PD_CALL_TECHNICALCOMMITTEE_SET_MEMBERS_V9 0
 typedef struct {
@@ -360,7 +368,7 @@ typedef struct {
 typedef struct {
     pd_Hash_t proposal_hash;
     pd_Compactu32_t index;
-    pd_Compactu64_t proposal_weight_bound;
+    pd_Weight_t proposal_weight_bound;
     pd_Compactu32_t length_bound;
 } pd_technicalcommittee_close_V9_t;
 
@@ -839,8 +847,9 @@ typedef union {
     pd_council_execute_V9_t council_execute_V9;
     pd_council_propose_V9_t council_propose_V9;
     pd_council_vote_V9_t council_vote_V9;
-    pd_council_close_V9_t council_close_V9;
+    pd_council_close_old_weight_V9_t council_close_old_weight_V9;
     pd_council_disapprove_proposal_V9_t council_disapprove_proposal_V9;
+    pd_council_close_V9_t council_close_V9;
     pd_technicalcommittee_set_members_V9_t technicalcommittee_set_members_V9;
     pd_technicalcommittee_execute_V9_t technicalcommittee_execute_V9;
     pd_technicalcommittee_propose_V9_t technicalcommittee_propose_V9;
@@ -1006,7 +1015,7 @@ typedef struct {
     pd_OptionTimepoint_V9_t maybe_timepoint;
     pd_OpaqueCall_V9_t call;
     pd_bool_t store_call;
-    pd_Weight_V9_t max_weight;
+    pd_Weight_t max_weight;
 } pd_multisig_as_multi_V9_t;
 
 #define PD_CALL_MULTISIG_APPROVE_AS_MULTI_V9 2
@@ -1015,7 +1024,7 @@ typedef struct {
     pd_VecAccountId_V9_t other_signatories;
     pd_OptionTimepoint_V9_t maybe_timepoint;
     pd_H256_t call_hash;
-    pd_Weight_V9_t max_weight;
+    pd_Weight_t max_weight;
 } pd_multisig_approve_as_multi_V9_t;
 
 #define PD_CALL_MULTISIG_CANCEL_AS_MULTI_V9 3

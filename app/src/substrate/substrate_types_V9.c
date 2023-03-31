@@ -302,13 +302,6 @@ parser_error_t _readVote_V9(parser_context_t* c, pd_Vote_V9_t* v)
     return parser_ok;
 }
 
-parser_error_t _readWeight_V9(parser_context_t* c, pd_Weight_V9_t* v)
-{
-    CHECK_INPUT()
-    CHECK_ERROR(_readUInt64(c, &v->value))
-    return parser_ok;
-}
-
 parser_error_t _readVecAccountId_V9(parser_context_t* c, pd_VecAccountId_V9_t* v) {
     GEN_DEF_READVECTOR(AccountId_V9)
 }
@@ -1018,16 +1011,6 @@ parser_error_t _toStringVote_V9(
     }
 
     return parser_ok;
-}
-
-parser_error_t _toStringWeight_V9(
-    const pd_Weight_V9_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount)
-{
-    return _toStringu64(&v->value, outValue, outValueLen, pageIdx, pageCount);
 }
 
 parser_error_t _toStringVecAccountId_V9(

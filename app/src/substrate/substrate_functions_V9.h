@@ -66,7 +66,6 @@ parser_error_t _readVecAccountId_V9(parser_context_t* c, pd_VecAccountId_V9_t* v
 parser_error_t _readVecLookupasStaticLookupSource_V9(parser_context_t* c, pd_VecLookupasStaticLookupSource_V9_t* v);
 parser_error_t _readVestingInfo_V9(parser_context_t* c, pd_VestingInfo_V9_t* v);
 parser_error_t _readVote_V9(parser_context_t* c, pd_Vote_V9_t* v);
-parser_error_t _readWeight_V9(parser_context_t* c, pd_Weight_V9_t* v);
 
 // toString functions
 parser_error_t _toStringAccountId_V9(
@@ -344,13 +343,6 @@ parser_error_t _toStringVestingInfo_V9(
 
 parser_error_t _toStringVote_V9(
     const pd_Vote_V9_t* v,
-    char* outValue,
-    uint16_t outValueLen,
-    uint8_t pageIdx,
-    uint8_t* pageCount);
-
-parser_error_t _toStringWeight_V9(
-    const pd_Weight_V9_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,

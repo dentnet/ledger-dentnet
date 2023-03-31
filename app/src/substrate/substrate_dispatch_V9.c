@@ -409,7 +409,7 @@ __Z_INLINE parser_error_t _readMethod_sudo_sudo_unchecked_weight_V9(
      parser_context_t* c, pd_sudo_sudo_unchecked_weight_V9_t* m)
  {
      CHECK_ERROR(_readCall(c, &m->call))
-     CHECK_ERROR(_readWeight_V9(c, &m->weight))
+     CHECK_ERROR(_readWeight(c, &m->weight))
      return parser_ok;
 }
 
@@ -456,8 +456,8 @@ __Z_INLINE parser_error_t _readMethod_council_vote_V9(
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_council_close_V9(
-    parser_context_t* c, pd_council_close_V9_t* m)
+__Z_INLINE parser_error_t _readMethod_council_close_old_weight_V9(
+    parser_context_t* c, pd_council_close_old_weight_V9_t* m)
 {
     CHECK_ERROR(_readHash(c, &m->proposal_hash))
     CHECK_ERROR(_readCompactu32(c, &m->index))
@@ -470,6 +470,16 @@ __Z_INLINE parser_error_t _readMethod_council_disapprove_proposal_V9(
     parser_context_t* c, pd_council_disapprove_proposal_V9_t* m)
 {
     CHECK_ERROR(_readHash(c, &m->proposal_hash))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_council_close_V9(
+    parser_context_t* c, pd_council_close_V9_t* m)
+{
+    CHECK_ERROR(_readHash(c, &m->proposal_hash))
+    CHECK_ERROR(_readCompactu32(c, &m->index))
+    CHECK_ERROR(_readWeight(c, &m->proposal_weight_bound))
+    CHECK_ERROR(_readCompactu32(c, &m->length_bound))
     return parser_ok;
 }
 
@@ -513,7 +523,7 @@ __Z_INLINE parser_error_t _readMethod_technicalcommittee_close_V9(
 {
     CHECK_ERROR(_readHash(c, &m->proposal_hash))
     CHECK_ERROR(_readCompactu32(c, &m->index))
-    CHECK_ERROR(_readCompactu64(c, &m->proposal_weight_bound))
+    CHECK_ERROR(_readWeight(c, &m->proposal_weight_bound))
     CHECK_ERROR(_readCompactu32(c, &m->length_bound))
     return parser_ok;
 }
@@ -743,7 +753,7 @@ __Z_INLINE parser_error_t _readMethod_multisig_as_multi_V9(
     CHECK_ERROR(_readOptionTimepoint_V9(c, &m->maybe_timepoint))
     CHECK_ERROR(_readOpaqueCall_V9(c, &m->call))
     CHECK_ERROR(_readbool(c, &m->store_call))
-    CHECK_ERROR(_readWeight_V9(c, &m->max_weight))
+    CHECK_ERROR(_readWeight(c, &m->max_weight))
     return parser_ok;
 }
 
@@ -754,7 +764,7 @@ __Z_INLINE parser_error_t _readMethod_multisig_approve_as_multi_V9(
     CHECK_ERROR(_readVecAccountId_V9(c, &m->other_signatories))
     CHECK_ERROR(_readOptionTimepoint_V9(c, &m->maybe_timepoint))
     CHECK_ERROR(_readH256(c, &m->call_hash))
-    CHECK_ERROR(_readWeight_V9(c, &m->max_weight))
+    CHECK_ERROR(_readWeight(c, &m->max_weight))
     return parser_ok;
 }
 
@@ -956,10 +966,13 @@ parser_error_t _readMethod_V9(
         CHECK_ERROR(_readMethod_council_vote_V9(c, &method->basic.council_vote_V9))
         break;
     case 3844: /* module 15 call 4 */
-        CHECK_ERROR(_readMethod_council_close_V9(c, &method->basic.council_close_V9))
+        CHECK_ERROR(_readMethod_council_close_old_weight_V9(c, &method->basic.council_close_old_weight_V9))
         break;
     case 3845: /* module 15 call 5 */
         CHECK_ERROR(_readMethod_council_disapprove_proposal_V9(c, &method->basic.council_disapprove_proposal_V9))
+        break;
+    case 3846: /* module 15 call 6 */
+        CHECK_ERROR(_readMethod_council_close_V9(c, &method->basic.council_close_V9))
         break;
     case 4096: /* module 16 call 0 */
         CHECK_ERROR(_readMethod_technicalcommittee_set_members_V9(c, &method->basic.technicalcommittee_set_members_V9))
@@ -973,11 +986,11 @@ parser_error_t _readMethod_V9(
     case 4099: /* module 16 call 3 */
         CHECK_ERROR(_readMethod_technicalcommittee_vote_V9(c, &method->basic.technicalcommittee_vote_V9))
         break;
-    case 4100: /* module 16 call 4 */
-        CHECK_ERROR(_readMethod_technicalcommittee_close_V9(c, &method->basic.technicalcommittee_close_V9))
-        break;
     case 4101: /* module 16 call 5 */
         CHECK_ERROR(_readMethod_technicalcommittee_disapprove_proposal_V9(c, &method->basic.technicalcommittee_disapprove_proposal_V9))
+        break;
+    case 4102: /* module 16 call 6 */
+        CHECK_ERROR(_readMethod_technicalcommittee_close_V9(c, &method->basic.technicalcommittee_close_V9))
         break;
     case 4864: /* module 19 call 0 */
         CHECK_ERROR(_readMethod_treasury_propose_spend_V9(c, &method->basic.treasury_propose_spend_V9))
@@ -1348,9 +1361,11 @@ const char* _getMethod_Name_V9_ParserFull(uint16_t callPrivIdx)
     case 3843: /* module 15 call 3 */
         return STR_ME_VOTE;
     case 3844: /* module 15 call 4 */
-        return STR_ME_CLOSE;
+        return STR_ME_CLOSE_OLD_WEIGHT;
     case 3845: /* module 15 call 5 */
         return STR_ME_DISAPPROVE_PROPOSAL;
+    case 3846: /* module 15 call 6 */
+        return STR_ME_CLOSE;
     case 4096: /* module 16 call 0 */
         return STR_ME_SET_MEMBERS;
     case 4097: /* module 16 call 1 */
@@ -1359,10 +1374,10 @@ const char* _getMethod_Name_V9_ParserFull(uint16_t callPrivIdx)
         return STR_ME_PROPOSE;
     case 4099: /* module 16 call 3 */
         return STR_ME_VOTE;
-    case 4100: /* module 16 call 4 */
-        return STR_ME_CLOSE;
     case 4101: /* module 16 call 5 */
         return STR_ME_DISAPPROVE_PROPOSAL;
+    case 4102: /* module 16 call 6 */
+        return STR_ME_CLOSE;
     case 4352: /* module 17 call 0 */
         return STR_ME_VOTE;
     case 4353: /* module 17 call 1 */
@@ -1675,6 +1690,8 @@ uint8_t _getMethod_NumItems_V9(uint8_t moduleIdx, uint8_t callIdx)
         return 4;
     case 3845: /* module 15 call 5 */
         return 1;
+    case 3846: /* module 15 call 6 */
+        return 4;
     case 4096: /* module 16 call 0 */
         return 3;
     case 4097: /* module 16 call 1 */
@@ -1683,10 +1700,10 @@ uint8_t _getMethod_NumItems_V9(uint8_t moduleIdx, uint8_t callIdx)
         return 3;
     case 4099: /* module 16 call 3 */
         return 3;
-    case 4100: /* module 16 call 4 */
-        return 4;
     case 4101: /* module 16 call 5 */
         return 1;
+    case 4102: /* module 16 call 6 */
+        return 4;
     case 4352: /* module 17 call 0 */
         return 2;
     case 4353: /* module 17 call 1 */
@@ -2508,6 +2525,19 @@ const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
+    case 3846: /* module 15 call 6 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal_hash;
+        case 1:
+            return STR_IT_index;
+        case 2:
+            return STR_IT_proposal_weight_bound;
+        case 3:
+            return STR_IT_length_bound;
+        default:
+            return NULL;
+        }
     case 4096: /* module 16 call 0 */
         switch (itemIdx) {
         case 0:
@@ -2550,7 +2580,14 @@ const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 4100: /* module 16 call 4 */
+    case 4101: /* module 16 call 5 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_proposal_hash;
+        default:
+            return NULL;
+        }
+    case 4102: /* module 16 call 6 */
         switch (itemIdx) {
         case 0:
             return STR_IT_proposal_hash;
@@ -2560,13 +2597,6 @@ const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
             return STR_IT_proposal_weight_bound;
         case 3:
             return STR_IT_length_bound;
-        default:
-            return NULL;
-        }
-    case 4101: /* module 16 call 5 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_proposal_hash;
         default:
             return NULL;
         }
@@ -3787,22 +3817,22 @@ parser_error_t _getMethod_ItemValue_V9(
         switch (itemIdx) {
         case 0: /* council_close_V9 - proposal_hash */;
             return _toStringHash(
-                &m->basic.council_close_V9.proposal_hash,
+                &m->basic.council_close_old_weight_V9.proposal_hash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* council_close_V9 - index */;
             return _toStringCompactu32(
-                &m->basic.council_close_V9.index,
+                &m->basic.council_close_old_weight_V9.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* council_close_V9 - proposal_weight_bound */;
             return _toStringCompactu64(
-                &m->basic.council_close_V9.proposal_weight_bound,
+                &m->basic.council_close_old_weight_V9.proposal_weight_bound,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* council_close_V9 - length_bound */;
             return _toStringCompactu32(
-                &m->basic.council_close_V9.length_bound,
+                &m->basic.council_close_old_weight_V9.length_bound,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -3813,6 +3843,31 @@ parser_error_t _getMethod_ItemValue_V9(
         case 0: /* council_disapprove_proposal_V9 - proposal_hash */;
             return _toStringHash(
                 &m->basic.council_disapprove_proposal_V9.proposal_hash,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 3846: /* module 15 call 6 */
+        switch (itemIdx) {
+        case 0: /* council_close_V9 - proposal_hash */;
+            return _toStringHash(
+                &m->basic.council_close_V9.proposal_hash,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* council_close_V9 - index */;
+            return _toStringCompactu32(
+                &m->basic.council_close_V9.index,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* council_close_V9 - proposal_weight_bound */;
+            return _toStringWeight(
+                &m->basic.council_close_V9.proposal_weight_bound,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* council_close_V9 - length_bound */;
+            return _toStringCompactu32(
+                &m->basic.council_close_V9.length_bound,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -3893,7 +3948,17 @@ parser_error_t _getMethod_ItemValue_V9(
         default:
             return parser_no_data;
         }
-    case 4100: /* module 16 call 4 */
+    case 4101: /* module 16 call 5 */
+        switch (itemIdx) {
+        case 0: /* technicalcommittee_disapprove_proposal_V9 - proposal_hash */;
+            return _toStringHash(
+                &m->basic.technicalcommittee_disapprove_proposal_V9.proposal_hash,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 4102: /* module 16 call 6 */
         switch (itemIdx) {
         case 0: /* technicalcommittee_close_V9 - proposal_hash */;
             return _toStringHash(
@@ -3906,23 +3971,13 @@ parser_error_t _getMethod_ItemValue_V9(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* technicalcommittee_close_V9 - proposal_weight_bound */;
-            return _toStringCompactu64(
+            return _toStringWeight(
                 &m->basic.technicalcommittee_close_V9.proposal_weight_bound,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* technicalcommittee_close_V9 - length_bound */;
             return _toStringCompactu32(
                 &m->basic.technicalcommittee_close_V9.length_bound,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 4101: /* module 16 call 5 */
-        switch (itemIdx) {
-        case 0: /* technicalcommittee_disapprove_proposal_V9 - proposal_hash */;
-            return _toStringHash(
-                &m->basic.technicalcommittee_disapprove_proposal_V9.proposal_hash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4316,7 +4371,7 @@ parser_error_t _getMethod_ItemValue_V9(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 5: /* multisig_as_multi_V9 - max_weight */;
-            return _toStringWeight_V9(
+            return _toStringWeight(
                 &m->nested.multisig_as_multi_V9.max_weight,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4346,7 +4401,7 @@ parser_error_t _getMethod_ItemValue_V9(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 4: /* multisig_approve_as_multi_V9 - max_weight */;
-            return _toStringWeight_V9(
+            return _toStringWeight(
                 &m->nested.multisig_approve_as_multi_V9.max_weight,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4481,14 +4536,15 @@ bool _getMethod_IsNestingSupported_V9(uint8_t moduleIdx, uint8_t callIdx)
     case 3841: // Council:Execute
     case 3842: // Council:Propose
     case 3843: // Council:Vote
-    case 3844: // Council:Close
+    case 3844: // Council:Close old weight
     case 3845: // Council:Disapprove proposal
+    case 3846: // Council:Close
     case 4096: // TechnicalCommittee:Set members
     case 4097: // TechnicalCommittee:Execute
     case 4098: // TechnicalCommittee:Propose
     case 4099: // TechnicalCommittee:Vote
-    case 4100: // TechnicalCommittee:Close
     case 4101: // TechnicalCommittee:Disapprove proposal
+    case 4102: // TechnicalCommittee:Close
     case 4864: // Treasury:Propose spend
     case 4865: // Treasury:Reject proposal
     case 4866: // Treasury:Approve proposal

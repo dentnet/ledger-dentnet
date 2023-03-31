@@ -169,8 +169,9 @@ Please:
 |Execute |    |   |   | `BoxTasConfigIProposal` proposal <br/>`Compactu32` length_bound <br/> | 
 |Propose |    |   |   | `Compactu32` threshold <br/>`BoxTasConfigIProposal` proposal <br/>`Compactu32` length_bound <br/> | 
 |Vote |    | :heavy_check_mark: |   | `Hash` proposal <br/>`Compactu32` index <br/>`bool` approve <br/> | 
-|Close |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`Compactu32` index <br/>`Compactu64` proposal_weight_bound <br/>`Compactu32` length_bound <br/> | 
+|Close old weight |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`Compactu33` index <br/>`Compactu64` proposal_weight_bound <br/>`Compactu32` length_bound <br/> | 
 |Disapprove proposal |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> | 
+|Close |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`Compactu33` index <br/>`Weight` proposal_weight_bound <br/>`Compactu32` length_bound <br/> | 
 
 ## TechnicalCommittee
 
@@ -180,8 +181,8 @@ Please:
 |Execute |    |   |   | `BoxTasConfigIProposal` proposal <br/>`Compactu32` length_bound <br/> | 
 |Propose |    |   |   | `Compactu32` threshold <br/>`BoxTasConfigIProposal` proposal <br/>`Compactu32` length_bound <br/> | 
 |Vote |    | :heavy_check_mark: |   | `Hash` proposal <br/>`Compactu32` index <br/>`bool` approve <br/> | 
-|Close |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`Compactu32` index <br/>`Compactu64` proposal_weight_bound <br/>`Compactu32` length_bound <br/> | 
 |Disapprove proposal |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/> | 
+|Close |    | :heavy_check_mark: |   | `Hash` proposal_hash <br/>`Compactu32` index <br/>`Weight` proposal_weight_bound <br/>`Compactu32` length_bound <br/> | 
 
 ## Treasury
 

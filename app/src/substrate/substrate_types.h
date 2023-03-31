@@ -80,6 +80,19 @@ typedef struct {
 // Common types
 ////////////////////////
 
+typedef compactInt_t pd_Compactu32_t; // u32
+typedef compactInt_t pd_Compactu64_t; // u64
+typedef compactInt_t pd_CompactAssignments_t;
+typedef compactInt_t pd_CompactBountyIndex_t;
+typedef compactInt_t pd_CompactEraIndex_t;
+typedef compactInt_t pd_CompactMemberCount_t;
+typedef compactInt_t pd_CompactMoment_t;
+typedef compactInt_t pd_CompactPropIndex_t;
+typedef compactInt_t pd_CompactProposalIndex_t;
+typedef compactInt_t pd_CompactReferendumIndex_t;
+typedef compactInt_t pd_CompactRegistrarIndex_t;
+typedef compactInt_t pd_CompactWeight_t;
+
 typedef struct {
     const uint8_t* _ptr;
 } pd_Balance_t;
@@ -109,6 +122,11 @@ typedef struct {
     uint64_t _lenBuffer;
     uint32_t callTxVersion;
 } pd_VecCall_t;
+
+typedef struct {
+    pd_Compactu64_t refTime;
+    pd_Compactu64_t proofSize;
+} pd_Weight_t;
 
 typedef compactInt_t pd_Compactu128_t;
 
@@ -167,24 +185,6 @@ typedef struct {
 typedef struct {
     compactInt_t value;
 } pd_CompactBalance_t;
-
-////////////////////////
-////////////////////////
-////////////////////////
-////////////////////////
-
-typedef compactInt_t pd_Compactu32_t; // u32
-typedef compactInt_t pd_Compactu64_t; // u64
-typedef compactInt_t pd_CompactAssignments_t;
-typedef compactInt_t pd_CompactBountyIndex_t;
-typedef compactInt_t pd_CompactEraIndex_t;
-typedef compactInt_t pd_CompactMemberCount_t;
-typedef compactInt_t pd_CompactMoment_t;
-typedef compactInt_t pd_CompactPropIndex_t;
-typedef compactInt_t pd_CompactProposalIndex_t;
-typedef compactInt_t pd_CompactReferendumIndex_t;
-typedef compactInt_t pd_CompactRegistrarIndex_t;
-typedef compactInt_t pd_CompactWeight_t;
 
 #ifdef __cplusplus
 }
