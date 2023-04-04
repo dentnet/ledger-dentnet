@@ -116,7 +116,7 @@ parser_error_t _readEthereumAddress_V9(parser_context_t* c, pd_EthereumAddress_V
 }
 
 parser_error_t _readKeys_V9(parser_context_t* c, pd_Keys_V9_t* v) {
-    GEN_DEF_READARRAY(6 * 32)
+    GEN_DEF_READARRAY(4 * 32)
 }
 
 parser_error_t _readLookupasStaticLookupSource_V9(parser_context_t* c, pd_LookupasStaticLookupSource_V9_t* v)
@@ -612,7 +612,7 @@ parser_error_t _toStringKeys_V9(
     uint16_t outValueLen,
     uint8_t pageIdx,
     uint8_t* pageCount) {
-    GEN_DEF_TOSTRING_ARRAY(6 * 32)
+    GEN_DEF_TOSTRING_ARRAY(4 * 32)
 }
 
 parser_error_t _toStringLookupasStaticLookupSource_V9(

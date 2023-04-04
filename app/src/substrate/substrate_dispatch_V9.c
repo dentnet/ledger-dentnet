@@ -167,17 +167,11 @@ __Z_INLINE parser_error_t _readMethod_utility_force_batch_V9(
 }
 
 #ifdef SUBSTRATE_PARSER_FULL
-__Z_INLINE parser_error_t _readMethod_system_fill_block_V9(
-    parser_context_t* c, pd_system_fill_block_V9_t* m)
-{
-    CHECK_ERROR(_readPerbill_V9(c, &m->ratio))
-    return parser_ok;
-}
 
 __Z_INLINE parser_error_t _readMethod_system_remark_V9(
     parser_context_t* c, pd_system_remark_V9_t* m)
 {
-    CHECK_ERROR(_readVecu8(c, &m->remark))
+    CHECK_ERROR(_readBytes(c, &m->remark))
     return parser_ok;
 }
 
@@ -205,7 +199,7 @@ __Z_INLINE parser_error_t _readMethod_system_set_code_without_checks_V9(
 __Z_INLINE parser_error_t _readMethod_system_remark_with_event_V9(
     parser_context_t* c, pd_system_remark_with_event_V9_t* m)
 {
-    CHECK_ERROR(_readVecu8(c, &m->remark))
+    CHECK_ERROR(_readBytes(c, &m->remark))
     return parser_ok;
 }
 
@@ -751,8 +745,7 @@ __Z_INLINE parser_error_t _readMethod_multisig_as_multi_V9(
     CHECK_ERROR(_readu16(c, &m->threshold))
     CHECK_ERROR(_readVecAccountId_V9(c, &m->other_signatories))
     CHECK_ERROR(_readOptionTimepoint_V9(c, &m->maybe_timepoint))
-    CHECK_ERROR(_readOpaqueCall_V9(c, &m->call))
-    CHECK_ERROR(_readbool(c, &m->store_call))
+    CHECK_ERROR(_readCall(c, &m->call))
     CHECK_ERROR(_readWeight(c, &m->max_weight))
     return parser_ok;
 }
@@ -861,21 +854,18 @@ parser_error_t _readMethod_V9(
 
 #ifdef SUBSTRATE_PARSER_FULL
     case 0: /* module 0 call 0 */
-        CHECK_ERROR(_readMethod_system_fill_block_V9(c, &method->nested.system_fill_block_V9))
-        break;
-    case 1: /* module 0 call 1 */
         CHECK_ERROR(_readMethod_system_remark_V9(c, &method->nested.system_remark_V9))
         break;
-    case 2: /* module 0 call 2 */
+    case 1: /* module 0 call 1 */
         CHECK_ERROR(_readMethod_system_set_heap_pages_V9(c, &method->nested.system_set_heap_pages_V9))
         break;
-    case 3: /* module 0 call 3 */
+    case 2: /* module 0 call 2 */
         CHECK_ERROR(_readMethod_system_set_code_V9(c, &method->nested.system_set_code_V9))
         break;
-    case 4: /* module 0 call 4 */
+    case 3: /* module 0 call 3 */
         CHECK_ERROR(_readMethod_system_set_code_without_checks_V9(c, &method->nested.system_set_code_without_checks_V9))
         break;
-    case 8: /* module 0 call 8 */
+    case 7: /* module 0 call 7 */
         CHECK_ERROR(_readMethod_system_remark_with_event_V9(c, &method->nested.system_remark_with_event_V9))
         break;
     case 768: /* module 3 call 0 */
@@ -1234,17 +1224,15 @@ const char* _getMethod_Name_V9_ParserFull(uint16_t callPrivIdx)
 {
     switch (callPrivIdx) {
 #ifdef SUBSTRATE_PARSER_FULL
-    case 0: /* module 0 call 0 */
-        return STR_ME_FILL_BLOCK;
-    case 1: /* module 0 call 1 */
+    case 0: /* module 0 call 1 */
         return STR_ME_REMARK;
-    case 2: /* module 0 call 2 */
+    case 1: /* module 0 call 2 */
         return STR_ME_SET_HEAP_PAGES;
-    case 3: /* module 0 call 3 */
+    case 2: /* module 0 call 3 */
         return STR_ME_SET_CODE;
-    case 4: /* module 0 call 4 */
+    case 3: /* module 0 call 4 */
         return STR_ME_SET_CODE_WITHOUT_CHECKS;
-    case 8: /* module 0 call 8 */
+    case 7: /* module 0 call 8 */
         return STR_ME_REMARK_WITH_EVENT;
     case 10240: /* module 10 call 0 */
         return STR_ME_NOTE_PREIMAGE;
@@ -1576,9 +1564,7 @@ uint8_t _getMethod_NumItems_V9(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 3: /* module 0 call 3 */
         return 1;
-    case 4: /* module 0 call 4 */
-        return 1;
-    case 8: /* module 0 call 8 */
+    case 7: /* module 0 call 7 */
         return 1;
     case 768: /* module 3 call 0 */
         return 1;
@@ -1789,7 +1775,7 @@ uint8_t _getMethod_NumItems_V9(uint8_t moduleIdx, uint8_t callIdx)
     case 7680: /* module 30 call 0 */
         return 2;
     case 7681: /* module 30 call 1 */
-        return 6;
+        return 5;
     case 7682: /* module 30 call 2 */
         return 5;
     case 7683: /* module 30 call 3 */
@@ -2019,21 +2005,21 @@ const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
     case 0: /* module 0 call 0 */
         switch (itemIdx) {
         case 0:
-            return STR_IT_ratio;
+            return STR_IT_remark;
         default:
             return NULL;
         }
     case 1: /* module 0 call 1 */
         switch (itemIdx) {
         case 0:
-            return STR_IT_remark;
+            return STR_IT_pages;
         default:
             return NULL;
         }
     case 2: /* module 0 call 2 */
         switch (itemIdx) {
         case 0:
-            return STR_IT_pages;
+            return STR_IT_code;
         default:
             return NULL;
         }
@@ -2044,14 +2030,7 @@ const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         default:
             return NULL;
         }
-    case 4: /* module 0 call 4 */
-        switch (itemIdx) {
-        case 0:
-            return STR_IT_code;
-        default:
-            return NULL;
-        }
-    case 8: /* module 0 call 8 */
+    case 7: /* module 0 call 7 */
         switch (itemIdx) {
         case 0:
             return STR_IT_remark;
@@ -2959,8 +2938,6 @@ const char* _getMethod_ItemName_V9(uint8_t moduleIdx, uint8_t callIdx, uint8_t i
         case 3:
             return STR_IT_call;
         case 4:
-            return STR_IT_store_call;
-        case 5:
             return STR_IT_max_weight;
         default:
             return NULL;
@@ -3380,25 +3357,15 @@ parser_error_t _getMethod_ItemValue_V9(
 #ifdef SUBSTRATE_PARSER_FULL
     case 0: /* module 0 call 0 */
         switch (itemIdx) {
-        case 0: /* system_fill_block_V9 - ratio */;
-            return _toStringPerbill_V9(
-                &m->nested.system_fill_block_V9.ratio,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        default:
-            return parser_no_data;
-        }
-    case 1: /* module 0 call 1 */
-        switch (itemIdx) {
         case 0: /* system_remark_V9 - remark */;
-            return _toStringVecu8(
+            return _toStringBytes(
                 &m->nested.system_remark_V9.remark,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
             return parser_no_data;
         }
-    case 2: /* module 0 call 2 */
+    case 1: /* module 0 call 1 */
         switch (itemIdx) {
         case 0: /* system_set_heap_pages_V9 - pages */;
             return _toStringu64(
@@ -3408,7 +3375,7 @@ parser_error_t _getMethod_ItemValue_V9(
         default:
             return parser_no_data;
         }
-    case 3: /* module 0 call 3 */
+    case 2: /* module 0 call 2 */
         switch (itemIdx) {
         case 0: /* system_set_code_V9 - code */;
             return _toStringVecu8(
@@ -3418,7 +3385,7 @@ parser_error_t _getMethod_ItemValue_V9(
         default:
             return parser_no_data;
         }
-    case 4: /* module 0 call 4 */
+    case 3: /* module 0 call 3 */
         switch (itemIdx) {
         case 0: /* system_set_code_without_checks_V9 - code */;
             return _toStringVecu8(
@@ -3428,10 +3395,10 @@ parser_error_t _getMethod_ItemValue_V9(
         default:
             return parser_no_data;
         }
-    case 8: /* module 0 call 8 */
+    case 7: /* module 0 call 7 */
         switch (itemIdx) {
         case 0: /* system_remark_with_event_V9 - remark */;
-            return _toStringVecu8(
+            return _toStringBytes(
                 &m->nested.system_remark_with_event_V9.remark,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4361,16 +4328,11 @@ parser_error_t _getMethod_ItemValue_V9(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 3: /* multisig_as_multi_V9 - call */;
-            return _toStringOpaqueCall_V9(
+            return _toStringCall(
                 &m->nested.multisig_as_multi_V9.call,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 4: /* multisig_as_multi_V9 - store_call */;
-            return _toStringbool(
-                &m->nested.multisig_as_multi_V9.store_call,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 5: /* multisig_as_multi_V9 - max_weight */;
+        case 4: /* multisig_as_multi_V9 - max_weight */;
             return _toStringWeight(
                 &m->nested.multisig_as_multi_V9.max_weight,
                 outValue, outValueLen,

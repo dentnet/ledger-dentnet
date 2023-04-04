@@ -13,7 +13,9 @@ This project contains the DENTNet app (https://www.dentnet.io/) for Ledger Nano 
 - C++ unit tests
 - Zemu tests
 
-For more information: [How to build](docs/build.md)
+For more information:
+- [How to build](docs/build.md)
+- [How to install](docs/install.md)
 
 ## ATTENTION
 
@@ -29,15 +31,14 @@ Please:
 
 | Name        | Light | XL | Nesting | Arguments | 
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Fill block |    | :heavy_check_mark: | :heavy_check_mark: | `Perbill` ratio <br/> | 
-|Remark |    | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` remark <br/> | 
+|Remark |    | :heavy_check_mark: | :heavy_check_mark: | `Bytes` remark <br/> | 
 |Set heap pages |    | :heavy_check_mark: | :heavy_check_mark: | `u64` pages <br/> | 
 |Set code |    | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` code <br/> | 
 |Set code without checks |    | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` code <br/> | 
 |Set storage |    |   |   | `VecKeyValue` items <br/> | 
 |Kill storage |    |   |   | `VecKey` keys <br/> | 
 |Kill prefix |    |   |   | `Key` prefix <br/>`u32` subkeys <br/> | 
-|Remark with event |    | :heavy_check_mark: | :heavy_check_mark: | `Vecu8` remark <br/> | 
+|Remark with event |    | :heavy_check_mark: | :heavy_check_mark: | `Bytes` remark <br/> | 
 
 ## Preimage
 
@@ -47,24 +48,6 @@ Please:
 |Unnote preimage |    | :heavy_check_mark: |   | `Hash` hash <br/> |
 |Request preimage |    | :heavy_check_mark: |   | `Hash` hash <br/> |
 |Unrequest preimage |    | :heavy_check_mark: |   | `Hash` hash <br/> |
-
-## Scheduler
-
-| Name        | Light | XL | Nesting | Arguments | 
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Schedule |    |   |   | `BlockNumber` when <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`BoxCallOrHashOfT` call <br/> | 
-|Cancel |    |   |   | `BlockNumber` when <br/>`u32` index <br/> | 
-|Schedule named |    |   |   | `Vecu8` id <br/>`BlockNumber` when <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`BoxCallOrHashOfT` call <br/> | 
-|Schedule after |    |   |   | `BlockNumber` after <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`BoxCallOrHashOfT` call <br/> |
-|Schedule named after |    |   |   | `Vecu8` id <br/>`BlockNumber` after <br/>`OptionschedulePeriodBlockNumber` maybe_periodic <br/>`schedulePriority` priority <br/>`BoxCallOrHashOfT` call <br/> |
-
-## Babe
-
-| Name        | Light | XL | Nesting | Arguments | 
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Report equivocation |    |   |   | `BoxEquivocationProofHeader` equivocation_proof <br/>`KeyOwnerProof` key_owner_proof <br/> | 
-|Report equivocation unsigned |    |   |   | `BoxEquivocationProofHeader` equivocation_proof <br/>`KeyOwnerProof` key_owner_proof <br/> | 
-|Plan config change |    |   |   | `NextConfigDescriptor` config <br/> | 
 
 ## Timestamp
 
@@ -92,12 +75,6 @@ Please:
 |Transfer keep alive | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | `LookupasStaticLookupSource` dest <br/>`CompactBalance` amount <br/> | 
 |Transfer all | :heavy_check_mark:  | :heavy_check_mark: |   | `LookupasStaticLookupSource` dest <br/>`bool` keep_alive <br/> | 
 |Force unreserve |    | :heavy_check_mark: |   | `LookupasStaticLookupSource` who <br/>`Balance` amount <br/> | 
-
-## Authorship
-
-| Name        | Light | XL | Nesting | Arguments | 
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Set uncles |    |   |   | `VecHeader` new_uncles <br/> | 
 
 ## Staking
 
@@ -155,12 +132,6 @@ Please:
 |Report equivocation unsigned |    |   |   | `BoxEquivocationProofHashBlockNumber` equivocation_proof <br/>`KeyOwnerProof` key_owner_proof <br/> | 
 |Note stalled |    | :heavy_check_mark: |   | `BlockNumber` delay <br/>`BlockNumber` best_finalized_block_number <br/> | 
 
-## ImOnline
-
-| Name        | Light | XL | Nesting | Arguments | 
-| :---------- |:------------:|:--------:|:--------:|:--------|
-|Heartbeat |    |   |   | `HeartbeatBlockNumber` heartbeat <br/>`AuthorityIdasRuntimeAppPublicSignature` signature <br/> | 
-
 ## Council
 
 | Name        | Light | XL | Nesting | Arguments | 
@@ -213,6 +184,7 @@ Please:
 |Batch all | :heavy_check_mark:  | :heavy_check_mark: |   | `VecCall` calls <br/> | 
 |Dispatch as |    |   |   | `BoxPalletsOrigin` as_origin <br/>`Call` call <br/> | 
 |Force batch | :heavy_check_mark:  | :heavy_check_mark: |   | `VecCall` calls <br/> |
+|With weight |    |   |   | `Call` call <br/>`Weight` weight | 
 
 ## Identity
 

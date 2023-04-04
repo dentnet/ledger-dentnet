@@ -48,7 +48,6 @@ static const char* STR_MO_BAGSLIST = "Bagslist";
 static const char* STR_MO_XCMPALLET = "Xcmpallet";
 
 // Methods names
-static const char* STR_ME_FILL_BLOCK = "Fill block";
 static const char* STR_ME_REMARK = "Remark";
 static const char* STR_ME_SET_HEAP_PAGES = "Set heap pages";
 static const char* STR_ME_SET_CODE = "Set code";

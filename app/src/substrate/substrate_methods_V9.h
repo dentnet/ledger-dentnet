@@ -958,34 +958,29 @@ typedef struct {
 } pd_balances_transfer_keep_alive_V9_t;
 
 #ifdef SUBSTRATE_PARSER_FULL
-#define PD_CALL_SYSTEM_FILL_BLOCK_V9 0
+#define PD_CALL_SYSTEM_REMARK_V9 0
 typedef struct {
-    pd_Perbill_V9_t ratio;
-} pd_system_fill_block_V9_t;
-
-#define PD_CALL_SYSTEM_REMARK_V9 1
-typedef struct {
-    pd_Vecu8_t remark;
+    pd_Bytes_t remark;
 } pd_system_remark_V9_t;
 
-#define PD_CALL_SYSTEM_SET_HEAP_PAGES_V9 2
+#define PD_CALL_SYSTEM_SET_HEAP_PAGES_V9 1
 typedef struct {
     pd_u64_t pages;
 } pd_system_set_heap_pages_V9_t;
 
-#define PD_CALL_SYSTEM_SET_CODE_V9 3
+#define PD_CALL_SYSTEM_SET_CODE_V9 2
 typedef struct {
     pd_Vecu8_t code;
 } pd_system_set_code_V9_t;
 
-#define PD_CALL_SYSTEM_SET_CODE_WITHOUT_CHECKS_V9 4
+#define PD_CALL_SYSTEM_SET_CODE_WITHOUT_CHECKS_V9 3
 typedef struct {
     pd_Vecu8_t code;
 } pd_system_set_code_without_checks_V9_t;
 
-#define PD_CALL_SYSTEM_REMARK_WITH_EVENT_V9 8
+#define PD_CALL_SYSTEM_REMARK_WITH_EVENT_V9 7
 typedef struct {
-    pd_Vecu8_t remark;
+    pd_Bytes_t remark;
 } pd_system_remark_with_event_V9_t;
 
 #define PD_CALL_BALANCES_SET_BALANCE_V9 1
@@ -1013,8 +1008,7 @@ typedef struct {
     pd_u16_t threshold;
     pd_VecAccountId_V9_t other_signatories;
     pd_OptionTimepoint_V9_t maybe_timepoint;
-    pd_OpaqueCall_V9_t call;
-    pd_bool_t store_call;
+    pd_Call_t call;
     pd_Weight_t max_weight;
 } pd_multisig_as_multi_V9_t;
 
@@ -1042,7 +1036,6 @@ typedef union {
     pd_balances_force_transfer_V9_t balances_force_transfer_V9;
     pd_balances_transfer_keep_alive_V9_t balances_transfer_keep_alive_V9;
 #ifdef SUBSTRATE_PARSER_FULL
-    pd_system_fill_block_V9_t system_fill_block_V9;
     pd_system_remark_V9_t system_remark_V9;
     pd_system_set_heap_pages_V9_t system_set_heap_pages_V9;
     pd_system_set_code_V9_t system_set_code_V9;
