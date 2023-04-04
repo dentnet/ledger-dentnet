@@ -223,6 +223,16 @@ typedef struct {
 } pd_VecAccountId_V9_t;
 
 typedef struct {
+    uint8_t value;
+    union {
+        pd_AccountId_V9_t id;
+        pd_CompactAccountIndex_V9_t index;
+        pd_Bytes_t raw;
+        const uint8_t* _ptr;
+    };
+} pd_AccountIdLookupOfT_V9_t;
+
+typedef struct {
     uint64_t value;
 } pd_Weight_V9_t;
 

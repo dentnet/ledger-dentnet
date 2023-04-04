@@ -434,7 +434,7 @@ typedef struct {
 
 #define PD_CALL_IDENTITY_ADD_REGISTRAR_V9 0
 typedef struct {
-    pd_AccountId_V9_t account;
+    pd_AccountIdLookupOfT_V9_t account;
 } pd_identity_add_registrar_V9_t;
 
 #define PD_CALL_IDENTITY_CLEAR_IDENTITY_V9 3
@@ -514,8 +514,8 @@ typedef struct {
 
 #define PD_CALL_PROXY_PROXY_ANNOUNCED_V9 9
 typedef struct {
-    pd_AccountId_V9_t delegate;
-    pd_AccountId_V9_t real;
+    pd_AccountIdLookupOfT_V9_t delegate;
+    pd_AccountIdLookupOfT_V9_t real;
     pd_OptionProxyType_V9_t force_proxy_type;
     pd_Call_t call;
 } pd_proxy_proxy_announced_V9_t;
@@ -992,7 +992,7 @@ typedef struct {
 
 #define PD_CALL_PROXY_PROXY_V9 0
 typedef struct {
-    pd_AccountId_V9_t real;
+    pd_AccountIdLookupOfT_V9_t real;
     pd_OptionProxyType_V9_t force_proxy_type;
     pd_Call_t call;
 } pd_proxy_proxy_V9_t;

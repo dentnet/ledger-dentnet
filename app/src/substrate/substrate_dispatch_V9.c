@@ -607,7 +607,7 @@ __Z_INLINE parser_error_t _readMethod_vesting_merge_schedules_V9(
 __Z_INLINE parser_error_t _readMethod_identity_add_registrar_V9(
     parser_context_t* c, pd_identity_add_registrar_V9_t* m)
 {
-    CHECK_ERROR(_readAccountId_V9(c, &m->account))
+    CHECK_ERROR(_readAccountIdLookupOfT_V9(c, &m->account))
     return parser_ok;
 }
 
@@ -671,7 +671,7 @@ __Z_INLINE parser_error_t _readMethod_identity_quit_sub_V9(
 __Z_INLINE parser_error_t _readMethod_proxy_proxy_V9(
     parser_context_t* c, pd_proxy_proxy_V9_t* m)
 {
-    CHECK_ERROR(_readAccountId_V9(c, &m->real))
+    CHECK_ERROR(_readAccountIdLookupOfT_V9(c, &m->real))
     CHECK_ERROR(_readOptionProxyType_V9(c, &m->force_proxy_type))
     CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
@@ -724,8 +724,8 @@ __Z_INLINE parser_error_t _readMethod_proxy_kill_anonymous_V9(
 __Z_INLINE parser_error_t _readMethod_proxy_proxy_announced_V9(
     parser_context_t* c, pd_proxy_proxy_announced_V9_t* m)
 {
-    CHECK_ERROR(_readAccountId_V9(c, &m->delegate))
-    CHECK_ERROR(_readAccountId_V9(c, &m->real))
+    CHECK_ERROR(_readAccountIdLookupOfT_V9(c, &m->delegate))
+    CHECK_ERROR(_readAccountIdLookupOfT_V9(c, &m->real))
     CHECK_ERROR(_readOptionProxyType_V9(c, &m->force_proxy_type))
     CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
@@ -4063,7 +4063,7 @@ parser_error_t _getMethod_ItemValue_V9(
     case 7168: /* module 28 call 0 */
         switch (itemIdx) {
         case 0: /* identity_add_registrar_V9 - account */;
-            return _toStringAccountId_V9(
+            return _toStringAccountIdLookupOfT_V9(
                 &m->basic.identity_add_registrar_V9.account,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4158,7 +4158,7 @@ parser_error_t _getMethod_ItemValue_V9(
     case 7424: /* module 29 call 0 */
         switch (itemIdx) {
         case 0: /* proxy_proxy_V9 - real */;
-            return _toStringAccountId_V9(
+            return _toStringAccountIdLookupOfT_V9(
                 &m->nested.proxy_proxy_V9.real,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4273,12 +4273,12 @@ parser_error_t _getMethod_ItemValue_V9(
     case 7433: /* module 29 call 9 */
         switch (itemIdx) {
         case 0: /* proxy_proxy_announced_V9 - delegate */;
-            return _toStringAccountId_V9(
+            return _toStringAccountIdLookupOfT_V9(
                 &m->basic.proxy_proxy_announced_V9.delegate,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_proxy_announced_V9 - real */;
-            return _toStringAccountId_V9(
+            return _toStringAccountIdLookupOfT_V9(
                 &m->basic.proxy_proxy_announced_V9.real,
                 outValue, outValueLen,
                 pageIdx, pageCount);

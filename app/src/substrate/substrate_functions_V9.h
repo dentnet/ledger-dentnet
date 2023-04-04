@@ -27,6 +27,7 @@ extern "C" {
 
 // Read functions
 parser_error_t _readAccountId_V9(parser_context_t* c, pd_AccountId_V9_t* v);
+parser_error_t _readAccountIdLookupOfT_V9(parser_context_t* c, pd_AccountIdLookupOfT_V9_t* v);
 parser_error_t _readAccountIndex_V9(parser_context_t* c, pd_AccountIndex_V9_t* v);
 parser_error_t _readAccountVoteSplit_V9(parser_context_t* c, pd_AccountVoteSplit_V9_t* v);
 parser_error_t _readAccountVoteStandard_V9(parser_context_t* c, pd_AccountVoteStandard_V9_t* v);
@@ -70,6 +71,13 @@ parser_error_t _readVote_V9(parser_context_t* c, pd_Vote_V9_t* v);
 // toString functions
 parser_error_t _toStringAccountId_V9(
     const pd_AccountId_V9_t* v,
+    char* outValue,
+    uint16_t outValueLen,
+    uint8_t pageIdx,
+    uint8_t* pageCount);
+
+parser_error_t _toStringAccountIdLookupOfT_V9(
+    const pd_AccountIdLookupOfT_V9_t* v,
     char* outValue,
     uint16_t outValueLen,
     uint8_t pageIdx,
