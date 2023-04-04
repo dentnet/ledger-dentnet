@@ -280,7 +280,7 @@ typedef struct {
 
 #define PD_CALL_SUDO_SET_KEY_V9 2 
 typedef struct {
-    pd_LookupasStaticLookupSource_V9_t new_;
+    pd_AccountIdLookupOfT_V9_t new_;
 } pd_sudo_set_key_V9_t;
 
 #define PD_CALL_GRANDPA_NOTE_STALLED_V9 2

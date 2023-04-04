@@ -9551,5 +9551,82 @@
 			"9 | Block [1/2] : 91b171bb158e2d3848fa23a9f1c25182fb8e20",
 			"9 | Block [2/2] : 313b2c1eb49219da7a70ce90c3"
 		]
+	},
+	{
+		"blob" : "0a0000001012345678d5030000c82300000900000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3",
+		"index" : 546,
+		"name" : "Sudo_Sudo",
+		"output" : 
+		[
+			"0 | Sudo : Sudo",
+			"1 | Call [1/2] : Remark",
+			"1 | Call [2/2] : 12345678"
+		],
+		"output_expert" : 
+		[
+			"0 | Sudo : Sudo",
+			"1 | Call [1/2] : Remark",
+			"1 | Call [2/2] : 12345678",
+			"2 | Chain : DENTNet",
+			"3 | Nonce : 0",
+			"4 | Era Phase : 61",
+			"5 | Era Period : 64",
+			"6 | Block [1/2] : 91b171bb158e2d3848fa23a9f1c25182fb8e20",
+			"6 | Block [2/2] : 313b2c1eb49219da7a70ce90c3"
+		]
+	},
+	{
+		"blob" : "0a010000101234567800e10dd503008ed73e0dc82300000900000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3",
+		"index" : 547,
+		"name" : "Sudo_Sudo_unchecked_weight",
+		"output" : 
+		[
+			"0 | Sudo : Sudo unchecked weight",
+			"1 | Call [1/2] : Remark",
+			"1 | Call [2/2] : 12345678",
+			"2 | Weight limit [1/2] : 0",
+			"2 | Weight limit [2/2] : 888",
+			"3 | Tip : D/X 0.000000000055555555"
+		],
+		"output_expert" : 
+		[
+			"0 | Sudo : Sudo unchecked weight",
+			"1 | Call [1/2] : Remark",
+			"1 | Call [2/2] : 12345678",
+			"2 | Weight limit [1/2] : 0",
+			"2 | Weight limit [2/2] : 888",
+			"3 | Chain : DENTNet",
+			"4 | Nonce : 0",
+			"5 | Tip : D/X 0.000000000055555555",
+			"6 | Era Phase : 61",
+			"7 | Era Period : 64",
+			"8 | Block [1/2] : 91b171bb158e2d3848fa23a9f1c25182fb8e20",
+			"8 | Block [2/2] : 313b2c1eb49219da7a70ce90c3"
+		]
+	},
+	{
+		"blob" : "0a02003ede187cfbdc0061f483208e38d1074e9983f6b611b32cb6b3cf8dee1f3cef04d503008ed73e0dc82300000900000091b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c391b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3",
+		"index" : 548,
+		"name" : "Sudo_Set_key",
+		"output" : 
+		[
+			"0 | Sudo : Set key",
+			"1 | New [1/2] : dx6ewg13ebFY6zj3NeWMtt4zZffDvUa7iqDB3B",
+			"1 | New [2/2] : 4FjzLjcSvtD",
+			"2 | Tip : D/X 0.000000000055555555"
+		],
+		"output_expert" : 
+		[
+			"0 | Sudo : Set key",
+			"1 | New [1/2] : dx6ewg13ebFY6zj3NeWMtt4zZffDvUa7iqDB3B",
+			"1 | New [2/2] : 4FjzLjcSvtD",
+			"2 | Chain : DENTNet",
+			"3 | Nonce : 0",
+			"4 | Tip : D/X 0.000000000055555555",
+			"5 | Era Phase : 61",
+			"6 | Era Period : 64",
+			"7 | Block [1/2] : 91b171bb158e2d3848fa23a9f1c25182fb8e20",
+			"7 | Block [2/2] : 313b2c1eb49219da7a70ce90c3"
+		]
 	}
 ]

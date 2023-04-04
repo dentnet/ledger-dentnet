@@ -388,7 +388,7 @@ __Z_INLINE parser_error_t _readMethod_staking_force_apply_min_commission_V9(
 __Z_INLINE parser_error_t _readMethod_sudo_set_key_V9(
      parser_context_t* c, pd_sudo_set_key_V9_t* m)
  {
-     CHECK_ERROR(_readLookupasStaticLookupSource_V9(c, &m->new_))
+     CHECK_ERROR(_readAccountIdLookupOfT_V9(c, &m->new_))
      return parser_ok;
 }
 
@@ -3685,6 +3685,42 @@ parser_error_t _getMethod_ItemValue_V9(
         case 0: /* staking_force_apply_min_commission_V9 - validator_stash */;
             return _toStringAccountId_V9(
                 &m->basic.staking_force_apply_min_commission_V9.validator_stash,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 2560: /* module 10 call 0 */
+        switch (itemIdx) {
+        case 0: /* sudo_sudo_V9 - call */;
+            return _toStringCall(
+                &m->basic.sudo_sudo_V9.call,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 2561: /* module 10 call 1 */
+        switch (itemIdx) {
+        case 0: /* sudo_sudo_unchecked_weight_V9 - call */;
+            return _toStringCall(
+                &m->basic.sudo_sudo_unchecked_weight_V9.call,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* sudo_sudo_unchecked_weight_V9 - weight */;
+            return _toStringWeight(
+                &m->basic.sudo_sudo_unchecked_weight_V9.weight,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+        break;
+    case 2562: /* module 10 call 2 */
+        switch (itemIdx) {
+        case 0: /* sudo_set_key_V9 - new_ */;
+            return _toStringAccountIdLookupOfT_V9(
+                &m->basic.sudo_set_key_V9.new_,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
