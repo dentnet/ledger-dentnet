@@ -19,8 +19,8 @@
 #include "zxmacros.h"
 #include <stdint.h>
 
-__Z_INLINE parser_error_t _readMethod_balances_transfer_V10(
-    parser_context_t* c, pd_balances_transfer_V10_t* m)
+__Z_INLINE parser_error_t _readMethod_balances_transfer_allow_death_V10(
+    parser_context_t* c, pd_balances_transfer_allow_death_V10_t* m)
 {
     CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->dest))
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
@@ -99,6 +99,8 @@ __Z_INLINE parser_error_t _readMethod_staking_nominate_V10(
 __Z_INLINE parser_error_t _readMethod_staking_chill_V10(
     parser_context_t* c, pd_staking_chill_V10_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -142,6 +144,8 @@ __Z_INLINE parser_error_t _readMethod_session_set_keys_V10(
 __Z_INLINE parser_error_t _readMethod_session_purge_keys_V10(
     parser_context_t* c, pd_session_purge_keys_V10_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -310,12 +314,16 @@ __Z_INLINE parser_error_t _readMethod_staking_increase_validator_count_V10(
 __Z_INLINE parser_error_t _readMethod_staking_force_no_eras_V10(
     parser_context_t* c, pd_staking_force_no_eras_V10_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_force_new_era_V10(
     parser_context_t* c, pd_staking_force_new_era_V10_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -337,6 +345,8 @@ __Z_INLINE parser_error_t _readMethod_staking_force_unstake_V10(
 __Z_INLINE parser_error_t _readMethod_staking_force_new_era_always_V10(
     parser_context_t* c, pd_staking_force_new_era_always_V10_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -569,6 +579,8 @@ __Z_INLINE parser_error_t _readMethod_treasury_remove_approval_V10(
 __Z_INLINE parser_error_t _readMethod_vesting_vest_V10(
     parser_context_t* c, pd_vesting_vest_V10_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -614,6 +626,8 @@ __Z_INLINE parser_error_t _readMethod_identity_add_registrar_V10(
 __Z_INLINE parser_error_t _readMethod_identity_clear_identity_V10(
     parser_context_t* c, pd_identity_clear_identity_V10_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -665,6 +679,8 @@ __Z_INLINE parser_error_t _readMethod_identity_remove_sub_V10(
 __Z_INLINE parser_error_t _readMethod_identity_quit_sub_V10(
     parser_context_t* c, pd_identity_quit_sub_V10_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -698,6 +714,8 @@ __Z_INLINE parser_error_t _readMethod_proxy_remove_proxy_V10(
 __Z_INLINE parser_error_t _readMethod_proxy_remove_proxies_V10(
     parser_context_t* c, pd_proxy_remove_proxies_V10_t* m)
 {
+    UNUSED(c);
+    UNUSED(m);
     return parser_ok;
 }
 
@@ -792,7 +810,7 @@ parser_error_t _readMethod_V10(
     switch (callPrivIdx) {
 
     case 1280: /* module 5 call 0 */
-        CHECK_ERROR(_readMethod_balances_transfer_V10(c, &method->nested.balances_transfer_V10))
+        CHECK_ERROR(_readMethod_balances_transfer_allow_death_V10(c, &method->nested.balances_transfer_allow_death_V10))
         break;
     case 1282: /* module 5 call 2 */
         CHECK_ERROR(_readMethod_balances_force_transfer_V10(c, &method->nested.balances_force_transfer_V10))
@@ -1156,7 +1174,7 @@ const char* _getMethod_Name_V10(uint8_t moduleIdx, uint8_t callIdx)
 
     switch (callPrivIdx) {
     case 1280: /* module 5 call 0 */
-        return STR_ME_TRANSFER;
+        return STR_ME_TRANSFER_ALLOW_DEATH;
     case 1282: /* module 5 call 2 */
         return STR_ME_FORCE_TRANSFER;
     case 1283: /* module 5 call 3 */
@@ -1247,7 +1265,7 @@ const char* _getMethod_Name_V10_ParserFull(uint16_t callPrivIdx)
     case 1024: /* module 4 call 0 */
         return STR_ME_CLAIM;
     case 1025: /* module 4 call 1 */
-        return STR_ME_TRANSFER;
+        return STR_ME_TRANSFER_ALLOW_DEATH;
     case 1026: /* module 4 call 2 */
         return STR_ME_FREE;
     case 1027: /* module 4 call 3 */
@@ -3123,12 +3141,12 @@ parser_error_t _getMethod_ItemValue_V10(
         switch (itemIdx) {
         case 0: /* balances_transfer_V10 - dest */;
             return _toStringLookupasStaticLookupSource_V10(
-                &m->nested.balances_transfer_V10.dest,
+                &m->nested.balances_transfer_allow_death_V10.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* balances_transfer_V10 - amount */;
             return _toStringCompactBalance(
-                &m->nested.balances_transfer_V10.amount,
+                &m->nested.balances_transfer_allow_death_V10.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:

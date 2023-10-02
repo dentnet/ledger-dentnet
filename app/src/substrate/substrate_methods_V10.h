@@ -942,7 +942,7 @@ typedef union {
 typedef struct {
     pd_LookupasStaticLookupSource_V10_t dest;
     pd_CompactBalance_t amount;
-} pd_balances_transfer_V10_t;
+} pd_balances_transfer_allow_death_V10_t;
 
 #define PD_CALL_BALANCES_FORCE_TRANSFER_V10 2
 typedef struct {
@@ -1032,7 +1032,7 @@ typedef struct {
 #endif
 
 typedef union {
-    pd_balances_transfer_V10_t balances_transfer_V10;
+    pd_balances_transfer_allow_death_V10_t balances_transfer_allow_death_V10;
     pd_balances_force_transfer_V10_t balances_force_transfer_V10;
     pd_balances_transfer_keep_alive_V10_t balances_transfer_keep_alive_V10;
 #ifdef SUBSTRATE_PARSER_FULL

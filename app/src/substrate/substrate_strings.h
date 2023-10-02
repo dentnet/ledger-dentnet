@@ -76,6 +76,7 @@ static const char* STR_ME_TRANSFER = "Transfer";
 static const char* STR_ME_FREE = "Free";
 static const char* STR_ME_FORCE_TRANSFER = "Force transfer";
 static const char* STR_ME_FREEZE = "Freeze";
+static const char* STR_ME_TRANSFER_ALLOW_DEATH = "Transfer allow death";
 static const char* STR_ME_SET_BALANCE = "Set balance";
 static const char* STR_ME_TRANSFER_KEEP_ALIVE = "Transfer keep alive";
 static const char* STR_ME_TRANSFER_ALL = "Transfer all";
