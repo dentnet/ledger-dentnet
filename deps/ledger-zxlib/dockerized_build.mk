@@ -49,7 +49,7 @@ $(info EXAMPLE_VUE_DIR       : $(EXAMPLE_VUE_DIR))
 $(info TESTS_JS_DIR          : $(TESTS_JS_DIR))
 $(info TESTS_JS_PACKAGE      : $(TESTS_JS_PACKAGE))
 
-DOCKER_IMAGE_ZONDAX=zondax/ledger-app-builder:ledger-eb27b9eb2917620b95f5df03a16ea61d62ef2032
+DOCKER_IMAGE_ZONDAX=zondax/ledger-app-builder:ledger-d5c1919974f6d65661322e1914995e6df5d30637
 DOCKER_IMAGE_LEDGER=ghcr.io/ledgerhq/ledger-app-builder/ledger-app-builder:latest
 
 ifdef INTERACTIVE
@@ -93,12 +93,9 @@ endef
 all:
 	@$(MAKE) clean
 	@$(MAKE) buildS
-	@$(MAKE) clean_glyphs
 	@$(MAKE) buildX
-	@$(MAKE) clean_glyphs
 	@$(MAKE) buildS2
 ifdef ZXLIB_COMPILE_STAX
-	@$(MAKE) clean_glyphs
 	@$(MAKE) buildST
 endif # ZXLIB_COMPILE_STAX
 
@@ -126,7 +123,7 @@ build_rustS:
 
 .PHONY: build_rustX
 build_rustX:
-	$(call run_docker,$(DOCKER_BOLOS_SDKX),$(TARGET_X,)make -j $(NPROC) rust)
+	$(call run_docker,$(DOCKER_BOLOS_SDKX),$(TARGET_X),make -j $(NPROC) rust)
 
 .PHONY: build_rustS2
 build_rustS2:
@@ -154,13 +151,8 @@ buildS2:
 	$(call run_docker,$(DOCKER_BOLOS_SDKS2),$(TARGET_S2),make -j $(NPROC))
 
 .PHONY: buildST
-buildST: build_rustST
+buildST:
 	$(call run_docker,$(DOCKER_BOLOS_SDKST),$(TARGET_ST),make -j $(NPROC))
-
-.PHONY: clean_glyphs
-clean_glyphs:
-	@echo "Removing glyphs files"
-	@rm -f app/glyphs/glyphs.c app/glyphs/glyphs.h || true
 
 .PHONY: clean_output
 clean_output:

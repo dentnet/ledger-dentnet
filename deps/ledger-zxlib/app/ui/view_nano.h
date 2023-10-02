@@ -26,6 +26,8 @@ typedef uint8_t max_char_display;
 typedef int max_char_display;
 #endif
 
+#define MAX_REVIEW_UX_SCREENS 10
+
 void splitValueField();
 void splitValueAddress();
 max_char_display get_max_char_per_line();
@@ -41,5 +43,3 @@ bool h_paging_can_decrease();
 void h_paging_decrease();
 
 bool h_paging_intro_screen();
-
-void h_review_action(unsigned int requireReply);

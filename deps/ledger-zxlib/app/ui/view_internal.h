@@ -29,6 +29,8 @@
 #define MAX_CHARS_PER_VALUE1_LINE   4096
 #define MAX_CHARS_HEXMESSAGE        160
 #elif defined(TARGET_STAX)
+#include "nbgl_use_case.h"
+#define MAX_LINES_PER_PAGE_REVIEW   NB_MAX_LINES_IN_REVIEW
 #define MAX_CHARS_PER_KEY_LINE      64
 #define MAX_CHARS_PER_VALUE1_LINE   180
 #define MAX_CHARS_HEXMESSAGE        160
@@ -79,6 +81,27 @@ static const char* shortcut_value = SHORTCUT_VALUE;
     #define INTRO_PAGES 0
 #endif
 
+static const char* review_key = REVIEW_SCREEN_TITLE;
+static const char* review_txvalue = REVIEW_SCREEN_TXN_VALUE;
+static const char* review_addrvalue = REVIEW_SCREEN_ADDR_VALUE;
+static const char* review_keyconfig = "Review";
+static const char* review_configvalue = "configuration";
+
+static const char* shortcut_key = SHORTCUT_TITLE;
+static const char* shortcut_value = SHORTCUT_VALUE;
+
+#if defined(TARGET_NANOS)
+    #if defined(REVIEW_SCREEN_ENABLED) && defined(SHORTCUT_MODE_ENABLED)
+        #define INTRO_PAGES 2
+    #elif defined(REVIEW_SCREEN_ENABLED) || defined(SHORTCUT_MODE_ENABLED)
+        #define INTRO_PAGES 1
+    #else
+        #define INTRO_PAGES 0
+    #endif
+#else
+    #define INTRO_PAGES 0
+#endif
+
 typedef enum {
   REVIEW_UI = 0,
   REVIEW_ADDRESS,
@@ -93,8 +116,8 @@ typedef struct {
 #if defined(TARGET_STAX)
         char* key;
         char* value;
-        char keys[FIELDS_PER_PAGE][MAX_CHARS_PER_KEY_LINE];
-        char values[FIELDS_PER_PAGE][MAX_CHARS_PER_VALUE1_LINE];
+        char keys[NB_MAX_DISPLAYED_PAIRS_IN_REVIEW][MAX_CHARS_PER_KEY_LINE];
+        char values[NB_MAX_DISPLAYED_PAIRS_IN_REVIEW][MAX_CHARS_PER_VALUE1_LINE];
 #else
         char key[MAX_CHARS_PER_KEY_LINE];
         char value[MAX_CHARS_PER_VALUE1_LINE];
@@ -108,6 +131,10 @@ typedef struct {
     viewfunc_accept_t viewfuncAccept;
     viewfunc_initialize_t viewfuncInitialize;
 
+    viewfunc_getInnerItem_t viewfuncGetInnerItem;
+    viewfunc_getNumItems_t viewfuncGetInnerNumItems;
+    viewfunc_canInspectItem_t viewfuncCanInspectItem;
+
 #ifdef APP_SECRET_MODE_ENABLED
     uint8_t secret_click_count;
 #endif
@@ -115,6 +142,8 @@ typedef struct {
     uint8_t itemCount;
     uint8_t pageIdx;
     uint8_t pageCount;
+
+    inner_state_t innerField;
 } view_t;
 
 typedef enum {
@@ -142,17 +171,23 @@ extern view_t viewdata;
 ///////////////////////////////////////////////
 ///////////////////////////////////////////////
 
-void view_idle_show_impl(uint8_t item_idx, char *statusString);
+void view_idle_show_impl(uint8_t item_idx, const char *statusString);
 
-void view_message_impl(char *title, char *message);
+void view_message_impl(const char *title, const char *message);
 
 void view_error_show_impl();
 
+void view_custom_error_show_impl();
+
 void h_paging_init();
+
+void h_inspect_init();
 
 void view_review_show_impl(unsigned int requireReply);
 
-void view_initialize_show_impl(uint8_t item_idx, char *statusString);
+void view_inspect_show_impl();
+
+void view_initialize_show_impl(uint8_t item_idx, const char *statusString);
 
 void h_approve(unsigned int _);
 
@@ -163,3 +198,5 @@ void h_review_update();
 void h_error_accept(unsigned int _);
 
 zxerr_t h_review_update_data();
+
+zxerr_t h_inspect_update_data();

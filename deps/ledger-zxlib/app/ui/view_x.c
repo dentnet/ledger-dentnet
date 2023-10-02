@@ -30,6 +30,7 @@
 #include "view_templates.h"
 #include "tx.h"
 #include "view_nano.h"
+#include "view_nano_inspect.h"
 
 #ifdef APP_SECRET_MODE_ENABLED
 #include "secret.h"
@@ -62,7 +63,6 @@ static void h_shortcut_toggle();
 static void h_shortcut_update();
 #endif
 
-#define MAX_REVIEW_UX_SCREENS 10
 static void h_shortcut(unsigned int);
 static void run_ux_review_flow(review_type_e reviewType, const ux_flow_step_t* const start_step);
 const ux_flow_step_t *ux_review_flow[MAX_REVIEW_UX_SCREENS];
@@ -148,12 +148,27 @@ UX_FLOW(
 
 ///////////
 
+UX_STEP_NOCB(ux_custom_error_flow_1_step, pbb, { &C_icon_warning, viewdata.key, viewdata.value,});
+UX_STEP_VALID(ux_custom_error_flow_2_step, pb, h_error_accept(0), { &C_icon_validate_14, "Ok"});
+
+UX_FLOW(
+    ux_custom_error_flow,
+    &ux_custom_error_flow_1_step,
+    &ux_custom_error_flow_2_step
+);
+
+///////////
+
 UX_FLOW_DEF_NOCB(ux_review_flow_1_review_title, pbb, { &C_icon_app, REVIEW_SCREEN_TITLE, REVIEW_SCREEN_TXN_VALUE,});
 UX_FLOW_DEF_NOCB(ux_review_flow_2_review_title, pbb, { &C_icon_app, REVIEW_SCREEN_TITLE, REVIEW_SCREEN_ADDR_VALUE,});
 UX_FLOW_DEF_NOCB(ux_review_flow_3_review_title, pbb, { &C_icon_app, "Review", "configuration",});
 
 UX_STEP_INIT(ux_review_flow_2_start_step, NULL, NULL, { h_review_loop_start(); });
+#ifdef HAVE_INSPECT
+UX_STEP_CB_INIT(ux_review_flow_2_step, bnnn_paging, h_review_loop_inside(), inspect_init(), { .title = viewdata.key, .text = viewdata.value, });
+#else
 UX_STEP_NOCB_INIT(ux_review_flow_2_step, bnnn_paging, { h_review_loop_inside(); }, { .title = viewdata.key, .text = viewdata.value, });
+#endif
 UX_STEP_INIT(ux_review_flow_2_end_step, NULL, NULL, { h_review_loop_end(); });
 UX_STEP_VALID(ux_review_flow_3_step, pb, h_approve(0), { &C_icon_validate_14, APPROVE_LABEL });
 UX_STEP_VALID(ux_review_flow_4_step, pb, h_reject(review_type), { &C_icon_crossmark, REJECT_LABEL });
@@ -330,7 +345,7 @@ static void h_shortcut(__Z_UNUSED unsigned int _) {
 //////////////////////////
 //////////////////////////
 
-void view_idle_show_impl(__Z_UNUSED uint8_t item_idx, char *statusString) {
+void view_idle_show_impl(__Z_UNUSED uint8_t item_idx, const char *statusString) {
     if (statusString == NULL ) {
         snprintf(viewdata.key, MAX_CHARS_PER_KEY_LINE, "%s", MENU_MAIN_APP_LINE2);
 #ifdef APP_SECRET_MODE_ENABLED
@@ -348,7 +363,7 @@ void view_idle_show_impl(__Z_UNUSED uint8_t item_idx, char *statusString) {
     ux_flow_init(0, ux_idle_flow, NULL);
 }
 
-void view_initialize_show_impl(__Z_UNUSED uint8_t item_idx, char *statusString) {
+void view_initialize_show_impl(__Z_UNUSED uint8_t item_idx, const char *statusString) {
     if (statusString == NULL ) {
         snprintf(viewdata.key, MAX_CHARS_PER_KEY_LINE, "%s", "Not Ready");
     } else {
@@ -372,6 +387,10 @@ void view_review_show_impl(unsigned int requireReply){
     }
 
     run_ux_review_flow((review_type_e)review_type, NULL);
+}
+
+void run_root_txn_flow() {
+    run_ux_review_flow(review_type, &ux_review_flow_2_start_step);
 }
 
 // Build review UX flow and run it
@@ -407,7 +426,7 @@ void run_ux_review_flow(review_type_e reviewType, const ux_flow_step_t* const st
     ux_flow_init(0, ux_review_flow, start_step);
 }
 
-void view_message_impl(char *title, char *message) {
+void view_message_impl(const char *title, const char *message) {
     snprintf(viewdata.key, MAX_CHARS_PER_KEY_LINE, "%s", title);
     snprintf(viewdata.value, MAX_CHARS_PER_VALUE1_LINE, "%s", message);
     ux_layout_bnnn_paging_reset();
@@ -423,5 +442,13 @@ void view_error_show_impl() {
         ux_stack_push();
     }
     ux_flow_init(0, ux_error_flow, NULL);
+}
+
+void view_custom_error_show_impl() {
+    ux_layout_bnnn_paging_reset();
+    if(G_ux.stack_count == 0) {
+        ux_stack_push();
+    }
+    ux_flow_init(0, ux_custom_error_flow, NULL);
 }
 #endif

@@ -28,6 +28,7 @@
 #include "view_templates.h"
 #include "zxutils_ledger.h"
 #include "view_nano.h"
+#include "view_nano_inspect.h"
 
 #define BAGL_WIDTH 128
 #define BAGL_HEIGHT 32
@@ -43,6 +44,10 @@ static void h_expert_update();
 static void h_review_button_left();
 static void h_review_button_right();
 static void h_review_button_both();
+
+bool is_accept_item();
+void set_accept_item();
+bool is_reject_item();
 
 #ifdef APP_SECRET_MODE_ENABLED
 static void h_secret_click();
@@ -115,6 +120,12 @@ const ux_menu_entry_t menu_initialize[] = {
     UX_MENU_END
 };
 
+const ux_menu_entry_t menu_custom_error[] = {
+    {NULL, NULL, 0, &C_icon_warning, viewdata.key, viewdata.value, 33, 12},
+    {NULL, h_error_accept, 0, &C_icon_validate_14, "Ok", NULL, 50, 29},
+    UX_MENU_END
+};
+
 static const bagl_element_t view_message[] = {
     UI_BACKGROUND,
     UI_LabelLine(UIID_LABEL + 0, 0, 8, UI_SCREEN_WIDTH, UI_11PX, UI_WHITE, UI_BLACK, viewdata.key),
@@ -176,7 +187,7 @@ static unsigned int view_review_button(unsigned int button_mask, __Z_UNUSED unsi
     return 0;
 }
 
-const bagl_element_t* idle_preprocessor(const ux_menu_entry_t* entry, bagl_element_t* element) {
+const bagl_element_t* idle_preprocessor(__Z_UNUSED const ux_menu_entry_t* entry, bagl_element_t* element) {
     switch(ux_menu.current_entry) {
         case SCREEN_HOME:
             break;
@@ -202,13 +213,13 @@ const bagl_element_t* idle_preprocessor(const ux_menu_entry_t* entry, bagl_eleme
 const bagl_element_t *view_prepro(const bagl_element_t *element) {
     switch (element->component.userid) {
         case UIID_ICONLEFT:
-            if (!h_paging_can_decrease()){
+            if (!h_paging_can_decrease() || h_paging_inspect_go_to_root_screen()){
                 return NULL;
             }
             UX_CALLBACK_SET_INTERVAL(2000)
             break;
         case UIID_ICONRIGHT:
-            if (!h_paging_can_increase()){
+            if (!h_paging_can_increase() || h_paging_inspect_back_screen()){
                 return NULL;
             }
             UX_CALLBACK_SET_INTERVAL(2000)
@@ -245,10 +256,10 @@ void h_review_update() {
             break;
         default:
             view_error_show();
-            UX_WAIT();
             break;
     }
 }
+
 
 void h_review_button_left() {
     zemu_log_stack("h_review_button_left");
@@ -262,6 +273,29 @@ void h_review_button_right() {
     h_review_update();
 }
 
+static void h_review_action(unsigned int requireReply) {
+    if( is_accept_item() ){
+        zemu_log_stack("action_accept");
+        h_approve(1);
+        return;
+    }
+
+    if( is_reject_item() ){
+        zemu_log_stack("action_reject");
+        h_reject(requireReply);
+        return;
+    }
+
+    zemu_log_stack("quick accept");
+    if (app_mode_shortcut()) {
+        set_accept_item();
+        h_review_update();
+        return;
+    }
+
+    inspect_init();
+}
+
 void h_review_button_both() {
     zemu_log_stack("h_review_button_both");
     h_review_action(review_type);
@@ -273,7 +307,7 @@ void h_review_button_both() {
 //////////////////////////
 //////////////////////////
 
-void view_initialize_show_impl(uint8_t item_idx, char *statusString) {
+void view_initialize_show_impl(uint8_t item_idx, const char *statusString) {
     if (statusString == NULL ) {
         snprintf(viewdata.key, MAX_CHARS_PER_VALUE_LINE, "%s", MENU_MAIN_APP_LINE2);
     } else {
@@ -282,7 +316,7 @@ void view_initialize_show_impl(uint8_t item_idx, char *statusString) {
     UX_MENU_DISPLAY(item_idx, menu_initialize, NULL);
 }
 
-void view_idle_show_impl(uint8_t item_idx, char *statusString) {
+void view_idle_show_impl(uint8_t item_idx, const char *statusString) {
     if (statusString == NULL ) {
         snprintf(viewdata.key, MAX_CHARS_PER_VALUE_LINE, "%s", MENU_MAIN_APP_LINE2);
 #ifdef APP_SECRET_MODE_ENABLED
@@ -296,7 +330,7 @@ void view_idle_show_impl(uint8_t item_idx, char *statusString) {
     UX_MENU_DISPLAY(item_idx, menu_main, idle_preprocessor);
 }
 
-void view_message_impl(char *title, char *message) {
+void view_message_impl(const char *title, const char *message) {
     snprintf(viewdata.key, MAX_CHARS_PER_VALUE_LINE, "%s", title);
     snprintf(viewdata.value, MAX_CHARS_PER_VALUE_LINE, "%s", message);
     UX_DISPLAY(view_message, view_prepro_idle)
@@ -304,6 +338,10 @@ void view_message_impl(char *title, char *message) {
 
 void view_error_show_impl() {
     UX_DISPLAY(view_error, view_prepro)
+}
+
+void view_custom_error_show_impl() {
+    UX_MENU_DISPLAY(0, menu_custom_error, NULL);
 }
 
 void h_expert_toggle() {

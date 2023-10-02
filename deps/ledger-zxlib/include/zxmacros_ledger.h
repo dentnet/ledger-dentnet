@@ -32,18 +32,16 @@
 #define MEMCMP memcmp
 #define MEMZERO explicit_bzero
 
+#define IS_UX_ALLOWED (G_ux_params.len != BOLOS_UX_IGNORE && G_ux_params.len != BOLOS_UX_CONTINUE)
 #if defined(TARGET_NANOX) || defined(TARGET_NANOS2)
 #define NV_CONST const
 #define NV_VOLATILE volatile
-#define IS_UX_ALLOWED (G_ux_params.len != BOLOS_UX_IGNORE && G_ux_params.len != BOLOS_UX_CONTINUE)
 #elif defined(TARGET_NANOS)
 #define NV_CONST
 #define NV_VOLATILE
-#define IS_UX_ALLOWED (G_ux_params.len != BOLOS_UX_IGNORE && G_ux_params.len != BOLOS_UX_CONTINUE)
 #else
 #define NV_CONST const
 #define NV_VOLATILE volatile
-#define IS_UX_ALLOWED false
 #endif
 
 #define CHECK_APP_CANARY() check_app_canary();
@@ -61,5 +59,23 @@ extern unsigned int app_stack_canary;
 #else
 #define UX_WAIT(){}
 #endif
+
+// Macros for handling no-throw methods error check
+#define CHECK_CXERROR(CALL)    \
+  do {                         \
+    cx_err_t __cx_err = CALL;  \
+    if (__cx_err != CX_OK) {   \
+      return __cx_err;         \
+    }                          \
+  } while (0);
+
+
+#define CATCH_CXERROR(CALL)    \
+  do {                         \
+    cx_err_t __cx_err = CALL;  \
+    if (__cx_err != CX_OK) {   \
+      goto catch_cx_error;     \
+    }                          \
+  } while (0);
 
 #endif

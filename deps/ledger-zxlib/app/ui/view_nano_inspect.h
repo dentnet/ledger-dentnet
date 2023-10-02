@@ -1,5 +1,5 @@
 /*******************************************************************************
-*   (c) 2020 Zondax GmbH
+*   (c) 2018 - 2023 Zondax AG
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -14,28 +14,19 @@
 *  limitations under the License.
 ********************************************************************************/
 #pragma once
-#include <stdint.h>
+#include <stdbool.h>
+#include "view.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+bool h_can_increase(paging_t *paging, uint8_t actionsCount);
 
-typedef enum {
-    no_error = 0,
-    invalid_derPrefix,
-    invalid_payloadLen,
-    invalid_rmaker,
-    invalid_rLen,
-    invalid_smarker,
-    invalid_sLen,
-} err_convert_e;
+void h_increase(paging_t *paging, uint8_t actionsCount);
 
-err_convert_e convertDERtoRSV(const uint8_t *inSignatureDER,
-                              unsigned int inInfo,
-                              uint8_t *outR,
-                              uint8_t *outS,
-                              uint8_t *outV);
+bool h_can_decrease(paging_t *paging);
 
-#ifdef __cplusplus
-}
-#endif
+void h_decrease(paging_t *paging);
+
+void inspect_init();
+
+bool h_paging_inspect_go_to_root_screen();
+
+bool h_paging_inspect_back_screen();

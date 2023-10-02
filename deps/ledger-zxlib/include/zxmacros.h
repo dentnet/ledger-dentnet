@@ -15,13 +15,13 @@
 ********************************************************************************/
 #pragma once
 
+#ifdef __cplusplus
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "modernize-use-nullptr"
 #pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
 #pragma ide diagnostic ignored "OCUnusedMacroInspection"
 #pragma ide diagnostic ignored "modernize-deprecated-headers"
 
-#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -39,6 +39,10 @@ extern void explicit_bzero(void *s, size_t n) __THROW __nonnull ((1));
 #define __Z_INLINE inline __attribute__((always_inline)) static
 #define __Z_UNUSED __attribute__((unused))
 #define NV_ALIGN __attribute__ ((aligned(64)))
+
+#ifndef UNUSED
+#define UNUSED(x) (void)x
+#endif
 
 #if defined(LEDGER_SPECIFIC)
 #include "bolos_target.h"
@@ -111,7 +115,7 @@ __Z_INLINE void zemu_log(__Z_UNUSED const char *msg) {
 }
 #endif
 
-#if APP_TESTING
+#if defined(APP_TESTING)
 #define ZEMU_LOGF(SIZE, ...) { char tmp[(SIZE)]; snprintf(tmp, (SIZE), __VA_ARGS__); zemu_log(tmp); }
 #else
 #define ZEMU_LOGF(SIZE, ...) {}
@@ -119,6 +123,6 @@ __Z_INLINE void zemu_log(__Z_UNUSED const char *msg) {
 
 #ifdef __cplusplus
 }
+#pragma clang diagnostic pop
 #endif
 
-#pragma clang diagnostic pop

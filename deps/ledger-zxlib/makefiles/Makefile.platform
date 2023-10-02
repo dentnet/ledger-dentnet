@@ -1,6 +1,6 @@
 #*******************************************************************************
 #  Ledger App
-#  (c) 2018 - 2022 Zondax AG
+#  (c) 2018 - 2023 Zondax AG
 #
 #  Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -42,6 +42,7 @@ else ifeq ($(TARGET_NAME),TARGET_STAX)
 # Stax
 	DEFINES += IO_SEPROXYHAL_BUFFER_SIZE_B=300
 	DEFINES += NBGL_QRCODE
+	SDK_SOURCE_PATH += qrcode
 
 #	Required by SDK
 	DEFINES += UNUSED\(x\)=\(void\)x
@@ -91,25 +92,17 @@ endif
 #########################
 
 CC := $(CLANGPATH)clang
-CFLAGS += -O3 -Os -Wno-unknown-pragmas -Wno-unused-parameter
 
 AS := $(GCCPATH)arm-none-eabi-gcc
 AFLAGS +=
 
 LD       := $(GCCPATH)arm-none-eabi-gcc
-LDFLAGS  += -O3 -Os
 LDLIBS   += -lm -lgcc -lc
 
 ##########################
-GLYPH_SRC_DIR = glyphs
-INCLUDES_PATH += $(CURDIR)/glyphs
-ifeq ($(TARGET_NAME),TARGET_STAX)
-GLYPH_FILES += $(addprefix glyphs_stax/,$(sort $(notdir $(shell find glyphs_stax/))))
-endif
 include $(BOLOS_SDK)/Makefile.glyphs
 
 APP_SOURCE_PATH += $(CURDIR)/src
-APP_SOURCE_PATH += $(CURDIR)/glyphs
 
 ZXLIB_DIR := $(CURDIR)/../deps/ledger-zxlib/
 APP_SOURCE_PATH += $(ZXLIB_DIR)/include
