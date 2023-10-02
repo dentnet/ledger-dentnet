@@ -54,15 +54,15 @@ extern "C" {
 
 #define PD_CALL_BALANCES_TRANSFER_ALL_V10 4
 typedef struct {
-    pd_LookupasStaticLookupSource_V10_t dest;
+    pd_AccountIdLookupOfT_t dest;
     pd_bool_t keep_alive;
 } pd_balances_transfer_all_V10_t;
 
 #define PD_CALL_STAKING_BOND_V10 0
 typedef struct {
-    pd_LookupasStaticLookupSource_V10_t controller;
+    pd_AccountIdLookupOfT_t controller;
     pd_CompactBalance_t amount;
-    pd_RewardDestination_V10_t payee;
+    pd_RewardDestination_t payee;
 } pd_staking_bond_V10_t;
 
 #define PD_CALL_STAKING_BOND_EXTRA_V10 1
@@ -82,12 +82,12 @@ typedef struct {
 
 #define PD_CALL_STAKING_VALIDATE_V10 4
 typedef struct {
-    pd_ValidatorPrefs_V10_t prefs;
+    pd_ValidatorPrefs_t prefs;
 } pd_staking_validate_V10_t;
 
 #define PD_CALL_STAKING_NOMINATE_V10 5
 typedef struct {
-    pd_VecLookupasStaticLookupSource_V10_t targets;
+    pd_VecAccountIdLookupOfT_t targets;
 } pd_staking_nominate_V10_t;
 
 #define PD_CALL_STAKING_CHILL_V10 6
@@ -96,18 +96,18 @@ typedef struct {
 
 #define PD_CALL_STAKING_SET_PAYEE_V10 7
 typedef struct {
-    pd_RewardDestination_V10_t payee;
+    pd_RewardDestination_t payee;
 } pd_staking_set_payee_V10_t;
 
 #define PD_CALL_STAKING_SET_CONTROLLER_V10 8
 typedef struct {
-    pd_LookupasStaticLookupSource_V10_t controller;
+    pd_AccountIdLookupOfT_t controller;
 } pd_staking_set_controller_V10_t;
 
 #define PD_CALL_STAKING_PAYOUT_STAKERS_V10 18
 typedef struct {
-    pd_AccountId_V10_t validator_stash;
-    pd_EraIndex_V10_t era;
+    pd_AccountId_t validator_stash;
+    pd_EraIndex_t era;
 } pd_staking_payout_stakers_V10_t;
 
 #define PD_CALL_STAKING_REBOND_V10 19
@@ -117,7 +117,7 @@ typedef struct {
 
 #define PD_CALL_SESSION_SET_KEYS_V10 0
 typedef struct {
-    pd_Keys_V10_t keys;
+    pd_Keys_t keys;
     pd_Bytes_t proof;
 } pd_session_set_keys_V10_t;
 
@@ -169,35 +169,35 @@ typedef struct {
 
 #define PD_CALL_INDICES_CLAIM_V10 0
 typedef struct {
-    pd_AccountIndex_V10_t index;
+    pd_AccountIndex_t index;
 } pd_indices_claim_V10_t;
 
 #define PD_CALL_INDICES_TRANSFER_V10 1
 typedef struct {
-    pd_AccountId_V10_t new_;
-    pd_AccountIndex_V10_t index;
+    pd_AccountId_t new_;
+    pd_AccountIndex_t index;
 } pd_indices_transfer_V10_t;
 
 #define PD_CALL_INDICES_FREE_V10 2
 typedef struct {
-    pd_AccountIndex_V10_t index;
+    pd_AccountIndex_t index;
 } pd_indices_free_V10_t;
 
 #define PD_CALL_INDICES_FORCE_TRANSFER_V10 3
 typedef struct {
-    pd_AccountId_V10_t new_;
-    pd_AccountIndex_V10_t index;
+    pd_AccountId_t new_;
+    pd_AccountIndex_t index;
     pd_bool_t freeze;
 } pd_indices_force_transfer_V10_t;
 
 #define PD_CALL_INDICES_FREEZE_V10 4
 typedef struct {
-    pd_AccountIndex_V10_t index;
+    pd_AccountIndex_t index;
 } pd_indices_freeze_V10_t;
 
 #define PD_CALL_BALANCES_FORCE_UNRESERVE_V10 5
 typedef struct {
-    pd_LookupasStaticLookupSource_V10_t who;
+    pd_AccountIdLookupOfT_t who;
     pd_Balance_t amount;
 } pd_balances_force_unreserve_V10_t;
 
@@ -221,12 +221,12 @@ typedef struct {
 
 #define PD_CALL_STAKING_SET_INVULNERABLES_V10 14
 typedef struct {
-    pd_VecAccountId_V10_t invulnerables;
+    pd_VecAccountId_t invulnerables;
 } pd_staking_set_invulnerables_V10_t;
 
 #define PD_CALL_STAKING_FORCE_UNSTAKE_V10 15
 typedef struct {
-    pd_AccountId_V10_t stash;
+    pd_AccountId_t stash;
     pd_u32_t num_slashing_spans;
 } pd_staking_force_unstake_V10_t;
 
@@ -236,7 +236,7 @@ typedef struct {
 
 #define PD_CALL_STAKING_CANCEL_DEFERRED_SLASH_V10 17
 typedef struct {
-    pd_EraIndex_V10_t era;
+    pd_EraIndex_t era;
     pd_Vecu32_t slash_indices;
 } pd_staking_cancel_deferred_slash_V10_t;
 
@@ -248,23 +248,23 @@ typedef struct {
 
 #define PD_CALL_STAKING_REAP_STASH_V10 21
 typedef struct {
-    pd_AccountId_V10_t stash;
+    pd_AccountId_t stash;
     pd_u32_t num_slashing_spans;
 } pd_staking_reap_stash_V10_t;
 
 #define PD_CALL_STAKING_KICK_V10 22
 typedef struct {
-    pd_VecLookupasStaticLookupSource_V10_t who;
+    pd_VecAccountIdLookupOfT_t who;
 } pd_staking_kick_V10_t;
 
 #define PD_CALL_STAKING_CHILL_OTHER_V10 24
 typedef struct {
-    pd_AccountId_V10_t controller;
+    pd_AccountId_t controller;
 } pd_staking_chill_other_V10_t;
 
 #define PD_CALL_STAKING_FORCE_APPLY_MIN_COMMISSION_V10 25
 typedef struct {
-    pd_AccountId_V10_t validator_stash;
+    pd_AccountId_t validator_stash;
 } pd_staking_force_apply_min_commission_V10_t;
 
 #define PD_CALL_SUDO_SUDO_V10 0
@@ -280,7 +280,7 @@ typedef struct {
 
 #define PD_CALL_SUDO_SET_KEY_V10 2 
 typedef struct {
-    pd_AccountIdLookupOfT_V10_t new_;
+    pd_AccountIdLookupOfT_t new_;
 } pd_sudo_set_key_V10_t;
 
 #define PD_CALL_GRANDPA_NOTE_STALLED_V10 2
@@ -291,9 +291,9 @@ typedef struct {
 
 #define PD_CALL_COUNCIL_SET_MEMBERS_V10 0
 typedef struct {
-    pd_VecAccountId_V10_t new_members;
-    pd_OptionAccountId_V10_t prime;
-    pd_MemberCount_V10_t old_count;
+    pd_VecAccountId_t new_members;
+    pd_OptionAccountId_t prime;
+    pd_MemberCount_t old_count;
 } pd_council_set_members_V10_t;
 
 #define PD_CALL_COUNCIL_EXECUTE_V10 1
@@ -339,9 +339,9 @@ typedef struct {
 
 #define PD_CALL_TECHNICALCOMMITTEE_SET_MEMBERS_V10 0
 typedef struct {
-    pd_VecAccountId_V10_t new_members;
-    pd_OptionAccountId_V10_t prime;
-    pd_MemberCount_V10_t old_count;
+    pd_VecAccountId_t new_members;
+    pd_OptionAccountId_t prime;
+    pd_MemberCount_t old_count;
 } pd_technicalcommittee_set_members_V10_t;
 
 #define PD_CALL_TECHNICALCOMMITTEE_EXECUTE_V10 1
@@ -380,7 +380,7 @@ typedef struct {
 #define PD_CALL_TREASURY_PROPOSE_SPEND_V10 0
 typedef struct {
     pd_CompactBalance_t amount;
-    pd_LookupasStaticLookupSource_V10_t beneficiary;
+    pd_AccountIdLookupOfT_t beneficiary;
 } pd_treasury_propose_spend_V10_t;
 
 #define PD_CALL_TREASURY_REJECT_PROPOSAL_V10 1
@@ -396,7 +396,7 @@ typedef struct {
 #define PD_CALL_TREASURY_SPEND_V10 3
 typedef struct {
     pd_CompactBalance_t amount;
-    pd_LookupasStaticLookupSource_V10_t beneficiary;
+    pd_AccountIdLookupOfT_t beneficiary;
 } pd_treasury_spend_V10_t;
 
 #define PD_CALL_TREASURY_REMOVE_APPROVAL_V10 4
@@ -410,20 +410,20 @@ typedef struct {
 
 #define PD_CALL_VESTING_VEST_OTHER_V10 1
 typedef struct {
-    pd_LookupasStaticLookupSource_V10_t target;
+    pd_AccountIdLookupOfT_t target;
 } pd_vesting_vest_other_V10_t;
 
 #define PD_CALL_VESTING_VESTED_TRANSFER_V10 2
 typedef struct {
-    pd_LookupasStaticLookupSource_V10_t target;
-    pd_VestingInfo_V10_t schedule;
+    pd_AccountIdLookupOfT_t target;
+    pd_VestingInfo_t schedule;
 } pd_vesting_vested_transfer_V10_t;
 
 #define PD_CALL_VESTING_FORCE_VESTED_TRANSFER_V10 3
 typedef struct {
-    pd_LookupasStaticLookupSource_V10_t source;
-    pd_LookupasStaticLookupSource_V10_t target;
-    pd_VestingInfo_V10_t schedule;
+    pd_AccountIdLookupOfT_t source;
+    pd_AccountIdLookupOfT_t target;
+    pd_VestingInfo_t schedule;
 } pd_vesting_force_vested_transfer_V10_t;
 
 #define PD_CALL_VESTING_MERGE_SCHEDULES_V10 4
@@ -434,7 +434,7 @@ typedef struct {
 
 #define PD_CALL_IDENTITY_ADD_REGISTRAR_V10 0
 typedef struct {
-    pd_AccountIdLookupOfT_V10_t account;
+    pd_AccountIdLookupOfT_t account;
 } pd_identity_add_registrar_V10_t;
 
 #define PD_CALL_IDENTITY_CLEAR_IDENTITY_V10 3
@@ -449,7 +449,7 @@ typedef struct {
 
 #define PD_CALL_IDENTITY_CANCEL_REQUEST_V10 5
 typedef struct {
-    pd_RegistrarIndex_V10_t reg_index;
+    pd_RegistrarIndex_t reg_index;
 } pd_identity_cancel_request_V10_t;
 
 #define PD_CALL_IDENTITY_SET_FEE_V10 6
@@ -461,17 +461,17 @@ typedef struct {
 #define PD_CALL_IDENTITY_SET_ACCOUNT_ID_V10 7
 typedef struct {
     pd_Compactu32_t index;
-    pd_AccountId_V10_t new_;
+    pd_AccountId_t new_;
 } pd_identity_set_account_id_V10_t;
 
 #define PD_CALL_IDENTITY_KILL_IDENTITY_V10 10
 typedef struct {
-    pd_LookupasStaticLookupSource_V10_t target;
+    pd_AccountIdLookupOfT_t target;
 } pd_identity_kill_identity_V10_t;
 
 #define PD_CALL_IDENTITY_REMOVE_SUB_V10 13
 typedef struct {
-    pd_LookupasStaticLookupSource_V10_t sub;
+    pd_AccountIdLookupOfT_t sub;
 } pd_identity_remove_sub_V10_t;
 
 #define PD_CALL_IDENTITY_QUIT_SUB_V10 14
@@ -480,15 +480,15 @@ typedef struct {
 
 #define PD_CALL_PROXY_ADD_PROXY_V10 1
 typedef struct {
-    pd_AccountId_V10_t delegate;
-    pd_ProxyType_V10_t proxy_type;
+    pd_AccountId_t delegate;
+    pd_ProxyType_t proxy_type;
     pd_BlockNumber_t delay;
 } pd_proxy_add_proxy_V10_t;
 
 #define PD_CALL_PROXY_REMOVE_PROXY_V10 2
 typedef struct {
-    pd_AccountId_V10_t delegate;
-    pd_ProxyType_V10_t proxy_type;
+    pd_AccountId_t delegate;
+    pd_ProxyType_t proxy_type;
     pd_BlockNumber_t delay;
 } pd_proxy_remove_proxy_V10_t;
 
@@ -498,15 +498,15 @@ typedef struct {
 
 #define PD_CALL_PROXY_ANONYMOUS_V10 4
 typedef struct {
-    pd_ProxyType_V10_t proxy_type;
+    pd_ProxyType_t proxy_type;
     pd_BlockNumber_t delay;
     pd_u16_t index;
 } pd_proxy_anonymous_V10_t;
 
 #define PD_CALL_PROXY_KILL_ANONYMOUS_V10 5
 typedef struct {
-    pd_AccountId_V10_t spawner;
-    pd_ProxyType_V10_t proxy_type;
+    pd_AccountId_t spawner;
+    pd_ProxyType_t proxy_type;
     pd_u16_t index;
     pd_Compactu32_t height;
     pd_Compactu32_t ext_index;
@@ -514,9 +514,9 @@ typedef struct {
 
 #define PD_CALL_PROXY_PROXY_ANNOUNCED_V10 9
 typedef struct {
-    pd_AccountIdLookupOfT_V10_t delegate;
-    pd_AccountIdLookupOfT_V10_t real;
-    pd_OptionProxyType_V10_t force_proxy_type;
+    pd_AccountIdLookupOfT_t delegate;
+    pd_AccountIdLookupOfT_t real;
+    pd_OptionProxyType_t force_proxy_type;
     pd_Call_t call;
 } pd_proxy_proxy_announced_V10_t;
 
@@ -528,12 +528,12 @@ typedef struct {
 
 #define PD_CALL_VOTERLIST_REBAG_V10 0
 typedef struct {
-    pd_AccountId_V10_t dislocated;
+    pd_AccountId_t dislocated;
 } pd_voterlist_rebag_V10_t;
 
 #define PD_CALL_VOTERLIST_PUT_IN_FRONT_OF_V10 1
 typedef struct {
-    pd_AccountId_V10_t lighter;
+    pd_AccountId_t lighter;
 } pd_voterlist_put_in_front_of_V10_t;
 
 #define PD_CALL_CONFIGURATION_SET_VALIDATION_UPGRADE_COOLDOWN_V10 0
@@ -663,7 +663,7 @@ typedef struct {
 
 #define PD_CALL_CONFIGURATION_SET_UMP_SERVICE_TOTAL_WEIGHT_V10 26
 typedef struct {
-    pd_Weight_V10_t new_;
+    pd_Weight_t new_;
 } pd_configuration_set_ump_service_total_weight_V10_t;
 
 #define PD_CALL_CONFIGURATION_SET_MAX_UPWARD_MESSAGE_SIZE_V10 27
@@ -733,7 +733,7 @@ typedef struct {
 
 #define PD_CALL_CONFIGURATION_SET_UMP_MAX_INDIVIDUAL_WEIGHT_V10 40
 typedef struct {
-    pd_Weight_V10_t new_;
+    pd_Weight_t new_;
 } pd_configuration_set_ump_max_individual_weight_V10_t;
 
 #define PD_CALL_CONFIGURATION_SET_PVF_CHECKING_ENABLED_V10 41
@@ -743,7 +743,7 @@ typedef struct {
 
 #define PD_CALL_CONFIGURATION_SET_PVF_VOTING_TTL_V10 42
 typedef struct {
-    pd_SessionIndex_V10_t new_;
+    pd_SessionIndex_t new_;
 } pd_configuration_set_pvf_voting_ttl_V10_t;
 
 #define PD_CALL_CONFIGURATION_SET_MINIMUM_VALIDATION_UPGRADE_DELAY_V10 43
@@ -940,20 +940,20 @@ typedef union {
 
 #define PD_CALL_BALANCES_TRANSFER_V10 0
 typedef struct {
-    pd_LookupasStaticLookupSource_V10_t dest;
+    pd_AccountIdLookupOfT_t dest;
     pd_CompactBalance_t amount;
 } pd_balances_transfer_allow_death_V10_t;
 
 #define PD_CALL_BALANCES_FORCE_TRANSFER_V10 2
 typedef struct {
-    pd_LookupasStaticLookupSource_V10_t source;
-    pd_LookupasStaticLookupSource_V10_t dest;
+    pd_AccountIdLookupOfT_t source;
+    pd_AccountIdLookupOfT_t dest;
     pd_CompactBalance_t amount;
 } pd_balances_force_transfer_V10_t;
 
 #define PD_CALL_BALANCES_TRANSFER_KEEP_ALIVE_V10 3
 typedef struct {
-    pd_LookupasStaticLookupSource_V10_t dest;
+    pd_AccountIdLookupOfT_t dest;
     pd_CompactBalance_t amount;
 } pd_balances_transfer_keep_alive_V10_t;
 
@@ -985,29 +985,29 @@ typedef struct {
 
 #define PD_CALL_BALANCES_SET_BALANCE_V10 1
 typedef struct {
-    pd_LookupasStaticLookupSource_V10_t who;
+    pd_AccountIdLookupOfT_t who;
     pd_CompactBalance_t new_free;
     pd_CompactBalance_t new_reserved;
 } pd_balances_set_balance_V10_t;
 
 #define PD_CALL_PROXY_PROXY_V10 0
 typedef struct {
-    pd_AccountIdLookupOfT_V10_t real;
-    pd_OptionProxyType_V10_t force_proxy_type;
+    pd_AccountIdLookupOfT_t real;
+    pd_OptionProxyType_t force_proxy_type;
     pd_Call_t call;
 } pd_proxy_proxy_V10_t;
 
 #define PD_CALL_MULTISIG_AS_MULTI_THRESHOLD_1_V10 0
 typedef struct {
-    pd_VecAccountId_V10_t other_signatories;
+    pd_VecAccountId_t other_signatories;
     pd_Call_t call;
 } pd_multisig_as_multi_threshold_1_V10_t;
 
 #define PD_CALL_MULTISIG_AS_MULTI_V10 1
 typedef struct {
     pd_u16_t threshold;
-    pd_VecAccountId_V10_t other_signatories;
-    pd_OptionTimepoint_V10_t maybe_timepoint;
+    pd_VecAccountId_t other_signatories;
+    pd_OptionTimepoint_t maybe_timepoint;
     pd_Call_t call;
     pd_Weight_t max_weight;
 } pd_multisig_as_multi_V10_t;
@@ -1015,8 +1015,8 @@ typedef struct {
 #define PD_CALL_MULTISIG_APPROVE_AS_MULTI_V10 2
 typedef struct {
     pd_u16_t threshold;
-    pd_VecAccountId_V10_t other_signatories;
-    pd_OptionTimepoint_V10_t maybe_timepoint;
+    pd_VecAccountId_t other_signatories;
+    pd_OptionTimepoint_t maybe_timepoint;
     pd_H256_t call_hash;
     pd_Weight_t max_weight;
 } pd_multisig_approve_as_multi_V10_t;
@@ -1024,8 +1024,8 @@ typedef struct {
 #define PD_CALL_MULTISIG_CANCEL_AS_MULTI_V10 3
 typedef struct {
     pd_u16_t threshold;
-    pd_VecAccountId_V10_t other_signatories;
-    pd_Timepoint_V10_t timepoint;
+    pd_VecAccountId_t other_signatories;
+    pd_Timepoint_t timepoint;
     pd_H256_t call_hash;
 } pd_multisig_cancel_as_multi_V10_t;
 

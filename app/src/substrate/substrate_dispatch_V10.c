@@ -22,7 +22,7 @@
 __Z_INLINE parser_error_t _readMethod_balances_transfer_allow_death_V10(
     parser_context_t* c, pd_balances_transfer_allow_death_V10_t* m)
 {
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->dest))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->dest))
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
@@ -30,8 +30,8 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_allow_death_V10(
 __Z_INLINE parser_error_t _readMethod_balances_force_transfer_V10(
     parser_context_t* c, pd_balances_force_transfer_V10_t* m)
 {
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->source))
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->dest))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->source))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->dest))
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
@@ -39,7 +39,7 @@ __Z_INLINE parser_error_t _readMethod_balances_force_transfer_V10(
 __Z_INLINE parser_error_t _readMethod_balances_transfer_keep_alive_V10(
     parser_context_t* c, pd_balances_transfer_keep_alive_V10_t* m)
 {
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->dest))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->dest))
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
     return parser_ok;
 }
@@ -47,7 +47,7 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_keep_alive_V10(
 __Z_INLINE parser_error_t _readMethod_balances_transfer_all_V10(
     parser_context_t* c, pd_balances_transfer_all_V10_t* m)
 {
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->dest))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->dest))
     CHECK_ERROR(_readbool(c, &m->keep_alive))
     return parser_ok;
 }
@@ -55,9 +55,9 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_all_V10(
 __Z_INLINE parser_error_t _readMethod_staking_bond_V10(
     parser_context_t* c, pd_staking_bond_V10_t* m)
 {
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->controller))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->controller))
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
-    CHECK_ERROR(_readRewardDestination_V10(c, &m->payee))
+    CHECK_ERROR(_readRewardDestination(c, &m->payee))
     return parser_ok;
 }
 
@@ -85,14 +85,14 @@ __Z_INLINE parser_error_t _readMethod_staking_withdraw_unbonded_V10(
 __Z_INLINE parser_error_t _readMethod_staking_validate_V10(
     parser_context_t* c, pd_staking_validate_V10_t* m)
 {
-    CHECK_ERROR(_readValidatorPrefs_V10(c, &m->prefs))
+    CHECK_ERROR(_readValidatorPrefs(c, &m->prefs))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_nominate_V10(
     parser_context_t* c, pd_staking_nominate_V10_t* m)
 {
-    CHECK_ERROR(_readVecLookupasStaticLookupSource_V10(c, &m->targets))
+    CHECK_ERROR(_readVecAccountIdLookupOfT(c, &m->targets))
     return parser_ok;
 }
 
@@ -107,22 +107,22 @@ __Z_INLINE parser_error_t _readMethod_staking_chill_V10(
 __Z_INLINE parser_error_t _readMethod_staking_set_payee_V10(
     parser_context_t* c, pd_staking_set_payee_V10_t* m)
 {
-    CHECK_ERROR(_readRewardDestination_V10(c, &m->payee))
+    CHECK_ERROR(_readRewardDestination(c, &m->payee))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_set_controller_V10(
     parser_context_t* c, pd_staking_set_controller_V10_t* m)
 {
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->controller))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->controller))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_payout_stakers_V10(
     parser_context_t* c, pd_staking_payout_stakers_V10_t* m)
 {
-    CHECK_ERROR(_readAccountId_V10(c, &m->validator_stash))
-    CHECK_ERROR(_readEraIndex_V10(c, &m->era))
+    CHECK_ERROR(_readAccountId(c, &m->validator_stash))
+    CHECK_ERROR(_readEraIndex(c, &m->era))
     return parser_ok;
 }
 
@@ -136,7 +136,7 @@ __Z_INLINE parser_error_t _readMethod_staking_rebond_V10(
 __Z_INLINE parser_error_t _readMethod_session_set_keys_V10(
     parser_context_t* c, pd_session_set_keys_V10_t* m)
 {
-    CHECK_ERROR(_readKeys_V10(c, &m->keys))
+    CHECK_ERROR(_readKeys(c, &m->keys))
     CHECK_ERROR(_readBytes(c, &m->proof))
     return parser_ok;
 }
@@ -245,30 +245,30 @@ __Z_INLINE parser_error_t _readMethod_timestamp_set_V10(
 __Z_INLINE parser_error_t _readMethod_indices_claim_V10(
     parser_context_t* c, pd_indices_claim_V10_t* m)
 {
-    CHECK_ERROR(_readAccountIndex_V10(c, &m->index))
+    CHECK_ERROR(_readAccountIndex(c, &m->index))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_indices_transfer_V10(
     parser_context_t* c, pd_indices_transfer_V10_t* m)
 {
-    CHECK_ERROR(_readAccountId_V10(c, &m->new_))
-    CHECK_ERROR(_readAccountIndex_V10(c, &m->index))
+    CHECK_ERROR(_readAccountId(c, &m->new_))
+    CHECK_ERROR(_readAccountIndex(c, &m->index))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_indices_free_V10(
     parser_context_t* c, pd_indices_free_V10_t* m)
 {
-    CHECK_ERROR(_readAccountIndex_V10(c, &m->index))
+    CHECK_ERROR(_readAccountIndex(c, &m->index))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_indices_force_transfer_V10(
     parser_context_t* c, pd_indices_force_transfer_V10_t* m)
 {
-    CHECK_ERROR(_readAccountId_V10(c, &m->new_))
-    CHECK_ERROR(_readAccountIndex_V10(c, &m->index))
+    CHECK_ERROR(_readAccountId(c, &m->new_))
+    CHECK_ERROR(_readAccountIndex(c, &m->index))
     CHECK_ERROR(_readbool(c, &m->freeze))
     return parser_ok;
 }
@@ -276,14 +276,14 @@ __Z_INLINE parser_error_t _readMethod_indices_force_transfer_V10(
 __Z_INLINE parser_error_t _readMethod_indices_freeze_V10(
     parser_context_t* c, pd_indices_freeze_V10_t* m)
 {
-    CHECK_ERROR(_readAccountIndex_V10(c, &m->index))
+    CHECK_ERROR(_readAccountIndex(c, &m->index))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_balances_set_balance_V10(
     parser_context_t* c, pd_balances_set_balance_V10_t* m)
 {
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->who))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->who))
     CHECK_ERROR(_readCompactBalance(c, &m->new_free))
     CHECK_ERROR(_readCompactBalance(c, &m->new_reserved))
     return parser_ok;
@@ -292,7 +292,7 @@ __Z_INLINE parser_error_t _readMethod_balances_set_balance_V10(
 __Z_INLINE parser_error_t _readMethod_balances_force_unreserve_V10(
     parser_context_t* c, pd_balances_force_unreserve_V10_t* m)
 {
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->who))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->who))
     CHECK_ERROR(_readBalance(c, &m->amount))
     return parser_ok;
 }
@@ -330,14 +330,14 @@ __Z_INLINE parser_error_t _readMethod_staking_force_new_era_V10(
 __Z_INLINE parser_error_t _readMethod_staking_set_invulnerables_V10(
     parser_context_t* c, pd_staking_set_invulnerables_V10_t* m)
 {
-    CHECK_ERROR(_readVecAccountId_V10(c, &m->invulnerables))
+    CHECK_ERROR(_readVecAccountId(c, &m->invulnerables))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_force_unstake_V10(
     parser_context_t* c, pd_staking_force_unstake_V10_t* m)
 {
-    CHECK_ERROR(_readAccountId_V10(c, &m->stash))
+    CHECK_ERROR(_readAccountId(c, &m->stash))
     CHECK_ERROR(_readu32(c, &m->num_slashing_spans))
     return parser_ok;
 }
@@ -353,7 +353,7 @@ __Z_INLINE parser_error_t _readMethod_staking_force_new_era_always_V10(
 __Z_INLINE parser_error_t _readMethod_staking_cancel_deferred_slash_V10(
     parser_context_t* c, pd_staking_cancel_deferred_slash_V10_t* m)
 {
-    CHECK_ERROR(_readEraIndex_V10(c, &m->era))
+    CHECK_ERROR(_readEraIndex(c, &m->era))
     CHECK_ERROR(_readVecu32(c, &m->slash_indices))
     return parser_ok;
 }
@@ -369,7 +369,7 @@ __Z_INLINE parser_error_t _readMethod_staking_set_history_depth_V10(
 __Z_INLINE parser_error_t _readMethod_staking_reap_stash_V10(
     parser_context_t* c, pd_staking_reap_stash_V10_t* m)
 {
-    CHECK_ERROR(_readAccountId_V10(c, &m->stash))
+    CHECK_ERROR(_readAccountId(c, &m->stash))
     CHECK_ERROR(_readu32(c, &m->num_slashing_spans))
     return parser_ok;
 }
@@ -377,28 +377,28 @@ __Z_INLINE parser_error_t _readMethod_staking_reap_stash_V10(
 __Z_INLINE parser_error_t _readMethod_staking_kick_V10(
     parser_context_t* c, pd_staking_kick_V10_t* m)
 {
-    CHECK_ERROR(_readVecLookupasStaticLookupSource_V10(c, &m->who))
+    CHECK_ERROR(_readVecAccountIdLookupOfT(c, &m->who))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_chill_other_V10(
     parser_context_t* c, pd_staking_chill_other_V10_t* m)
 {
-    CHECK_ERROR(_readAccountId_V10(c, &m->controller))
+    CHECK_ERROR(_readAccountId(c, &m->controller))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_staking_force_apply_min_commission_V10(
     parser_context_t* c, pd_staking_force_apply_min_commission_V10_t* m)
 {
-    CHECK_ERROR(_readAccountId_V10(c, &m->validator_stash))
+    CHECK_ERROR(_readAccountId(c, &m->validator_stash))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_sudo_set_key_V10(
      parser_context_t* c, pd_sudo_set_key_V10_t* m)
  {
-     CHECK_ERROR(_readAccountIdLookupOfT_V10(c, &m->new_))
+     CHECK_ERROR(_readAccountIdLookupOfT(c, &m->new_))
      return parser_ok;
 }
 
@@ -428,9 +428,9 @@ __Z_INLINE parser_error_t _readMethod_grandpa_note_stalled_V10(
 __Z_INLINE parser_error_t _readMethod_council_set_members_V10(
     parser_context_t* c, pd_council_set_members_V10_t* m)
 {
-    CHECK_ERROR(_readVecAccountId_V10(c, &m->new_members))
-    CHECK_ERROR(_readOptionAccountId_V10(c, &m->prime))
-    CHECK_ERROR(_readMemberCount_V10(c, &m->old_count))
+    CHECK_ERROR(_readVecAccountId(c, &m->new_members))
+    CHECK_ERROR(_readOptionAccountId(c, &m->prime))
+    CHECK_ERROR(_readMemberCount(c, &m->old_count))
     return parser_ok;
 }
 
@@ -490,9 +490,9 @@ __Z_INLINE parser_error_t _readMethod_council_close_V10(
 __Z_INLINE parser_error_t _readMethod_technicalcommittee_set_members_V10(
     parser_context_t* c, pd_technicalcommittee_set_members_V10_t* m)
 {
-    CHECK_ERROR(_readVecAccountId_V10(c, &m->new_members))
-    CHECK_ERROR(_readOptionAccountId_V10(c, &m->prime))
-    CHECK_ERROR(_readMemberCount_V10(c, &m->old_count))
+    CHECK_ERROR(_readVecAccountId(c, &m->new_members))
+    CHECK_ERROR(_readOptionAccountId(c, &m->prime))
+    CHECK_ERROR(_readMemberCount(c, &m->old_count))
     return parser_ok;
 }
 
@@ -543,7 +543,7 @@ __Z_INLINE parser_error_t _readMethod_treasury_propose_spend_V10(
     parser_context_t* c, pd_treasury_propose_spend_V10_t* m)
 {
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->beneficiary))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->beneficiary))
     return parser_ok;
 }
 
@@ -565,7 +565,7 @@ __Z_INLINE parser_error_t _readMethod_treasury_spend_V10(
     parser_context_t* c, pd_treasury_spend_V10_t* m)
 {
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->beneficiary))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->beneficiary))
     return parser_ok;
 }
 
@@ -587,24 +587,24 @@ __Z_INLINE parser_error_t _readMethod_vesting_vest_V10(
 __Z_INLINE parser_error_t _readMethod_vesting_vest_other_V10(
     parser_context_t* c, pd_vesting_vest_other_V10_t* m)
 {
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->target))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->target))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_vesting_vested_transfer_V10(
     parser_context_t* c, pd_vesting_vested_transfer_V10_t* m)
 {
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->target))
-    CHECK_ERROR(_readVestingInfo_V10(c, &m->schedule))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->target))
+    CHECK_ERROR(_readVestingInfo(c, &m->schedule))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_vesting_force_vested_transfer_V10(
     parser_context_t* c, pd_vesting_force_vested_transfer_V10_t* m)
 {
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->source))
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->target))
-    CHECK_ERROR(_readVestingInfo_V10(c, &m->schedule))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->source))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->target))
+    CHECK_ERROR(_readVestingInfo(c, &m->schedule))
     return parser_ok;
 }
 
@@ -619,7 +619,7 @@ __Z_INLINE parser_error_t _readMethod_vesting_merge_schedules_V10(
 __Z_INLINE parser_error_t _readMethod_identity_add_registrar_V10(
     parser_context_t* c, pd_identity_add_registrar_V10_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V10(c, &m->account))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->account))
     return parser_ok;
 }
 
@@ -642,7 +642,7 @@ __Z_INLINE parser_error_t _readMethod_identity_request_judgement_V10(
 __Z_INLINE parser_error_t _readMethod_identity_cancel_request_V10(
     parser_context_t* c, pd_identity_cancel_request_V10_t* m)
 {
-    CHECK_ERROR(_readRegistrarIndex_V10(c, &m->reg_index))
+    CHECK_ERROR(_readRegistrarIndex(c, &m->reg_index))
     return parser_ok;
 }
 
@@ -658,21 +658,21 @@ __Z_INLINE parser_error_t _readMethod_identity_set_account_id_V10(
     parser_context_t* c, pd_identity_set_account_id_V10_t* m)
 {
     CHECK_ERROR(_readCompactu32(c, &m->index))
-    CHECK_ERROR(_readAccountId_V10(c, &m->new_))
+    CHECK_ERROR(_readAccountId(c, &m->new_))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_identity_kill_identity_V10(
     parser_context_t* c, pd_identity_kill_identity_V10_t* m)
 {
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->target))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->target))
     return parser_ok;
 }
 
 __Z_INLINE parser_error_t _readMethod_identity_remove_sub_V10(
     parser_context_t* c, pd_identity_remove_sub_V10_t* m)
 {
-    CHECK_ERROR(_readLookupasStaticLookupSource_V10(c, &m->sub))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->sub))
     return parser_ok;
 }
 
@@ -687,8 +687,8 @@ __Z_INLINE parser_error_t _readMethod_identity_quit_sub_V10(
 __Z_INLINE parser_error_t _readMethod_proxy_proxy_V10(
     parser_context_t* c, pd_proxy_proxy_V10_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V10(c, &m->real))
-    CHECK_ERROR(_readOptionProxyType_V10(c, &m->force_proxy_type))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->real))
+    CHECK_ERROR(_readOptionProxyType(c, &m->force_proxy_type))
     CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
 }
@@ -696,8 +696,8 @@ __Z_INLINE parser_error_t _readMethod_proxy_proxy_V10(
 __Z_INLINE parser_error_t _readMethod_proxy_add_proxy_V10(
     parser_context_t* c, pd_proxy_add_proxy_V10_t* m)
 {
-    CHECK_ERROR(_readAccountId_V10(c, &m->delegate))
-    CHECK_ERROR(_readProxyType_V10(c, &m->proxy_type))
+    CHECK_ERROR(_readAccountId(c, &m->delegate))
+    CHECK_ERROR(_readProxyType(c, &m->proxy_type))
     CHECK_ERROR(_readBlockNumber(c, &m->delay))
     return parser_ok;
 }
@@ -705,8 +705,8 @@ __Z_INLINE parser_error_t _readMethod_proxy_add_proxy_V10(
 __Z_INLINE parser_error_t _readMethod_proxy_remove_proxy_V10(
     parser_context_t* c, pd_proxy_remove_proxy_V10_t* m)
 {
-    CHECK_ERROR(_readAccountId_V10(c, &m->delegate))
-    CHECK_ERROR(_readProxyType_V10(c, &m->proxy_type))
+    CHECK_ERROR(_readAccountId(c, &m->delegate))
+    CHECK_ERROR(_readProxyType(c, &m->proxy_type))
     CHECK_ERROR(_readBlockNumber(c, &m->delay))
     return parser_ok;
 }
@@ -722,7 +722,7 @@ __Z_INLINE parser_error_t _readMethod_proxy_remove_proxies_V10(
 __Z_INLINE parser_error_t _readMethod_proxy_anonymous_V10(
     parser_context_t* c, pd_proxy_anonymous_V10_t* m)
 {
-    CHECK_ERROR(_readProxyType_V10(c, &m->proxy_type))
+    CHECK_ERROR(_readProxyType(c, &m->proxy_type))
     CHECK_ERROR(_readBlockNumber(c, &m->delay))
     CHECK_ERROR(_readu16(c, &m->index))
     return parser_ok;
@@ -731,8 +731,8 @@ __Z_INLINE parser_error_t _readMethod_proxy_anonymous_V10(
 __Z_INLINE parser_error_t _readMethod_proxy_kill_anonymous_V10(
     parser_context_t* c, pd_proxy_kill_anonymous_V10_t* m)
 {
-    CHECK_ERROR(_readAccountId_V10(c, &m->spawner))
-    CHECK_ERROR(_readProxyType_V10(c, &m->proxy_type))
+    CHECK_ERROR(_readAccountId(c, &m->spawner))
+    CHECK_ERROR(_readProxyType(c, &m->proxy_type))
     CHECK_ERROR(_readu16(c, &m->index))
     CHECK_ERROR(_readCompactu32(c, &m->height))
     CHECK_ERROR(_readCompactu32(c, &m->ext_index))
@@ -742,9 +742,9 @@ __Z_INLINE parser_error_t _readMethod_proxy_kill_anonymous_V10(
 __Z_INLINE parser_error_t _readMethod_proxy_proxy_announced_V10(
     parser_context_t* c, pd_proxy_proxy_announced_V10_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT_V10(c, &m->delegate))
-    CHECK_ERROR(_readAccountIdLookupOfT_V10(c, &m->real))
-    CHECK_ERROR(_readOptionProxyType_V10(c, &m->force_proxy_type))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->delegate))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->real))
+    CHECK_ERROR(_readOptionProxyType(c, &m->force_proxy_type))
     CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
 }
@@ -752,7 +752,7 @@ __Z_INLINE parser_error_t _readMethod_proxy_proxy_announced_V10(
 __Z_INLINE parser_error_t _readMethod_multisig_as_multi_threshold_1_V10(
     parser_context_t* c, pd_multisig_as_multi_threshold_1_V10_t* m)
 {
-    CHECK_ERROR(_readVecAccountId_V10(c, &m->other_signatories))
+    CHECK_ERROR(_readVecAccountId(c, &m->other_signatories))
     CHECK_ERROR(_readCall(c, &m->call))
     return parser_ok;
 }
@@ -761,8 +761,8 @@ __Z_INLINE parser_error_t _readMethod_multisig_as_multi_V10(
     parser_context_t* c, pd_multisig_as_multi_V10_t* m)
 {
     CHECK_ERROR(_readu16(c, &m->threshold))
-    CHECK_ERROR(_readVecAccountId_V10(c, &m->other_signatories))
-    CHECK_ERROR(_readOptionTimepoint_V10(c, &m->maybe_timepoint))
+    CHECK_ERROR(_readVecAccountId(c, &m->other_signatories))
+    CHECK_ERROR(_readOptionTimepoint(c, &m->maybe_timepoint))
     CHECK_ERROR(_readCall(c, &m->call))
     CHECK_ERROR(_readWeight(c, &m->max_weight))
     return parser_ok;
@@ -772,8 +772,8 @@ __Z_INLINE parser_error_t _readMethod_multisig_approve_as_multi_V10(
     parser_context_t* c, pd_multisig_approve_as_multi_V10_t* m)
 {
     CHECK_ERROR(_readu16(c, &m->threshold))
-    CHECK_ERROR(_readVecAccountId_V10(c, &m->other_signatories))
-    CHECK_ERROR(_readOptionTimepoint_V10(c, &m->maybe_timepoint))
+    CHECK_ERROR(_readVecAccountId(c, &m->other_signatories))
+    CHECK_ERROR(_readOptionTimepoint(c, &m->maybe_timepoint))
     CHECK_ERROR(_readH256(c, &m->call_hash))
     CHECK_ERROR(_readWeight(c, &m->max_weight))
     return parser_ok;
@@ -783,8 +783,8 @@ __Z_INLINE parser_error_t _readMethod_multisig_cancel_as_multi_V10(
     parser_context_t* c, pd_multisig_cancel_as_multi_V10_t* m)
 {
     CHECK_ERROR(_readu16(c, &m->threshold))
-    CHECK_ERROR(_readVecAccountId_V10(c, &m->other_signatories))
-    CHECK_ERROR(_readTimepoint_V10(c, &m->timepoint))
+    CHECK_ERROR(_readVecAccountId(c, &m->other_signatories))
+    CHECK_ERROR(_readTimepoint(c, &m->timepoint))
     CHECK_ERROR(_readH256(c, &m->call_hash))
     return parser_ok;
 }
@@ -3140,7 +3140,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1280: /* module 5 call 0 */
         switch (itemIdx) {
         case 0: /* balances_transfer_V10 - dest */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.balances_transfer_allow_death_V10.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3155,12 +3155,12 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1282: /* module 5 call 2 */
         switch (itemIdx) {
         case 0: /* balances_force_transfer_V10 - source */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.balances_force_transfer_V10.source,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* balances_force_transfer_V10 - dest */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.balances_force_transfer_V10.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3175,7 +3175,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1283: /* module 5 call 3 */
         switch (itemIdx) {
         case 0: /* balances_transfer_keep_alive_V10 - dest */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.balances_transfer_keep_alive_V10.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3190,7 +3190,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1284: /* module 5 call 4 */
         switch (itemIdx) {
         case 0: /* balances_transfer_all_V10 - dest */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.balances_transfer_all_V10.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3205,7 +3205,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1792: /* module 7 call 0 */
         switch (itemIdx) {
         case 0: /* staking_bond_V10 - controller */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.staking_bond_V10.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3215,7 +3215,7 @@ parser_error_t _getMethod_ItemValue_V10(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* staking_bond_V10 - payee */;
-            return _toStringRewardDestination_V10(
+            return _toStringRewardDestination(
                 &m->basic.staking_bond_V10.payee,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3255,7 +3255,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1796: /* module 7 call 4 */
         switch (itemIdx) {
         case 0: /* staking_validate_V10 - prefs */;
-            return _toStringValidatorPrefs_V10(
+            return _toStringValidatorPrefs(
                 &m->basic.staking_validate_V10.prefs,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3265,7 +3265,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1797: /* module 7 call 5 */
         switch (itemIdx) {
         case 0: /* staking_nominate_V10 - targets */;
-            return _toStringVecLookupasStaticLookupSource_V10(
+            return _toStringVecAccountIdLookupOfT(
                 &m->basic.staking_nominate_V10.targets,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3280,7 +3280,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1799: /* module 7 call 7 */
         switch (itemIdx) {
         case 0: /* staking_set_payee_V10 - payee */;
-            return _toStringRewardDestination_V10(
+            return _toStringRewardDestination(
                 &m->basic.staking_set_payee_V10.payee,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3290,7 +3290,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1800: /* module 7 call 8 */
         switch (itemIdx) {
         case 0: /* staking_set_controller_V10 - controller */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.staking_set_controller_V10.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3300,12 +3300,12 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1810: /* module 7 call 18 */
         switch (itemIdx) {
         case 0: /* staking_payout_stakers_V10 - validator_stash */;
-            return _toStringAccountId_V10(
+            return _toStringAccountId(
                 &m->basic.staking_payout_stakers_V10.validator_stash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* staking_payout_stakers_V10 - era */;
-            return _toStringEraIndex_V10(
+            return _toStringEraIndex(
                 &m->basic.staking_payout_stakers_V10.era,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3325,7 +3325,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 2304: /* module 9 call 0 */
         switch (itemIdx) {
         case 0: /* session_set_keys_V10 - keys */;
-            return _toStringKeys_V10(
+            return _toStringKeys(
                 &m->basic.session_set_keys_V10.keys,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3476,7 +3476,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1024: /* module 4 call 0 */
         switch (itemIdx) {
         case 0: /* indices_claim_V10 - index */;
-            return _toStringAccountIndex_V10(
+            return _toStringAccountIndex(
                 &m->basic.indices_claim_V10.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3486,12 +3486,12 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1025: /* module 4 call 1 */
         switch (itemIdx) {
         case 0: /* indices_transfer_V10 - new_ */;
-            return _toStringAccountId_V10(
+            return _toStringAccountId(
                 &m->basic.indices_transfer_V10.new_,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* indices_transfer_V10 - index */;
-            return _toStringAccountIndex_V10(
+            return _toStringAccountIndex(
                 &m->basic.indices_transfer_V10.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3501,7 +3501,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1026: /* module 4 call 2 */
         switch (itemIdx) {
         case 0: /* indices_free_V10 - index */;
-            return _toStringAccountIndex_V10(
+            return _toStringAccountIndex(
                 &m->basic.indices_free_V10.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3511,12 +3511,12 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1027: /* module 4 call 3 */
         switch (itemIdx) {
         case 0: /* indices_force_transfer_V10 - new_ */;
-            return _toStringAccountId_V10(
+            return _toStringAccountId(
                 &m->basic.indices_force_transfer_V10.new_,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* indices_force_transfer_V10 - index */;
-            return _toStringAccountIndex_V10(
+            return _toStringAccountIndex(
                 &m->basic.indices_force_transfer_V10.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3531,7 +3531,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1028: /* module 4 call 4 */
         switch (itemIdx) {
         case 0: /* indices_freeze_V10 - index */;
-            return _toStringAccountIndex_V10(
+            return _toStringAccountIndex(
                 &m->basic.indices_freeze_V10.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3541,7 +3541,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1281: /* module 5 call 1 */
         switch (itemIdx) {
         case 0: /* balances_set_balance_V10 - who */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.balances_set_balance_V10.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3561,7 +3561,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1285: /* module 5 call 5 */
         switch (itemIdx) {
         case 0: /* balances_force_unreserve_V10 - who */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.balances_force_unreserve_V10.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3606,7 +3606,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1806: /* module 7 call 14 */
         switch (itemIdx) {
         case 0: /* staking_set_invulnerables_V10 - invulnerables */;
-            return _toStringVecAccountId_V10(
+            return _toStringVecAccountId(
                 &m->basic.staking_set_invulnerables_V10.invulnerables,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3616,7 +3616,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1807: /* module 7 call 15 */
         switch (itemIdx) {
         case 0: /* staking_force_unstake_V10 - stash */;
-            return _toStringAccountId_V10(
+            return _toStringAccountId(
                 &m->basic.staking_force_unstake_V10.stash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3636,7 +3636,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1809: /* module 7 call 17 */
         switch (itemIdx) {
         case 0: /* staking_cancel_deferred_slash_V10 - era */;
-            return _toStringEraIndex_V10(
+            return _toStringEraIndex(
                 &m->basic.staking_cancel_deferred_slash_V10.era,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3666,7 +3666,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1813: /* module 7 call 21 */
         switch (itemIdx) {
         case 0: /* staking_reap_stash_V10 - stash */;
-            return _toStringAccountId_V10(
+            return _toStringAccountId(
                 &m->basic.staking_reap_stash_V10.stash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3681,7 +3681,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1814: /* module 7 call 22 */
         switch (itemIdx) {
         case 0: /* staking_kick_V10 - who */;
-            return _toStringVecLookupasStaticLookupSource_V10(
+            return _toStringVecAccountIdLookupOfT(
                 &m->basic.staking_kick_V10.who,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3691,7 +3691,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1816: /* module 7 call 24 */
         switch (itemIdx) {
         case 0: /* staking_chill_other_V10 - controller */;
-            return _toStringAccountId_V10(
+            return _toStringAccountId(
                 &m->basic.staking_chill_other_V10.controller,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3701,7 +3701,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 1817: /* module 7 call 25 */
         switch (itemIdx) {
         case 0: /* staking_force_apply_min_commission_V10 - validator_stash */;
-            return _toStringAccountId_V10(
+            return _toStringAccountId(
                 &m->basic.staking_force_apply_min_commission_V10.validator_stash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3737,7 +3737,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 2562: /* module 10 call 2 */
         switch (itemIdx) {
         case 0: /* sudo_set_key_V10 - new_ */;
-            return _toStringAccountIdLookupOfT_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.sudo_set_key_V10.new_,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3762,17 +3762,17 @@ parser_error_t _getMethod_ItemValue_V10(
     case 3840: /* module 15 call 0 */
         switch (itemIdx) {
         case 0: /* council_set_members_V10 - new_members */;
-            return _toStringVecAccountId_V10(
+            return _toStringVecAccountId(
                 &m->basic.council_set_members_V10.new_members,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* council_set_members_V10 - prime */;
-            return _toStringOptionAccountId_V10(
+            return _toStringOptionAccountId(
                 &m->basic.council_set_members_V10.prime,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* council_set_members_V10 - old_count */;
-            return _toStringMemberCount_V10(
+            return _toStringMemberCount(
                 &m->basic.council_set_members_V10.old_count,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -3897,17 +3897,17 @@ parser_error_t _getMethod_ItemValue_V10(
     case 4096: /* module 16 call 0 */
         switch (itemIdx) {
         case 0: /* technicalcommittee_set_members_V10 - new_members */;
-            return _toStringVecAccountId_V10(
+            return _toStringVecAccountId(
                 &m->basic.technicalcommittee_set_members_V10.new_members,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* technicalcommittee_set_members_V10 - prime */;
-            return _toStringOptionAccountId_V10(
+            return _toStringOptionAccountId(
                 &m->basic.technicalcommittee_set_members_V10.prime,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* technicalcommittee_set_members_V10 - old_count */;
-            return _toStringMemberCount_V10(
+            return _toStringMemberCount(
                 &m->basic.technicalcommittee_set_members_V10.old_count,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4012,7 +4012,7 @@ parser_error_t _getMethod_ItemValue_V10(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* treasury_propose_spend_V10 - beneficiary */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.treasury_propose_spend_V10.beneficiary,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4057,7 +4057,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 6401: /* module 25 call 1 */
         switch (itemIdx) {
         case 0: /* vesting_vest_other_V10 - target */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.vesting_vest_other_V10.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4067,12 +4067,12 @@ parser_error_t _getMethod_ItemValue_V10(
     case 6402: /* module 25 call 2 */
         switch (itemIdx) {
         case 0: /* vesting_vested_transfer_V10 - target */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.vesting_vested_transfer_V10.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* vesting_vested_transfer_V10 - schedule */;
-            return _toStringVestingInfo_V10(
+            return _toStringVestingInfo(
                 &m->basic.vesting_vested_transfer_V10.schedule,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4082,17 +4082,17 @@ parser_error_t _getMethod_ItemValue_V10(
     case 6403: /* module 25 call 3 */
         switch (itemIdx) {
         case 0: /* vesting_force_vested_transfer_V10 - source */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.vesting_force_vested_transfer_V10.source,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* vesting_force_vested_transfer_V10 - target */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.vesting_force_vested_transfer_V10.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* vesting_force_vested_transfer_V10 - schedule */;
-            return _toStringVestingInfo_V10(
+            return _toStringVestingInfo(
                 &m->basic.vesting_force_vested_transfer_V10.schedule,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4117,7 +4117,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 7168: /* module 28 call 0 */
         switch (itemIdx) {
         case 0: /* identity_add_registrar_V10 - account */;
-            return _toStringAccountIdLookupOfT_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.identity_add_registrar_V10.account,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4147,7 +4147,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 7173: /* module 28 call 5 */
         switch (itemIdx) {
         case 0: /* identity_cancel_request_V10 - reg_index */;
-            return _toStringRegistrarIndex_V10(
+            return _toStringRegistrarIndex(
                 &m->basic.identity_cancel_request_V10.reg_index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4177,7 +4177,7 @@ parser_error_t _getMethod_ItemValue_V10(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* identity_set_account_id_V10 - new_ */;
-            return _toStringAccountId_V10(
+            return _toStringAccountId(
                 &m->basic.identity_set_account_id_V10.new_,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4187,7 +4187,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 7178: /* module 28 call 10 */
         switch (itemIdx) {
         case 0: /* identity_kill_identity_V10 - target */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.identity_kill_identity_V10.target,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4197,7 +4197,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 7181: /* module 28 call 13 */
         switch (itemIdx) {
         case 0: /* identity_remove_sub_V10 - sub */;
-            return _toStringLookupasStaticLookupSource_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.identity_remove_sub_V10.sub,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4212,12 +4212,12 @@ parser_error_t _getMethod_ItemValue_V10(
     case 7424: /* module 29 call 0 */
         switch (itemIdx) {
         case 0: /* proxy_proxy_V10 - real */;
-            return _toStringAccountIdLookupOfT_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->nested.proxy_proxy_V10.real,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_proxy_V10 - force_proxy_type */;
-            return _toStringOptionProxyType_V10(
+            return _toStringOptionProxyType(
                 &m->nested.proxy_proxy_V10.force_proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4232,12 +4232,12 @@ parser_error_t _getMethod_ItemValue_V10(
     case 7425: /* module 29 call 1 */
         switch (itemIdx) {
         case 0: /* proxy_add_proxy_V10 - delegate */;
-            return _toStringAccountId_V10(
+            return _toStringAccountId(
                 &m->basic.proxy_add_proxy_V10.delegate,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_add_proxy_V10 - proxy_type */;
-            return _toStringProxyType_V10(
+            return _toStringProxyType(
                 &m->basic.proxy_add_proxy_V10.proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4252,12 +4252,12 @@ parser_error_t _getMethod_ItemValue_V10(
     case 7426: /* module 29 call 2 */
         switch (itemIdx) {
         case 0: /* proxy_remove_proxy_V10 - delegate */;
-            return _toStringAccountId_V10(
+            return _toStringAccountId(
                 &m->basic.proxy_remove_proxy_V10.delegate,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_remove_proxy_V10 - proxy_type */;
-            return _toStringProxyType_V10(
+            return _toStringProxyType(
                 &m->basic.proxy_remove_proxy_V10.proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4277,7 +4277,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 7428: /* module 29 call 4 */
         switch (itemIdx) {
         case 0: /* proxy_anonymous_V10 - proxy_type */;
-            return _toStringProxyType_V10(
+            return _toStringProxyType(
                 &m->basic.proxy_anonymous_V10.proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4297,12 +4297,12 @@ parser_error_t _getMethod_ItemValue_V10(
     case 7429: /* module 29 call 5 */
         switch (itemIdx) {
         case 0: /* proxy_kill_anonymous_V10 - spawner */;
-            return _toStringAccountId_V10(
+            return _toStringAccountId(
                 &m->basic.proxy_kill_anonymous_V10.spawner,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_kill_anonymous_V10 - proxy_type */;
-            return _toStringProxyType_V10(
+            return _toStringProxyType(
                 &m->basic.proxy_kill_anonymous_V10.proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4327,17 +4327,17 @@ parser_error_t _getMethod_ItemValue_V10(
     case 7433: /* module 29 call 9 */
         switch (itemIdx) {
         case 0: /* proxy_proxy_announced_V10 - delegate */;
-            return _toStringAccountIdLookupOfT_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.proxy_proxy_announced_V10.delegate,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* proxy_proxy_announced_V10 - real */;
-            return _toStringAccountIdLookupOfT_V10(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.proxy_proxy_announced_V10.real,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* proxy_proxy_announced_V10 - force_proxy_type */;
-            return _toStringOptionProxyType_V10(
+            return _toStringOptionProxyType(
                 &m->basic.proxy_proxy_announced_V10.force_proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4352,7 +4352,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 7680: /* module 30 call 0 */
         switch (itemIdx) {
         case 0: /* multisig_as_multi_threshold_1_V10 - other_signatories */;
-            return _toStringVecAccountId_V10(
+            return _toStringVecAccountId(
                 &m->nested.multisig_as_multi_threshold_1_V10.other_signatories,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4372,12 +4372,12 @@ parser_error_t _getMethod_ItemValue_V10(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* multisig_as_multi_V10 - other_signatories */;
-            return _toStringVecAccountId_V10(
+            return _toStringVecAccountId(
                 &m->nested.multisig_as_multi_V10.other_signatories,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* multisig_as_multi_V10 - maybe_timepoint */;
-            return _toStringOptionTimepoint_V10(
+            return _toStringOptionTimepoint(
                 &m->nested.multisig_as_multi_V10.maybe_timepoint,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4402,12 +4402,12 @@ parser_error_t _getMethod_ItemValue_V10(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* multisig_approve_as_multi_V10 - other_signatories */;
-            return _toStringVecAccountId_V10(
+            return _toStringVecAccountId(
                 &m->nested.multisig_approve_as_multi_V10.other_signatories,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* multisig_approve_as_multi_V10 - maybe_timepoint */;
-            return _toStringOptionTimepoint_V10(
+            return _toStringOptionTimepoint(
                 &m->nested.multisig_approve_as_multi_V10.maybe_timepoint,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4432,12 +4432,12 @@ parser_error_t _getMethod_ItemValue_V10(
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* multisig_cancel_as_multi_V10 - other_signatories */;
-            return _toStringVecAccountId_V10(
+            return _toStringVecAccountId(
                 &m->nested.multisig_cancel_as_multi_V10.other_signatories,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 2: /* multisig_cancel_as_multi_V10 - timepoint */;
-            return _toStringTimepoint_V10(
+            return _toStringTimepoint(
                 &m->nested.multisig_cancel_as_multi_V10.timepoint,
                 outValue, outValueLen,
                 pageIdx, pageCount);
