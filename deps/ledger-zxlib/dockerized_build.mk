@@ -164,7 +164,7 @@ clean_build:
 	$(call run_docker,$(DOCKER_BOLOS_SDKS2),$(TARGET_S2),make clean)
 
 .PHONY: clean
-clean: clean_output clean_build clean_glyphs
+clean: clean_output clean_build
 
 .PHONY: listvariants
 listvariants:
