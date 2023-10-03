@@ -25,7 +25,7 @@ Please:
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
 
-# DENTNet 9.9160.x
+# DENTNet 10.9200.x
 
 ## System
 

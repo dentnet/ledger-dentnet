@@ -32,8 +32,8 @@ extern "C" {
     {                                              \
         switch (txVersion) {                       \
                                                    \
-        case 9:                                    \
-            return PD_CALL_##CALL##_V10;            \
+        case 10:                                   \
+            return PD_CALL_##CALL##_V10;           \
                                                    \
         default:                                   \
             return 0;                              \
