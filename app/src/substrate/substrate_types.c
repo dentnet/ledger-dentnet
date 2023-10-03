@@ -1588,8 +1588,7 @@ parser_error_t _readHash(parser_context_t* c, pd_Hash_t* v) {
 }
 
 parser_error_t _readKeys(parser_context_t* c, pd_Keys_t* v) {
-    // needs to match struct SessionKeys in runtime. DENTNet is 4, Polkadot is 6
-    GEN_DEF_READARRAY(4 * 32)
+    GEN_DEF_READARRAY(SESSION_KEYS * 32)
 }
 
 parser_error_t _readMemberCount(parser_context_t* c, pd_MemberCount_t* v)
@@ -5709,7 +5708,7 @@ parser_error_t _toStringKeys(
     uint16_t outValueLen,
     uint8_t pageIdx,
     uint8_t* pageCount) {
-    GEN_DEF_TOSTRING_ARRAY(6 * 32)
+    GEN_DEF_TOSTRING_ARRAY(SESSION_KEYS * 32)
 }
 
 parser_error_t _toStringMemberCount(

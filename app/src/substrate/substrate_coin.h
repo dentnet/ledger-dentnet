@@ -23,6 +23,7 @@ extern "C" {
 #define CLA 0x90
 
 #define INS_SIGN_RAW 0x03
+#define SESSION_KEYS 4          // size of struct SessionKeys in runtime
 
 #define HDPATH_LEN_DEFAULT 5
 #define HDPATH_0_DEFAULT (0x80000000 | 0x2c)
