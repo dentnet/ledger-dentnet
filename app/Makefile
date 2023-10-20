@@ -47,14 +47,14 @@ $(info ************ FULL PARSER ENABLED ************)
 endif
 
 ifndef COIN
-COIN=DOT
+COIN=DENTX
 endif
 
 include $(CURDIR)/Makefile.version
 
 $(info COIN  = [$(COIN)])
 
-ifeq ($(COIN),DOT)
+ifeq ($(COIN),DENTX)
 # Main app configuration
 DEFINES += APP_STANDARD
 ifneq ($(TARGET_NAME),TARGET_NANOS)
