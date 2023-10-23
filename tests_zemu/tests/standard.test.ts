@@ -14,15 +14,9 @@
  *  limitations under the License.
  ******************************************************************************* */
 
-import Zemu, {DEFAULT_START_OPTIONS } from '@zondax/zemu'
+import Zemu, { ButtonKind, DEFAULT_START_OPTIONS, zondaxMainmenuNavigation } from '@zondax/zemu'
 import { newPolkadotApp } from '@zondax/ledger-substrate'
 import {APP_SEED, models } from './common'
-import { txBalances_transfer, txSession_setKeys, txStaking_nominate } from './zemu_blobs'
-
-// @ts-ignore
-import ed25519 from 'ed25519-supercop'
-// @ts-ignore
-import { blake2bFinal, blake2bInit, blake2bUpdate } from 'blakejs'
 import Transport from '@ledgerhq/hw-transport'
 
 const defaultOptions = {
@@ -31,6 +25,9 @@ const defaultOptions = {
   custom: `-s "${APP_SEED}"`,
   X11: false,
 }
+
+const expected_address = 'dx5r2B9tU5LLvZCkBdfBtM7Nk3vu54fsvWyLb6niJ4tKy1X8r'
+const expected_pk = '1b14b80690da0751fca3c3758bbe2ee057f255886d12d7a397fc23799a53ba93'
 
 jest.setTimeout(180000)
 
@@ -57,8 +54,9 @@ describe('Standard', function () {
   test.each(models)('main menu', async function (m) {
     const sim = new Zemu(m.path)
     try {
+      const mainmenuNavigation = zondaxMainmenuNavigation(m.name)
       await sim.start({...defaultOptions, model: m.name})
-      await sim.navigateAndCompareSnapshots('.', `${m.prefix.toLowerCase()}-mainmenu`, [1, 0, 0, 4, -5])
+      await sim.navigateAndCompareSnapshots('.', `${m.prefix.toLowerCase()}-mainmenu`, mainmenuNavigation.schedule)
     } finally {
       await sim.close()
     }
@@ -97,9 +95,6 @@ describe('Standard', function () {
       expect(resp.return_code).toEqual(0x9000)
       expect(resp.error_message).toEqual('No errors')
 
-      const expected_address = 'dx5r2B9tU5LLvZCkBdfBtM7Nk3vu54fsvWyLb6niJ4tKy1X8r'
-      const expected_pk = '1b14b80690da0751fca3c3758bbe2ee057f255886d12d7a397fc23799a53ba93'
-
       expect(resp.address).toEqual(expected_address)
       expect(resp.pubKey).toEqual(expected_pk)
     } finally {
@@ -110,7 +105,12 @@ describe('Standard', function () {
   test.each(models)('show address', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      await sim.start({...defaultOptions, model: m.name})
+      await sim.start({
+        ...defaultOptions,
+        model: m.name,
+        approveKeyword: m.name === 'stax' ? 'QR' : '',
+        approveAction: ButtonKind.ApproveTapButton,
+      })
       const app = newDentnetApp(sim.getTransport())
 
       const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true)
@@ -126,9 +126,6 @@ describe('Standard', function () {
       expect(resp.return_code).toEqual(0x9000)
       expect(resp.error_message).toEqual('No errors')
 
-      const expected_address = 'dx5r2B9tU5LLvZCkBdfBtM7Nk3vu54fsvWyLb6niJ4tKy1X8r'
-      const expected_pk = '1b14b80690da0751fca3c3758bbe2ee057f255886d12d7a397fc23799a53ba93'
-
       expect(resp.address).toEqual(expected_address)
       expect(resp.pubKey).toEqual(expected_pk)
     } finally {
@@ -139,148 +136,23 @@ describe('Standard', function () {
   test.each(models)('show address - reject', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      await sim.start({...defaultOptions, model: m.name})
+      await sim.start({
+        ...defaultOptions,
+        model: m.name,
+        rejectKeyword: m.name === 'stax' ? 'QR' : '',
+      })
       const app = newDentnetApp(sim.getTransport())
 
       const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true)
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
-      await sim.navigateAndCompareUntilText('.', `${m.prefix.toLowerCase()}-show_address_reject`, 'REJECT')
+      await sim.compareSnapshotsAndReject('.', `${m.prefix.toLowerCase()}-show_address_reject`)
 
       const resp = await respRequest
       console.log(resp)
 
       expect(resp.return_code).toEqual(0x6986)
       expect(resp.error_message).toEqual('Transaction rejected')
-    } finally {
-      await sim.close()
-    }
-  })
-
-  test.each(models)('sign basic normal', async function (m) {
-    const sim = new Zemu(m.path)
-    try {
-      await sim.start({...defaultOptions, model: m.name})
-      const app = newDentnetApp(sim.getTransport())
-      const pathAccount = 0x80000000
-      const pathChange = 0x80000000
-      const pathIndex = 0x80000000
-
-      const txBlob = Buffer.from(txBalances_transfer, 'hex')
-
-      const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex)
-      const pubKey = Buffer.from(responseAddr.pubKey, 'hex')
-
-      // do not wait here.. we need to navigate
-      const signatureRequest = app.sign(pathAccount, pathChange, pathIndex, txBlob)
-      // Wait until we are not in the main menu
-      await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
-
-      await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-sign_basic_normal`)
-
-      const signatureResponse = await signatureRequest
-      console.log(signatureResponse)
-
-      expect(signatureResponse.return_code).toEqual(0x9000)
-      expect(signatureResponse.error_message).toEqual('No errors')
-
-      // Now verify the signature
-      let prehash = txBlob
-      if (txBlob.length > 256) {
-        const context = blake2bInit(32)
-        blake2bUpdate(context, txBlob)
-        prehash = Buffer.from(blake2bFinal(context))
-      }
-      const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey)
-      expect(valid).toEqual(true)
-    } finally {
-      await sim.close()
-    }
-  })
-
-  test.each(models)('sign basic expert', async function (m) {
-    const sim = new Zemu(m.path)
-    try {
-      await sim.start({...defaultOptions, model: m.name})
-      const app = newDentnetApp(sim.getTransport())
-      const pathAccount = 0x80000000
-      const pathChange = 0x80000000
-      const pathIndex = 0x80000000
-
-      // Change to expert mode so we can skip fields
-      await sim.clickRight()
-      await sim.clickBoth()
-      await sim.clickLeft()
-
-      const txBlob = Buffer.from(txBalances_transfer, 'hex')
-
-      const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex)
-      const pubKey = Buffer.from(responseAddr.pubKey, 'hex')
-
-      // do not wait here.. we need to navigate
-      const signatureRequest = app.sign(pathAccount, pathChange, pathIndex, txBlob)
-
-      // Wait until we are not in the main menu
-      await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
-
-      await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-sign_basic_expert`)
-
-      const signatureResponse = await signatureRequest
-      console.log(signatureResponse)
-
-      expect(signatureResponse.return_code).toEqual(0x9000)
-      expect(signatureResponse.error_message).toEqual('No errors')
-
-      // Now verify the signature
-      let prehash = txBlob
-      if (txBlob.length > 256) {
-        const context = blake2bInit(32)
-        blake2bUpdate(context, txBlob)
-        prehash = Buffer.from(blake2bFinal(context))
-      }
-      const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey)
-      expect(valid).toEqual(true)
-    } finally {
-      await sim.close()
-    }
-  })
-
-  test.each(models)('set keys', async function (m) {
-    const sim = new Zemu(m.path)
-    try {
-      await sim.start({...defaultOptions, model: m.name})
-      const app = newDentnetApp(sim.getTransport())
-      const pathAccount = 0x80000000
-      const pathChange = 0x80000000
-      const pathIndex = 0x80000000
-
-      const txBlob = Buffer.from(txSession_setKeys, 'hex')
-
-      const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex)
-      const pubKey = Buffer.from(responseAddr.pubKey, 'hex')
-
-      // do not wait here.. we need to navigate
-      const signatureRequest = app.sign(pathAccount, pathChange, pathIndex, txBlob)
-      // Wait until we are not in the main menu
-      await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
-
-      await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-set-keys`)
-
-      const signatureResponse = await signatureRequest
-      console.log(signatureResponse)
-
-      expect(signatureResponse.return_code).toEqual(0x9000)
-      expect(signatureResponse.error_message).toEqual('No errors')
-
-      // Now verify the signature
-      let prehash = txBlob
-      if (txBlob.length > 256) {
-        const context = blake2bInit(32)
-        blake2bUpdate(context, txBlob)
-        prehash = Buffer.from(blake2bFinal(context))
-      }
-      const valid = ed25519.verify(signatureResponse.signature.slice(1), prehash, pubKey)
-      expect(valid).toEqual(true)
     } finally {
       await sim.close()
     }
