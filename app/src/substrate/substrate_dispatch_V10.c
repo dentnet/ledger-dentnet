@@ -1541,7 +1541,7 @@ uint8_t _getMethod_NumItems_V10(uint8_t moduleIdx, uint8_t callIdx)
     case 1284: /* module 5 call 4 */
         return 2;
     case 1792: /* module 7 call 0 */
-        return 3;
+        return 2;
     case 1793: /* module 7 call 1 */
         return 1;
     case 1794: /* module 7 call 2 */
@@ -1905,10 +1905,8 @@ const char* _getMethod_ItemName_V10(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
     case 1792: /* module 7 call 0 */
         switch (itemIdx) {
         case 0:
-            return STR_IT_controller;
-        case 1:
             return STR_IT_amount;
-        case 2:
+        case 1:
             return STR_IT_payee;
         default:
             return NULL;
