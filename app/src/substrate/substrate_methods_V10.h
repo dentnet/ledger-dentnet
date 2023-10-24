@@ -60,7 +60,6 @@ typedef struct {
 
 #define PD_CALL_STAKING_BOND_V10 0
 typedef struct {
-    pd_AccountIdLookupOfT_t controller;
     pd_CompactBalance_t amount;
     pd_RewardDestination_t payee;
 } pd_staking_bond_V10_t;
