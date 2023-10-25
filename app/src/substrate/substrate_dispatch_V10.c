@@ -55,7 +55,6 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_all_V10(
 __Z_INLINE parser_error_t _readMethod_staking_bond_V10(
     parser_context_t* c, pd_staking_bond_V10_t* m)
 {
-    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->controller))
     CHECK_ERROR(_readCompactBalance(c, &m->amount))
     CHECK_ERROR(_readRewardDestination(c, &m->payee))
     return parser_ok;
@@ -1542,7 +1541,7 @@ uint8_t _getMethod_NumItems_V10(uint8_t moduleIdx, uint8_t callIdx)
     case 1284: /* module 5 call 4 */
         return 2;
     case 1792: /* module 7 call 0 */
-        return 3;
+        return 2;
     case 1793: /* module 7 call 1 */
         return 1;
     case 1794: /* module 7 call 2 */
@@ -1906,10 +1905,8 @@ const char* _getMethod_ItemName_V10(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
     case 1792: /* module 7 call 0 */
         switch (itemIdx) {
         case 0:
-            return STR_IT_controller;
-        case 1:
             return STR_IT_amount;
-        case 2:
+        case 1:
             return STR_IT_payee;
         default:
             return NULL;
@@ -3204,17 +3201,12 @@ parser_error_t _getMethod_ItemValue_V10(
         }
     case 1792: /* module 7 call 0 */
         switch (itemIdx) {
-        case 0: /* staking_bond_V10 - controller */;
-            return _toStringAccountIdLookupOfT(
-                &m->basic.staking_bond_V10.controller,
-                outValue, outValueLen,
-                pageIdx, pageCount);
-        case 1: /* staking_bond_V10 - amount */;
+        case 0: /* staking_bond_V10 - amount */;
             return _toStringCompactBalance(
                 &m->basic.staking_bond_V10.amount,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 2: /* staking_bond_V10 - payee */;
+        case 1: /* staking_bond_V10 - payee */;
             return _toStringRewardDestination(
                 &m->basic.staking_bond_V10.payee,
                 outValue, outValueLen,
