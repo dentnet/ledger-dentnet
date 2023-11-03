@@ -695,7 +695,7 @@ __Z_INLINE parser_error_t _readMethod_proxy_proxy_V10(
 __Z_INLINE parser_error_t _readMethod_proxy_add_proxy_V10(
     parser_context_t* c, pd_proxy_add_proxy_V10_t* m)
 {
-    CHECK_ERROR(_readAccountId(c, &m->delegate))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->delegate))
     CHECK_ERROR(_readProxyType(c, &m->proxy_type))
     CHECK_ERROR(_readBlockNumber(c, &m->delay))
     return parser_ok;
@@ -704,7 +704,7 @@ __Z_INLINE parser_error_t _readMethod_proxy_add_proxy_V10(
 __Z_INLINE parser_error_t _readMethod_proxy_remove_proxy_V10(
     parser_context_t* c, pd_proxy_remove_proxy_V10_t* m)
 {
-    CHECK_ERROR(_readAccountId(c, &m->delegate))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->delegate))
     CHECK_ERROR(_readProxyType(c, &m->proxy_type))
     CHECK_ERROR(_readBlockNumber(c, &m->delay))
     return parser_ok;
@@ -718,8 +718,8 @@ __Z_INLINE parser_error_t _readMethod_proxy_remove_proxies_V10(
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_proxy_anonymous_V10(
-    parser_context_t* c, pd_proxy_anonymous_V10_t* m)
+__Z_INLINE parser_error_t _readMethod_proxy_create_pure_V10(
+    parser_context_t* c, pd_proxy_create_pure_V10_t* m)
 {
     CHECK_ERROR(_readProxyType(c, &m->proxy_type))
     CHECK_ERROR(_readBlockNumber(c, &m->delay))
@@ -727,10 +727,10 @@ __Z_INLINE parser_error_t _readMethod_proxy_anonymous_V10(
     return parser_ok;
 }
 
-__Z_INLINE parser_error_t _readMethod_proxy_kill_anonymous_V10(
-    parser_context_t* c, pd_proxy_kill_anonymous_V10_t* m)
+__Z_INLINE parser_error_t _readMethod_proxy_kill_pure_V10(
+    parser_context_t* c, pd_proxy_kill_pure_V10_t* m)
 {
-    CHECK_ERROR(_readAccountId(c, &m->spawner))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->spawner))
     CHECK_ERROR(_readProxyType(c, &m->proxy_type))
     CHECK_ERROR(_readu16(c, &m->index))
     CHECK_ERROR(_readCompactu32(c, &m->height))
@@ -1069,10 +1069,10 @@ parser_error_t _readMethod_V10(
         CHECK_ERROR(_readMethod_proxy_remove_proxies_V10(c, &method->basic.proxy_remove_proxies_V10))
         break;
     case 7428: /* module 29 call 4 */
-        CHECK_ERROR(_readMethod_proxy_anonymous_V10(c, &method->basic.proxy_anonymous_V10))
+        CHECK_ERROR(_readMethod_proxy_create_pure_V10(c, &method->basic.proxy_create_pure_V10))
         break;
     case 7429: /* module 29 call 5 */
-        CHECK_ERROR(_readMethod_proxy_kill_anonymous_V10(c, &method->basic.proxy_kill_anonymous_V10))
+        CHECK_ERROR(_readMethod_proxy_kill_pure_V10(c, &method->basic.proxy_kill_pure_V10))
         break;
     case 7433: /* module 29 call 9 */
         CHECK_ERROR(_readMethod_proxy_proxy_announced_V10(c, &method->basic.proxy_proxy_announced_V10))
@@ -1460,9 +1460,9 @@ const char* _getMethod_Name_V10_ParserFull(uint16_t callPrivIdx)
     case 7427: /* module 29 call 3 */
         return STR_ME_REMOVE_PROXIES;
     case 7428: /* module 29 call 4 */
-        return STR_ME_ANONYMOUS;
+        return STR_ME_CREATE_PURE;
     case 7429: /* module 29 call 5 */
-        return STR_ME_KILL_ANONYMOUS;
+        return STR_ME_KILL_PURE;
     case 7433: /* module 29 call 9 */
         return STR_ME_PROXY_ANNOUNCED;
     case 7680: /* module 30 call 0 */
@@ -4224,7 +4224,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 7425: /* module 29 call 1 */
         switch (itemIdx) {
         case 0: /* proxy_add_proxy_V10 - delegate */;
-            return _toStringAccountId(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.proxy_add_proxy_V10.delegate,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4244,7 +4244,7 @@ parser_error_t _getMethod_ItemValue_V10(
     case 7426: /* module 29 call 2 */
         switch (itemIdx) {
         case 0: /* proxy_remove_proxy_V10 - delegate */;
-            return _toStringAccountId(
+            return _toStringAccountIdLookupOfT(
                 &m->basic.proxy_remove_proxy_V10.delegate,
                 outValue, outValueLen,
                 pageIdx, pageCount);
@@ -4268,19 +4268,19 @@ parser_error_t _getMethod_ItemValue_V10(
         }
     case 7428: /* module 29 call 4 */
         switch (itemIdx) {
-        case 0: /* proxy_anonymous_V10 - proxy_type */;
+        case 0: /* proxy_create_pure_V10 - proxy_type */;
             return _toStringProxyType(
-                &m->basic.proxy_anonymous_V10.proxy_type,
+                &m->basic.proxy_create_pure_V10.proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* proxy_anonymous_V10 - delay */;
+        case 1: /* proxy_create_pure_V10 - delay */;
             return _toStringBlockNumber(
-                &m->basic.proxy_anonymous_V10.delay,
+                &m->basic.proxy_create_pure_V10.delay,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 2: /* proxy_anonymous_V10 - index */;
+        case 2: /* proxy_create_pure_V10 - index */;
             return _toStringu16(
-                &m->basic.proxy_anonymous_V10.index,
+                &m->basic.proxy_create_pure_V10.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4288,29 +4288,29 @@ parser_error_t _getMethod_ItemValue_V10(
         }
     case 7429: /* module 29 call 5 */
         switch (itemIdx) {
-        case 0: /* proxy_kill_anonymous_V10 - spawner */;
-            return _toStringAccountId(
-                &m->basic.proxy_kill_anonymous_V10.spawner,
+        case 0: /* proxy_kill_pure_V10 - spawner */;
+            return _toStringAccountIdLookupOfT(
+                &m->basic.proxy_kill_pure_V10.spawner,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 1: /* proxy_kill_anonymous_V10 - proxy_type */;
+        case 1: /* proxy_kill_pure_V10 - proxy_type */;
             return _toStringProxyType(
-                &m->basic.proxy_kill_anonymous_V10.proxy_type,
+                &m->basic.proxy_kill_pure_V10.proxy_type,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 2: /* proxy_kill_anonymous_V10 - index */;
+        case 2: /* proxy_kill_pure_V10 - index */;
             return _toStringu16(
-                &m->basic.proxy_kill_anonymous_V10.index,
+                &m->basic.proxy_kill_pure_V10.index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 3: /* proxy_kill_anonymous_V10 - height */;
+        case 3: /* proxy_kill_pure_V10 - height */;
             return _toStringCompactu32(
-                &m->basic.proxy_kill_anonymous_V10.height,
+                &m->basic.proxy_kill_pure_V10.height,
                 outValue, outValueLen,
                 pageIdx, pageCount);
-        case 4: /* proxy_kill_anonymous_V10 - ext_index */;
+        case 4: /* proxy_kill_pure_V10 - ext_index */;
             return _toStringCompactu32(
-                &m->basic.proxy_kill_anonymous_V10.ext_index,
+                &m->basic.proxy_kill_pure_V10.ext_index,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
