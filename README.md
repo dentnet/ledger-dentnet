@@ -210,16 +210,16 @@ Please:
 
 | Name        | Light | XL | Nesting | Arguments | 
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Proxy |    | :heavy_check_mark: | :heavy_check_mark: | `AccountId` real <br/>`OptionProxyType` force_proxy_type <br/>`Call` call <br/> | 
-|Add proxy |    | :heavy_check_mark: |   | `AccountId` delegate <br/>`ProxyType` proxy_type <br/>`BlockNumber` delay <br/> | 
-|Remove proxy |    | :heavy_check_mark: |   | `AccountId` delegate <br/>`ProxyType` proxy_type <br/>`BlockNumber` delay <br/> | 
+|Proxy |    | :heavy_check_mark: | :heavy_check_mark: | `AccountIdLookupOfT` real <br/>`OptionProxyType` force_proxy_type <br/>`Call` call <br/> | 
+|Add proxy |    | :heavy_check_mark: |   | `AccountIdLookupOfT` delegate <br/>`ProxyType` proxy_type <br/>`BlockNumber` delay <br/> | 
+|Remove proxy |    | :heavy_check_mark: |   | `AccountIdLookupOfT` delegate <br/>`ProxyType` proxy_type <br/>`BlockNumber` delay <br/> | 
 |Remove proxies |    | :heavy_check_mark: |   |  | 
 |Anonymous |    | :heavy_check_mark: |   | `ProxyType` proxy_type <br/>`BlockNumber` delay <br/>`u16` index <br/> | 
-|Kill anonymous |    | :heavy_check_mark: |   | `AccountId` spawner <br/>`ProxyType` proxy_type <br/>`u16` index <br/>`Compactu32` height <br/>`Compactu32` ext_index <br/> | 
-|Announce |    |   |   | `AccountId` real <br/>`CallHashOf` call_hash <br/> | 
-|Remove announcement |    |   |   | `AccountId` real <br/>`CallHashOf` call_hash <br/> | 
-|Reject announcement |    |   |   | `AccountId` delegate <br/>`CallHashOf` call_hash <br/> | 
-|Proxy announced |    | :heavy_check_mark: |   | `AccountId` delegate <br/>`AccountId` real <br/>`OptionProxyType` force_proxy_type <br/>`Call` call <br/> | 
+|Kill pure |    | :heavy_check_mark: |   | `AccountIdLookupOfT` spawner <br/>`ProxyType` proxy_type <br/>`u16` index <br/>`Compactu32` height <br/>`Compactu32` ext_index <br/> | 
+|Announce |    |   |   | `AccountIdLookupOfT` real <br/>`CallHashOf` call_hash <br/> | 
+|Remove announcement |    |   |   | `AccountIdLookupOfT` real <br/>`CallHashOf` call_hash <br/> | 
+|Reject announcement |    |   |   | `AccountIdLookupOfT` delegate <br/>`CallHashOf` call_hash <br/> | 
+|Proxy announced |    | :heavy_check_mark: |   | `AccountIdLookupOfT` delegate <br/>`AccountIdLookupOfT` real <br/>`OptionProxyType` force_proxy_type <br/>`Call` call <br/> | 
 
 ## Multisig
 

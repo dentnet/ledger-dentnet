@@ -479,14 +479,14 @@ typedef struct {
 
 #define PD_CALL_PROXY_ADD_PROXY_V10 1
 typedef struct {
-    pd_AccountId_t delegate;
+    pd_AccountIdLookupOfT_t delegate;
     pd_ProxyType_t proxy_type;
     pd_BlockNumber_t delay;
 } pd_proxy_add_proxy_V10_t;
 
 #define PD_CALL_PROXY_REMOVE_PROXY_V10 2
 typedef struct {
-    pd_AccountId_t delegate;
+    pd_AccountIdLookupOfT_t delegate;
     pd_ProxyType_t proxy_type;
     pd_BlockNumber_t delay;
 } pd_proxy_remove_proxy_V10_t;
@@ -495,21 +495,21 @@ typedef struct {
 typedef struct {
 } pd_proxy_remove_proxies_V10_t;
 
-#define PD_CALL_PROXY_ANONYMOUS_V10 4
+#define PD_CALL_PROXY_CREATE_PURE_V10 4
 typedef struct {
     pd_ProxyType_t proxy_type;
     pd_BlockNumber_t delay;
     pd_u16_t index;
-} pd_proxy_anonymous_V10_t;
+} pd_proxy_create_pure_V10_t;
 
-#define PD_CALL_PROXY_KILL_ANONYMOUS_V10 5
+#define PD_CALL_PROXY_KILL_PURE_V10 5
 typedef struct {
-    pd_AccountId_t spawner;
+    pd_AccountIdLookupOfT_t spawner;
     pd_ProxyType_t proxy_type;
     pd_u16_t index;
     pd_Compactu32_t height;
     pd_Compactu32_t ext_index;
-} pd_proxy_kill_anonymous_V10_t;
+} pd_proxy_kill_pure_V10_t;
 
 #define PD_CALL_PROXY_PROXY_ANNOUNCED_V10 9
 typedef struct {
@@ -877,8 +877,8 @@ typedef union {
     pd_proxy_add_proxy_V10_t proxy_add_proxy_V10;
     pd_proxy_remove_proxy_V10_t proxy_remove_proxy_V10;
     pd_proxy_remove_proxies_V10_t proxy_remove_proxies_V10;
-    pd_proxy_anonymous_V10_t proxy_anonymous_V10;
-    pd_proxy_kill_anonymous_V10_t proxy_kill_anonymous_V10;
+    pd_proxy_create_pure_V10_t proxy_create_pure_V10;
+    pd_proxy_kill_pure_V10_t proxy_kill_pure_V10;
     pd_proxy_proxy_announced_V10_t proxy_proxy_announced_V10;
     pd_electionprovidermultiphase_governance_fallback_V10_t electionprovidermultiphase_governance_fallback_V10;
     pd_voterlist_rebag_V10_t voterlist_rebag_V10;
