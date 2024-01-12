@@ -25,7 +25,7 @@ Please:
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
 
-# DENTNet 10.9200.x
+# DENTNet 10.9230.x
 
 ## System
 
@@ -113,6 +113,13 @@ Please:
 | :---------- |:------------:|:--------:|:--------:|:--------|
 |Set keys | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | `Keys` keys <br/>`Bytes` proof <br/> | 
 |Purge keys | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: |  | 
+
+## Assets
+
+| Name        | Light | XL | Nesting | Arguments | 
+| :---------- |:------------:|:--------:|:--------:|:--------|
+|Transfer | :heavy_check_mark:  | :heavy_check_mark: |  | `Compactu32` asset_id <br />`LookupasStaticLookupSource` dest <br/>`CompactBalance` amount <br/>| 
+|Transfer keep alive | :heavy_check_mark:  | :heavy_check_mark: |   | `Compactu32` asset_id <br /> `LookupasStaticLookupSource` dest <br/>`CompactBalance` amount <br/> | 
 
 ## Sudo
 
