@@ -52,12 +52,6 @@ extern "C" {
 #define PD_CALL_AUCTIONS_V10 72
 #define PD_CALL_CROWDLOAN_V10 73
 
-#define PD_CALL_BALANCES_TRANSFER_ALL_V10 4
-typedef struct {
-    pd_AccountIdLookupOfT_t dest;
-    pd_bool_t keep_alive;
-} pd_balances_transfer_all_V10_t;
-
 #define PD_CALL_STAKING_BOND_V10 0
 typedef struct {
     pd_CompactBalance_t amount;
@@ -796,20 +790,15 @@ typedef struct {
 #endif
 
 typedef union {
-    pd_balances_transfer_all_V10_t balances_transfer_all_V10;
     pd_staking_bond_V10_t staking_bond_V10;
     pd_staking_bond_extra_V10_t staking_bond_extra_V10;
     pd_staking_unbond_V10_t staking_unbond_V10;
     pd_staking_withdraw_unbonded_V10_t staking_withdraw_unbonded_V10;
-    pd_staking_validate_V10_t staking_validate_V10;
     pd_staking_nominate_V10_t staking_nominate_V10;
     pd_staking_chill_V10_t staking_chill_V10;
     pd_staking_set_payee_V10_t staking_set_payee_V10;
     pd_staking_set_controller_V10_t staking_set_controller_V10;
-    pd_staking_payout_stakers_V10_t staking_payout_stakers_V10;
     pd_staking_rebond_V10_t staking_rebond_V10;
-    pd_session_set_keys_V10_t session_set_keys_V10;
-    pd_session_purge_keys_V10_t session_purge_keys_V10;
     pd_utility_batch_V10_t utility_batch_V10;
     pd_utility_batch_all_V10_t utility_batch_all_V10;
     pd_utility_force_batch_V10_t utility_force_batch_V10;
@@ -937,7 +926,7 @@ typedef union {
 #endif
 } pd_MethodBasic_V10_t;
 
-#define PD_CALL_BALANCES_TRANSFER_V10 0
+#define PD_CALL_BALANCES_TRANSFER_ALLOW_DEATH_V10 0
 typedef struct {
     pd_AccountIdLookupOfT_t dest;
     pd_CompactBalance_t amount;
@@ -955,6 +944,12 @@ typedef struct {
     pd_AccountIdLookupOfT_t dest;
     pd_CompactBalance_t amount;
 } pd_balances_transfer_keep_alive_V10_t;
+
+#define PD_CALL_BALANCES_TRANSFER_ALL_V10 4
+typedef struct {
+    pd_AccountIdLookupOfT_t dest;
+    pd_bool_t keep_alive;
+} pd_balances_transfer_all_V10_t;
 
 #ifdef SUBSTRATE_PARSER_FULL
 #define PD_CALL_SYSTEM_REMARK_V10 0
@@ -1034,6 +1029,11 @@ typedef union {
     pd_balances_transfer_allow_death_V10_t balances_transfer_allow_death_V10;
     pd_balances_force_transfer_V10_t balances_force_transfer_V10;
     pd_balances_transfer_keep_alive_V10_t balances_transfer_keep_alive_V10;
+    pd_balances_transfer_all_V10_t balances_transfer_all_V10;
+    pd_staking_validate_V10_t staking_validate_V10;
+    pd_staking_payout_stakers_V10_t staking_payout_stakers_V10;
+    pd_session_set_keys_V10_t session_set_keys_V10;
+    pd_session_purge_keys_V10_t session_purge_keys_V10;
 #ifdef SUBSTRATE_PARSER_FULL
     pd_system_remark_V10_t system_remark_V10;
     pd_system_set_heap_pages_V10_t system_set_heap_pages_V10;
