@@ -301,6 +301,12 @@ parser_error_t _readCompactBalance(parser_context_t *c, pd_CompactBalance_t *v) 
     return parser_ok;
 }
 
+parser_error_t _readCompactAssetBalance(parser_context_t *c, pd_CompactAssetBalance_t *v) {
+    CHECK_INPUT()
+    CHECK_ERROR(_readCompactInt(c, &v->value))
+    return parser_ok;
+}
+
 parser_error_t _toStringCompactIndex(const pd_CompactIndex_t *v,
                                      char *outValue, uint16_t outValueLen,
                                      uint8_t pageIdx, uint8_t *pageCount) {
@@ -314,6 +320,28 @@ parser_error_t _toStringCompactBalance(const pd_CompactBalance_t *v,
             &v->value,
             COIN_AMOUNT_DECIMAL_PLACES, true, "", COIN_TICKER,
             outValue, outValueLen, pageIdx, pageCount))
+    return parser_ok;
+}
+
+parser_error_t _toStringCompactAssetBalance(const pd_Compactu32_t *asset,
+                                       const pd_CompactAssetBalance_t *v,
+                                       char *outValue, uint16_t outValueLen,
+                                       uint8_t pageIdx, uint8_t *pageCount) {
+
+    uint64_t asset_id;
+
+    CHECK_ERROR(_getValue(asset, &asset_id));
+    if (asset_id == TOKEN_ASSET_ID) {
+        CHECK_ERROR(_toStringCompactInt(
+                &v->value,
+                TOKEN_AMOUNT_DECIMAL_PLACES, true, "", TOKEN_TICKER,
+                outValue, outValueLen, pageIdx, pageCount))
+    } else {
+        CHECK_ERROR(_toStringCompactInt(
+                &v->value,
+                0, true, "", "",
+                outValue, outValueLen, pageIdx, pageCount))
+    }
     return parser_ok;
 }
 

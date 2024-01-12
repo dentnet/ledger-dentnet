@@ -66,6 +66,11 @@ typedef enum {
 
 #define COIN_SECRET_REQUIRED_CLICKS 10
 
+// DENTNet specific asset
+#define TOKEN_ASSET_ID 1
+#define TOKEN_AMOUNT_DECIMAL_PLACES 8
+#define TOKEN_TICKER "DENT "
+
 #define MENU_MAIN_APP_LINE1 "DENTNet"
 #define MENU_MAIN_APP_LINE2 "Ready"
 #define MENU_MAIN_APP_LINE2_SECRET "D/X RECOVERY"

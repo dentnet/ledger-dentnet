@@ -52,6 +52,24 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_all_V10(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_assets_transfer_V10(
+    parser_context_t* c, pd_assets_transfer_V10_t* m)
+{
+    CHECK_ERROR(_readCompactu32(c, &m->asset))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->dest))
+    CHECK_ERROR(_readCompactAssetBalance(c, &m->amount))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_assets_transfer_keep_alive_V10(
+    parser_context_t* c, pd_assets_transfer_keep_alive_V10_t* m)
+{
+    CHECK_ERROR(_readCompactu32(c, &m->asset))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->dest))
+    CHECK_ERROR(_readCompactAssetBalance(c, &m->amount))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_staking_bond_V10(
     parser_context_t* c, pd_staking_bond_V10_t* m)
 {
@@ -859,6 +877,12 @@ parser_error_t _readMethod_V10(
     case 2305: /* module 9 call 1 */
         CHECK_ERROR(_readMethod_session_purge_keys_V10(c, &method->nested.session_purge_keys_V10))
         break;
+    case 5128: /* module 20 call 8 */
+        CHECK_ERROR(_readMethod_assets_transfer_V10(c, &method->basic.assets_transfer_V10))
+        break;
+    case 5129: /* module 20 call 9 */
+        CHECK_ERROR(_readMethod_assets_transfer_keep_alive_V10(c, &method->basic.assets_transfer_keep_alive_V10))
+        break;
     case 6656: /* module 26 call 0 */
         CHECK_ERROR(_readMethod_utility_batch_V10(c, &method->basic.utility_batch_V10))
         break;
@@ -1126,6 +1150,8 @@ const char* _getMethod_ModuleName_V10(uint8_t moduleIdx)
         return STR_MO_STAKING;
     case 9:
         return STR_MO_SESSION;
+    case 20:
+        return STR_MO_ASSETS;
     case 26:
         return STR_MO_UTILITY;
 #ifdef SUBSTRATE_PARSER_FULL
@@ -1206,6 +1232,10 @@ const char* _getMethod_Name_V10(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_SET_KEYS;
     case 2305: /* module 9 call 1 */
         return STR_ME_PURGE_KEYS;
+    case 5128: /* module 20 call 8 */
+        return STR_ME_TRANSFER;
+    case 5129: /* module 20 call 9 */
+        return STR_ME_TRANSFER_KEEP_ALIVE;
     case 6656: /* module 26 call 0 */
         return STR_ME_BATCH;
     case 6658: /* module 26 call 2 */
@@ -1566,6 +1596,10 @@ uint8_t _getMethod_NumItems_V10(uint8_t moduleIdx, uint8_t callIdx)
         return 2;
     case 2305: /* module 9 call 1 */
         return 0;
+    case 5128: /* module 20 call 8 */
+        return 3;
+    case 5129: /* module 20 call 9 */
+        return 3;
     case 6656: /* module 26 call 0 */
         return 1;
     case 6658: /* module 26 call 2 */
@@ -1992,6 +2026,28 @@ const char* _getMethod_ItemName_V10(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         }
     case 2305: /* module 9 call 1 */
         switch (itemIdx) {
+        default:
+            return NULL;
+        }
+    case 5128: /* module 20 call 8 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_asset_id;
+        case 1:
+            return STR_IT_target;
+        case 2:
+            return STR_IT_amount;
+        default:
+            return NULL;
+        }
+    case 5129: /* module 20 call 9 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_asset_id;
+        case 1:
+            return STR_IT_target;
+        case 2:
+            return STR_IT_amount;
         default:
             return NULL;
         }
@@ -3334,6 +3390,48 @@ parser_error_t _getMethod_ItemValue_V10(
         default:
             return parser_no_data;
         }
+    case 5128: /* module 20 call 8 */
+        switch (itemIdx) {
+        case 0: /* assets_transfer_V10 - amount */;
+            return _toStringCompactu32(
+                &m->basic.assets_transfer_V10.asset,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* assets_transfer_V10 - payee */;
+            return _toStringAccountIdLookupOfT(
+                &m->basic.assets_transfer_V10.dest,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* assets_transfer_V10 - amount */;
+            return _toStringCompactAssetBalance(
+                &m->basic.assets_transfer_V10.asset,
+                &m->basic.assets_transfer_V10.amount,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 5129: /* module 20 call 9 */
+        switch (itemIdx) {
+        case 0: /* assets_transfer_keep_alive_V10 - amount */;
+            return _toStringCompactu32(
+                &m->basic.assets_transfer_keep_alive_V10.asset,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* assets_transfer_V10 - payee */;
+            return _toStringAccountIdLookupOfT(
+                &m->basic.assets_transfer_keep_alive_V10.dest,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* assets_transfer_V10 - amount */;
+            return _toStringCompactAssetBalance(
+                &m->basic.assets_transfer_keep_alive_V10.asset,
+                &m->basic.assets_transfer_keep_alive_V10.amount,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
     case 6656: /* module 26 call 0 */
         switch (itemIdx) {
         case 0: /* utility_batch_V10 - calls */;
@@ -4553,6 +4651,8 @@ bool _getMethod_IsNestingSupported_V10(uint8_t moduleIdx, uint8_t callIdx)
     case 4866: // Treasury:Approve proposal
     case 4867: // Treasury:Spend
     case 4868: // Treasury:Remove approval
+    case 5128: // Assets:transfer
+    case 5129: // Assets:transfer_keep_alive
     case 6400: // Vesting:Vest
     case 6401: // Vesting:Vest other
     case 6402: // Vesting:Vested transfer

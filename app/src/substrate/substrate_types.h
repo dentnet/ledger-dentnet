@@ -119,6 +119,10 @@ typedef struct {
 } pd_CompactBalance_t;
 
 typedef struct {
+    compactInt_t value;
+} pd_CompactAssetBalance_t;
+
+typedef struct {
     const uint8_t* _ptr;
 } pd_u8_array_32_t;
 

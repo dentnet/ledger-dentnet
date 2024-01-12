@@ -37,6 +37,7 @@ extern "C" {
 #define PD_CALL_COUNCIL_V10 15
 #define PD_CALL_TECHNICALCOMMITTEE_V10 16
 #define PD_CALL_TREASURY_V10 19
+#define PD_CALL_ASSETS_V10 20
 #define PD_CALL_VESTING_V10 25
 #define PD_CALL_UTILITY_V10 26
 #define PD_CALL_IDENTITY_V10 28
@@ -117,6 +118,20 @@ typedef struct {
 #define PD_CALL_SESSION_PURGE_KEYS_V10 1
 typedef struct {
 } pd_session_purge_keys_V10_t;
+
+#define PD_CALL_ASSETS_TRANSFER_V10 8
+typedef struct {
+    pd_Compactu32_t asset;
+    pd_AccountIdLookupOfT_t dest;
+    pd_CompactAssetBalance_t amount;
+} pd_assets_transfer_V10_t;
+
+#define PD_CALL_ASSETS_TRANSFER_KEEP_ALIVE_V10 9
+typedef struct {
+    pd_Compactu32_t asset;
+    pd_AccountIdLookupOfT_t dest;
+    pd_CompactAssetBalance_t amount;
+} pd_assets_transfer_keep_alive_V10_t;
 
 #define PD_CALL_UTILITY_BATCH_V10 0
 typedef struct {
@@ -790,6 +805,8 @@ typedef struct {
 #endif
 
 typedef union {
+    pd_assets_transfer_V10_t assets_transfer_V10;
+    pd_assets_transfer_keep_alive_V10_t assets_transfer_keep_alive_V10;
     pd_staking_bond_V10_t staking_bond_V10;
     pd_staking_bond_extra_V10_t staking_bond_extra_V10;
     pd_staking_unbond_V10_t staking_unbond_V10;

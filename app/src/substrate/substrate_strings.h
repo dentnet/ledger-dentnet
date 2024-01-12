@@ -31,6 +31,7 @@ static const char* STR_MO_GRANDPA = "Grandpa";
 static const char* STR_MO_SUDO = "Sudo";
 static const char* STR_MO_COUNCIL = "Council";
 static const char* STR_MO_TECHNICALCOMMITTEE = "Technicalcommittee";
+static const char* STR_MO_ASSETS = "Assets";
 static const char* STR_MO_TREASURY = "Treasury";
 static const char* STR_MO_VESTING = "Vesting";
 static const char* STR_MO_UTILITY = "Utility";
@@ -485,6 +486,7 @@ static const char* STR_IT_location = "Location";
 static const char* STR_IT_xcm_version = "Xcm version";
 static const char* STR_IT_maybe_xcm_version = "Maybe xcm version";
 static const char* STR_IT_weight_limit = "Weight limit";
+static const char* STR_IT_asset_id = "Asset Id";
 
 #ifdef __cplusplus
 }
