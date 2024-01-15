@@ -52,6 +52,24 @@ __Z_INLINE parser_error_t _readMethod_balances_transfer_all_V10(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_assets_transfer_V10(
+    parser_context_t* c, pd_assets_transfer_V10_t* m)
+{
+    CHECK_ERROR(_readCompactu32(c, &m->asset))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->dest))
+    CHECK_ERROR(_readCompactAssetBalance(c, &m->amount))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_assets_transfer_keep_alive_V10(
+    parser_context_t* c, pd_assets_transfer_keep_alive_V10_t* m)
+{
+    CHECK_ERROR(_readCompactu32(c, &m->asset))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->dest))
+    CHECK_ERROR(_readCompactAssetBalance(c, &m->amount))
+    return parser_ok;
+}
+
 __Z_INLINE parser_error_t _readMethod_staking_bond_V10(
     parser_context_t* c, pd_staking_bond_V10_t* m)
 {
@@ -818,7 +836,7 @@ parser_error_t _readMethod_V10(
         CHECK_ERROR(_readMethod_balances_transfer_keep_alive_V10(c, &method->nested.balances_transfer_keep_alive_V10))
         break;
     case 1284: /* module 5 call 4 */
-        CHECK_ERROR(_readMethod_balances_transfer_all_V10(c, &method->basic.balances_transfer_all_V10))
+        CHECK_ERROR(_readMethod_balances_transfer_all_V10(c, &method->nested.balances_transfer_all_V10))
         break;
     case 1792: /* module 7 call 0 */
         CHECK_ERROR(_readMethod_staking_bond_V10(c, &method->basic.staking_bond_V10))
@@ -833,7 +851,7 @@ parser_error_t _readMethod_V10(
         CHECK_ERROR(_readMethod_staking_withdraw_unbonded_V10(c, &method->basic.staking_withdraw_unbonded_V10))
         break;
     case 1796: /* module 7 call 4 */
-        CHECK_ERROR(_readMethod_staking_validate_V10(c, &method->basic.staking_validate_V10))
+        CHECK_ERROR(_readMethod_staking_validate_V10(c, &method->nested.staking_validate_V10))
         break;
     case 1797: /* module 7 call 5 */
         CHECK_ERROR(_readMethod_staking_nominate_V10(c, &method->basic.staking_nominate_V10))
@@ -848,16 +866,22 @@ parser_error_t _readMethod_V10(
         CHECK_ERROR(_readMethod_staking_set_controller_V10(c, &method->basic.staking_set_controller_V10))
         break;
     case 1810: /* module 7 call 18 */
-        CHECK_ERROR(_readMethod_staking_payout_stakers_V10(c, &method->basic.staking_payout_stakers_V10))
+        CHECK_ERROR(_readMethod_staking_payout_stakers_V10(c, &method->nested.staking_payout_stakers_V10))
         break;
     case 1811: /* module 7 call 19 */
         CHECK_ERROR(_readMethod_staking_rebond_V10(c, &method->basic.staking_rebond_V10))
         break;
     case 2304: /* module 9 call 0 */
-        CHECK_ERROR(_readMethod_session_set_keys_V10(c, &method->basic.session_set_keys_V10))
+        CHECK_ERROR(_readMethod_session_set_keys_V10(c, &method->nested.session_set_keys_V10))
         break;
     case 2305: /* module 9 call 1 */
-        CHECK_ERROR(_readMethod_session_purge_keys_V10(c, &method->basic.session_purge_keys_V10))
+        CHECK_ERROR(_readMethod_session_purge_keys_V10(c, &method->nested.session_purge_keys_V10))
+        break;
+    case 5128: /* module 20 call 8 */
+        CHECK_ERROR(_readMethod_assets_transfer_V10(c, &method->basic.assets_transfer_V10))
+        break;
+    case 5129: /* module 20 call 9 */
+        CHECK_ERROR(_readMethod_assets_transfer_keep_alive_V10(c, &method->basic.assets_transfer_keep_alive_V10))
         break;
     case 6656: /* module 26 call 0 */
         CHECK_ERROR(_readMethod_utility_batch_V10(c, &method->basic.utility_batch_V10))
@@ -1126,6 +1150,8 @@ const char* _getMethod_ModuleName_V10(uint8_t moduleIdx)
         return STR_MO_STAKING;
     case 9:
         return STR_MO_SESSION;
+    case 20:
+        return STR_MO_ASSETS;
     case 26:
         return STR_MO_UTILITY;
 #ifdef SUBSTRATE_PARSER_FULL
@@ -1206,6 +1232,10 @@ const char* _getMethod_Name_V10(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_SET_KEYS;
     case 2305: /* module 9 call 1 */
         return STR_ME_PURGE_KEYS;
+    case 5128: /* module 20 call 8 */
+        return STR_ME_TRANSFER;
+    case 5129: /* module 20 call 9 */
+        return STR_ME_TRANSFER_KEEP_ALIVE;
     case 6656: /* module 26 call 0 */
         return STR_ME_BATCH;
     case 6658: /* module 26 call 2 */
@@ -1566,6 +1596,10 @@ uint8_t _getMethod_NumItems_V10(uint8_t moduleIdx, uint8_t callIdx)
         return 2;
     case 2305: /* module 9 call 1 */
         return 0;
+    case 5128: /* module 20 call 8 */
+        return 3;
+    case 5129: /* module 20 call 9 */
+        return 3;
     case 6656: /* module 26 call 0 */
         return 1;
     case 6658: /* module 26 call 2 */
@@ -1992,6 +2026,28 @@ const char* _getMethod_ItemName_V10(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         }
     case 2305: /* module 9 call 1 */
         switch (itemIdx) {
+        default:
+            return NULL;
+        }
+    case 5128: /* module 20 call 8 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_asset_id;
+        case 1:
+            return STR_IT_target;
+        case 2:
+            return STR_IT_amount;
+        default:
+            return NULL;
+        }
+    case 5129: /* module 20 call 9 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_asset_id;
+        case 1:
+            return STR_IT_target;
+        case 2:
+            return STR_IT_amount;
         default:
             return NULL;
         }
@@ -3188,12 +3244,12 @@ parser_error_t _getMethod_ItemValue_V10(
         switch (itemIdx) {
         case 0: /* balances_transfer_all_V10 - dest */;
             return _toStringAccountIdLookupOfT(
-                &m->basic.balances_transfer_all_V10.dest,
+                &m->nested.balances_transfer_all_V10.dest,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* balances_transfer_all_V10 - keep_alive */;
             return _toStringbool(
-                &m->basic.balances_transfer_all_V10.keep_alive,
+                &m->nested.balances_transfer_all_V10.keep_alive,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -3248,7 +3304,7 @@ parser_error_t _getMethod_ItemValue_V10(
         switch (itemIdx) {
         case 0: /* staking_validate_V10 - prefs */;
             return _toStringValidatorPrefs(
-                &m->basic.staking_validate_V10.prefs,
+                &m->nested.staking_validate_V10.prefs,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -3293,12 +3349,12 @@ parser_error_t _getMethod_ItemValue_V10(
         switch (itemIdx) {
         case 0: /* staking_payout_stakers_V10 - validator_stash */;
             return _toStringAccountId(
-                &m->basic.staking_payout_stakers_V10.validator_stash,
+                &m->nested.staking_payout_stakers_V10.validator_stash,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* staking_payout_stakers_V10 - era */;
             return _toStringEraIndex(
-                &m->basic.staking_payout_stakers_V10.era,
+                &m->nested.staking_payout_stakers_V10.era,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -3318,12 +3374,12 @@ parser_error_t _getMethod_ItemValue_V10(
         switch (itemIdx) {
         case 0: /* session_set_keys_V10 - keys */;
             return _toStringKeys(
-                &m->basic.session_set_keys_V10.keys,
+                &m->nested.session_set_keys_V10.keys,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         case 1: /* session_set_keys_V10 - proof */;
             return _toStringBytes(
-                &m->basic.session_set_keys_V10.proof,
+                &m->nested.session_set_keys_V10.proof,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -3331,6 +3387,48 @@ parser_error_t _getMethod_ItemValue_V10(
         }
     case 2305: /* module 9 call 1 */
         switch (itemIdx) {
+        default:
+            return parser_no_data;
+        }
+    case 5128: /* module 20 call 8 */
+        switch (itemIdx) {
+        case 0: /* assets_transfer_V10 - amount */;
+            return _toStringCompactu32(
+                &m->basic.assets_transfer_V10.asset,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* assets_transfer_V10 - payee */;
+            return _toStringAccountIdLookupOfT(
+                &m->basic.assets_transfer_V10.dest,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* assets_transfer_V10 - amount */;
+            return _toStringCompactAssetBalance(
+                &m->basic.assets_transfer_V10.asset,
+                &m->basic.assets_transfer_V10.amount,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 5129: /* module 20 call 9 */
+        switch (itemIdx) {
+        case 0: /* assets_transfer_keep_alive_V10 - amount */;
+            return _toStringCompactu32(
+                &m->basic.assets_transfer_keep_alive_V10.asset,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* assets_transfer_V10 - payee */;
+            return _toStringAccountIdLookupOfT(
+                &m->basic.assets_transfer_keep_alive_V10.dest,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* assets_transfer_V10 - amount */;
+            return _toStringCompactAssetBalance(
+                &m->basic.assets_transfer_keep_alive_V10.asset,
+                &m->basic.assets_transfer_keep_alive_V10.amount,
+                outValue, outValueLen,
+                pageIdx, pageCount);
         default:
             return parser_no_data;
         }
@@ -4508,13 +4606,11 @@ bool _getMethod_IsNestingSupported_V10(uint8_t moduleIdx, uint8_t callIdx)
     case 1026: // Indices:Free
     case 1027: // Indices:Force transfer
     case 1028: // Indices:Freeze
-    case 1284: // Balances:Transfer all
     case 1285: // Balances:Force unreserve
     case 1792: // Staking:Bond
     case 1793: // Staking:Bond extra
     case 1794: // Staking:Unbond
     case 1795: // Staking:Withdraw Unbonded
-    case 1796: // Staking:Validate
     case 1797: // Staking:Nominate
     case 1798: // Staking:Chill
     case 1799: // Staking:Set payee
@@ -4527,15 +4623,12 @@ bool _getMethod_IsNestingSupported_V10(uint8_t moduleIdx, uint8_t callIdx)
     case 1807: // Staking:Force unstake
     case 1808: // Staking:Force new era always
     case 1809: // Staking:Cancel deferred slash
-    case 1810: // Staking:Payout stakers
     case 1811: // Staking:Rebond
     case 1812: // Staking:Set history depth
     case 1813: // Staking:Reap stash
     case 1814: // Staking:Kick
     case 1816: // Staking:Chill other
     case 1817: // Staking:Force apply min commission
-    case 2304: // Session:Set keys
-    case 2305: // Session:Purge keys
     case 2560: // Sudo:Sudo
     case 2562: // Sudo:Set key
     case 2561: // Sudo:Sudo unchecked weight
@@ -4558,6 +4651,8 @@ bool _getMethod_IsNestingSupported_V10(uint8_t moduleIdx, uint8_t callIdx)
     case 4866: // Treasury:Approve proposal
     case 4867: // Treasury:Spend
     case 4868: // Treasury:Remove approval
+    case 5128: // Assets:transfer
+    case 5129: // Assets:transfer_keep_alive
     case 6400: // Vesting:Vest
     case 6401: // Vesting:Vest other
     case 6402: // Vesting:Vested transfer

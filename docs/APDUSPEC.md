@@ -27,12 +27,17 @@ The general structure of commands and responses is as follows:
 | Return code | Description             |
 | ----------- | ----------------------- |
 | 0x6400      | Execution Error         |
+| 0x6700      | Wrong buffer length     |
 | 0x6982      | Empty buffer            |
 | 0x6983      | Output buffer too small |
+| 0x6984      | Data is invalid         |
 | 0x6986      | Command not allowed     |
+| 0x6987      | Tx is not initialized   |
+| 0x6B00      | P1/P2 are invalid       |
 | 0x6D00      | INS not supported       |
 | 0x6E00      | CLA not supported       |
 | 0x6F00      | Unknown                 |
+| 0x6F01      | Sign / verify error     |
 | 0x9000      | Success                 |
 
 ---
@@ -53,14 +58,15 @@ The general structure of commands and responses is as follows:
 
 #### Response
 
-| Field   | Type     | Content          | Note                            |
-| ------- | -------- | ---------------- | ------------------------------- |
-| TEST    | byte (1) | Test Mode        | 0xFF means test mode is enabled |
-| MAJOR   | byte (2) | Version Major    | 0..65535                        |
-| MINOR   | byte (2) | Version Minor    | 0..65535                        |
-| PATCH   | byte (2) | Version Patch    | 0..65535                        |
-| LOCKED  | byte (1) | Device is locked |                                 |
-| SW1-SW2 | byte (2) | Return code      | see list of return codes        |
+| Field     | Type     | Content          | Note                            |
+| --------- | -------- | ---------------- | ------------------------------- |
+| TEST      | byte (1) | Test Mode        | 0xFF means test mode is enabled |
+| MAJOR     | byte (2) | Version Major    | 0..65535                        |
+| MINOR     | byte (2) | Version Minor    | 0..65535                        |
+| PATCH     | byte (2) | Version Patch    | 0..65535                        |
+| LOCKED    | byte (1) | Device is locked |                                 |
+| TARGET_ID | byte (4) | Target Id        |                                 |
+| SW1-SW2   | byte (2) | Return code      | see list of return codes        |
 
 ---
 

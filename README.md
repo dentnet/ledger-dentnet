@@ -25,7 +25,7 @@ Please:
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
 
-# DENTNet 10.9200.x
+# DENTNet 10.9230.x
 
 ## System
 
@@ -73,7 +73,7 @@ Please:
 |Set balance |    | :heavy_check_mark: | :heavy_check_mark: | `LookupasStaticLookupSource` who <br/>`CompactBalance` new_free <br/>`CompactBalance` new_reserved <br/> | 
 |Force transfer | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | `LookupasStaticLookupSource` source <br/>`LookupasStaticLookupSource` dest <br/>`CompactBalance` amount <br/> | 
 |Transfer keep alive | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | `LookupasStaticLookupSource` dest <br/>`CompactBalance` amount <br/> | 
-|Transfer all | :heavy_check_mark:  | :heavy_check_mark: |   | `LookupasStaticLookupSource` dest <br/>`bool` keep_alive <br/> | 
+|Transfer all | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | `LookupasStaticLookupSource` dest <br/>`bool` keep_alive <br/> | 
 |Force unreserve |    | :heavy_check_mark: |   | `LookupasStaticLookupSource` who <br/>`Balance` amount <br/> | 
 
 ## Staking
@@ -84,7 +84,7 @@ Please:
 |Bond extra | :heavy_check_mark:  | :heavy_check_mark: |   | `CompactBalance` amount <br/> | 
 |Unbond | :heavy_check_mark:  | :heavy_check_mark: |   | `CompactBalance` amount <br/> | 
 |Withdraw Unbonded | :heavy_check_mark:  | :heavy_check_mark: |   | `u32` num_slashing_spans <br/> | 
-|Validate | :heavy_check_mark:  | :heavy_check_mark: |   | `ValidatorPrefs` prefs <br/> | 
+|Validate | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | `ValidatorPrefs` prefs <br/> | 
 |Nominate | :heavy_check_mark:  | :heavy_check_mark: |   | `VecLookupasStaticLookupSource` targets <br/> | 
 |Chill | :heavy_check_mark:  | :heavy_check_mark: |   |  | 
 |Set payee | :heavy_check_mark:  | :heavy_check_mark: |   | `RewardDestination` payee <br/> | 
@@ -98,7 +98,7 @@ Please:
 |Force unstake |    | :heavy_check_mark: |   | `AccountId` stash <br/>`u32` num_slashing_spans <br/> | 
 |Force new era always |    | :heavy_check_mark: |   |  | 
 |Cancel deferred slash |    | :heavy_check_mark: |   | `EraIndex` era <br/>`Vecu32` slash_indices <br/> | 
-|Payout stakers | :heavy_check_mark:  | :heavy_check_mark: |   | `AccountId` validator_stash <br/>`EraIndex` era <br/> | 
+|Payout stakers | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | `AccountId` validator_stash <br/>`EraIndex` era <br/> | 
 |Rebond | :heavy_check_mark:  | :heavy_check_mark: |   | `CompactBalance` amount <br/> | 
 |Set history depth |    | :heavy_check_mark: |   | `Compactu32` new_history_depth <br/>`Compactu32` era_items_deleted <br/> | 
 |Reap stash |    | :heavy_check_mark: |   | `AccountId` stash <br/>`u32` num_slashing_spans <br/> | 
@@ -111,8 +111,15 @@ Please:
 
 | Name        | Light | XL | Nesting | Arguments | 
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Set keys | :heavy_check_mark:  | :heavy_check_mark: |   | `Keys` keys <br/>`Bytes` proof <br/> | 
-|Purge keys | :heavy_check_mark:  | :heavy_check_mark: |   |  | 
+|Set keys | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: | `Keys` keys <br/>`Bytes` proof <br/> | 
+|Purge keys | :heavy_check_mark:  | :heavy_check_mark: | :heavy_check_mark: |  | 
+
+## Assets
+
+| Name        | Light | XL | Nesting | Arguments | 
+| :---------- |:------------:|:--------:|:--------:|:--------|
+|Transfer | :heavy_check_mark:  | :heavy_check_mark: |  | `Compactu32` asset_id <br />`LookupasStaticLookupSource` dest <br/>`CompactBalance` amount <br/>| 
+|Transfer keep alive | :heavy_check_mark:  | :heavy_check_mark: |   | `Compactu32` asset_id <br /> `LookupasStaticLookupSource` dest <br/>`CompactBalance` amount <br/> | 
 
 ## Sudo
 
