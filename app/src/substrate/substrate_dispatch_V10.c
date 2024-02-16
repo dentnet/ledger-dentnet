@@ -814,6 +814,20 @@ __Z_INLINE parser_error_t _readMethod_electionprovidermultiphase_governance_fall
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_sponsor_register_sponsor_V10(
+    parser_context_t* c, pd_sponsor_register_sponsor_V10_t* m)
+{
+    CHECK_ERROR(_readAccountId(c, &m->account))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_sponsor_remove_sponsor_V10(
+    parser_context_t* c, pd_sponsor_remove_sponsor_V10_t* m)
+{
+    CHECK_ERROR(_readAccountId(c, &m->account))
+    return parser_ok;
+}
+
 #endif
 
 parser_error_t _readMethod_V10(
@@ -1128,6 +1142,13 @@ parser_error_t _readMethod_V10(
     case 10243: /* module 40 call 3 */
         CHECK_ERROR(_readMethod_preimage_unrequest_preimage_V10(c, &method->basic.preimage_unrequest_preimage_V10))
         break;
+    case 26112: /* module 102 call 0 */
+        CHECK_ERROR(_readMethod_sponsor_register_sponsor_V10(c, &method->basic.sponsor_register_sponsor_V10))
+        break;
+    case 26113: /* module 102 call 1 */
+        CHECK_ERROR(_readMethod_sponsor_remove_sponsor_V10(c, &method->basic.sponsor_remove_sponsor_V10))
+        break;
+
 #endif
     default:
         return parser_unexpected_callIndex;
@@ -1185,6 +1206,8 @@ const char* _getMethod_ModuleName_V10(uint8_t moduleIdx)
         return STR_MO_VOTERLIST;
     case 40:
         return STR_MO_PREIMAGE;
+    case 102:
+        return STR_MO_SPONSOR;
 #endif
     default:
         return NULL;
@@ -1549,6 +1572,10 @@ const char* _getMethod_Name_V10_ParserFull(uint16_t callPrivIdx)
         return STR_ME_SLASH_TIP;
     case 9220: /* module 36 call 4 */
         return STR_ME_GOVERNANCE_FALLBACK;
+    case 26112: /* module 102 call 0 */
+        return STR_ME_SPONSOR_REGISTER;
+    case 26113: /* module 102 call 1 */
+        return STR_ME_SPONSOR_REMOVE;
 #endif
     default:
         return NULL;
@@ -1885,6 +1912,10 @@ uint8_t _getMethod_NumItems_V10(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 9220: /* module 36 call 4 */
         return 2;
+    case 26112: /* module 102 call 0 */
+        return 1;
+    case 26113: /* module 102 call 1 */
+        return 1;
 #endif
     default:
         return 0;
@@ -3170,6 +3201,20 @@ const char* _getMethod_ItemName_V10(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
             return STR_IT_maybe_max_voters;
         case 1:
             return STR_IT_maybe_max_targets;
+        default:
+            return NULL;
+        }
+    case 26112: /* module 102 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_account;
+        default:
+            return NULL;
+        }
+    case 26113: /* module 102 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_account;
         default:
             return NULL;
         }
@@ -4555,6 +4600,26 @@ parser_error_t _getMethod_ItemValue_V10(
         default:
             return parser_no_data;
         }
+    case 26112: /* module 102 call 0 */
+        switch (itemIdx) {
+        case 0: /* sponsor_register_sponsor_V10 - account */
+            return _toStringAccountId(
+                &m->basic.sponsor_register_sponsor_V10.account,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 26113: /* module 102 call 1 */
+        switch (itemIdx) {
+        case 0: /* sponsor_remove_sponsor_V10 - account */
+            return _toStringAccountId(
+                &m->basic.sponsor_remove_sponsor_V10.account,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
 #endif
     default:
         return parser_ok;
@@ -4681,6 +4746,8 @@ bool _getMethod_IsNestingSupported_V10(uint8_t moduleIdx, uint8_t callIdx)
     case 10241: // Preimage:Unnote preimage
     case 10242: // Preimage:Request preimage
     case 10243: // Preimage:Unrequest preimage
+    case 26112: // Sponsor:Register sponsor
+    case 26113: // Sponsor:Remove sponsor
         return false;
     default:
         return true;

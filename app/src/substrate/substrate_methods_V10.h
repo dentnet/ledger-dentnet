@@ -802,6 +802,16 @@ typedef struct {
 typedef struct {
 } pd_auctions_cancel_auction_V10_t;
 
+#define PD_CALL_SPONSOR_REGISTER_SPONSOR_V10 0
+typedef struct {
+    pd_AccountId_t account;
+} pd_sponsor_register_sponsor_V10_t;
+
+#define PD_CALL_SPONSOR_REMOVE_SPONSOR_V10 1
+typedef struct {
+    pd_AccountId_t account;
+} pd_sponsor_remove_sponsor_V10_t;
+
 #endif
 
 typedef union {
@@ -940,6 +950,8 @@ typedef union {
     pd_auctions_new_auction_V10_t auctions_new_auction_V10;
     pd_auctions_bid_V10_t auctions_bid_V10;
     pd_auctions_cancel_auction_V10_t auctions_cancel_auction_V10;
+    pd_sponsor_register_sponsor_V10_t sponsor_register_sponsor_V10;
+    pd_sponsor_remove_sponsor_V10_t sponsor_remove_sponsor_V10;
 #endif
 } pd_MethodBasic_V10_t;
 

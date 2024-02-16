@@ -47,6 +47,7 @@ static const char* STR_MO_REGISTRAR = "Registrar";
 static const char* STR_MO_AUCTIONS = "Auctions";
 static const char* STR_MO_BAGSLIST = "Bagslist";
 static const char* STR_MO_XCMPALLET = "Xcmpallet";
+static const char* STR_MO_SPONSOR = "Sponsor";
 
 // Methods names
 static const char* STR_ME_REMARK = "Remark";
@@ -322,6 +323,8 @@ static const char* STR_ME_FORCE_SUBSCRIBE_VERSION_NOTIFY = "Force subscribe vers
 static const char* STR_ME_FORCE_UNSUBSCRIBE_VERSION_NOTIFY = "Force unsubscribe version notify";
 static const char* STR_ME_LIMITED_RESERVE_TRANSFER_ASSETS = "Limited reserve transfer assets";
 static const char* STR_ME_LIMITED_TELEPORT_ASSETS = "Limited teleport assets";
+static const char* STR_ME_SPONSOR_REGISTER = "Register sponsor";
+static const char* STR_ME_SPONSOR_REMOVE = "Remove sponsor";
 
 // Items names
 static const char* STR_IT_ratio = "Ratio";
