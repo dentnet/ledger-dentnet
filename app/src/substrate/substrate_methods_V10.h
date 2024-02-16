@@ -802,6 +802,42 @@ typedef struct {
 typedef struct {
 } pd_auctions_cancel_auction_V10_t;
 
+#define PD_CALL_NOMINATIONPOOLS_POOL_WITHDRAW_UNBONDED_V10 4
+typedef struct {
+    pd_PoolId_t pool_id;
+    pd_u32_t num_slashing_spans;
+} pd_nominationpools_pool_withdraw_unbonded_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_CREATE_WITH_POOL_ID_V10 7
+typedef struct {
+    pd_CompactBalance_t amount;
+    pd_AccountIdLookupOfT_t root;
+    pd_AccountIdLookupOfT_t nominator;
+    pd_AccountIdLookupOfT_t bouncer;
+    pd_PoolId_t pool_id;
+} pd_nominationpools_create_with_pool_id_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_SET_CONFIGS_V10 11
+typedef struct {
+    pd_ConfigOpBalanceOfT_t min_join_bond;
+    pd_ConfigOpBalanceOfT_t min_create_bond;
+    pd_ConfigOpu32_t max_pools;
+    pd_ConfigOpu32_t max_members;
+    pd_ConfigOpu32_t max_members_per_pool;
+    pd_ConfigOpPerbill_t global_max_commission;
+} pd_nominationpools_set_configs_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_BOND_EXTRA_OTHER_V10 14
+typedef struct {
+    pd_AccountIdLookupOfT_t member;
+    pd_BondExtraBalanceOfT_t extra;
+} pd_nominationpools_bond_extra_other_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_ADJUST_POOL_DEPOSIT_V10 21
+typedef struct {
+    pd_PoolId_t pool_id;
+} pd_nominationpools_adjust_pool_deposit_V10_t;
+
 #define PD_CALL_SPONSOR_REGISTER_SPONSOR_V10 0
 typedef struct {
     pd_AccountId_t account;
@@ -950,6 +986,11 @@ typedef union {
     pd_auctions_new_auction_V10_t auctions_new_auction_V10;
     pd_auctions_bid_V10_t auctions_bid_V10;
     pd_auctions_cancel_auction_V10_t auctions_cancel_auction_V10;
+    pd_nominationpools_pool_withdraw_unbonded_V10_t nominationpools_pool_withdraw_unbonded_V10;
+    pd_nominationpools_create_with_pool_id_V10_t nominationpools_create_with_pool_id_V10;
+    pd_nominationpools_set_configs_V10_t nominationpools_set_configs_V10;
+    pd_nominationpools_bond_extra_other_V10_t nominationpools_bond_extra_other_V10;
+    pd_nominationpools_adjust_pool_deposit_V10_t nominationpools_adjust_pool_deposit_V10;
     pd_sponsor_register_sponsor_V10_t sponsor_register_sponsor_V10;
     pd_sponsor_remove_sponsor_V10_t sponsor_remove_sponsor_V10;
 #endif
@@ -1052,6 +1093,105 @@ typedef struct {
     pd_H256_t call_hash;
 } pd_multisig_cancel_as_multi_V10_t;
 
+#define PD_CALL_NOMINATIONPOOLS_JOIN_V10 0
+typedef struct {
+    pd_CompactBalance_t amount;
+    pd_PoolId_t pool_id;
+} pd_nominationpools_join_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_BOND_EXTRA_V10 1
+typedef struct {
+    pd_BondExtraBalanceOfT_t extra;
+} pd_nominationpools_bond_extra_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_CLAIM_PAYOUT_V10 2
+typedef struct {
+} pd_nominationpools_claim_payout_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_UNBOND_V10 3
+typedef struct {
+    pd_AccountIdLookupOfT_t member_account;
+    pd_CompactBalance_t unbonding_points;
+} pd_nominationpools_unbond_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_WITHDRAW_UNBONDED_V10 5
+typedef struct {
+    pd_AccountIdLookupOfT_t member_account;
+    pd_u32_t num_slashing_spans;
+} pd_nominationpools_withdraw_unbonded_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_CREATE_V10 6
+typedef struct {
+    pd_CompactBalance_t amount;
+    pd_AccountIdLookupOfT_t root;
+    pd_AccountIdLookupOfT_t nominator;
+    pd_AccountIdLookupOfT_t bouncer;
+} pd_nominationpools_create_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_NOMINATE_V10 8
+typedef struct {
+    pd_PoolId_t pool_id;
+    pd_VecAccountId_t validators;
+} pd_nominationpools_nominate_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_SET_STATE_V10 9
+typedef struct {
+    pd_PoolId_t pool_id;
+    pd_PoolState_t state;
+} pd_nominationpools_set_state_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_SET_METADATA_V10 10
+typedef struct {
+    pd_PoolId_t pool_id;
+    pd_Vecu8_t metadata;
+} pd_nominationpools_set_metadata_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_UPDATE_ROLES_V10 12
+typedef struct {
+    pd_PoolId_t pool_id;
+    pd_ConfigOpAccountId_t new_root;
+    pd_ConfigOpAccountId_t new_nominator;
+    pd_ConfigOpAccountId_t new_bouncer;
+} pd_nominationpools_update_roles_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_CHILL_V10 13
+typedef struct {
+    pd_PoolId_t pool_id;
+} pd_nominationpools_chill_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_SET_CLAIM_PERMISSION_V10 15
+typedef struct {
+    pd_ClaimPermission_t permission;
+} pd_nominationpools_set_claim_permission_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_CLAIM_PAYOUT_OTHER_V10 16
+typedef struct {
+    pd_AccountId_t other;
+} pd_nominationpools_claim_payout_other_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_SET_COMMISSION_V10 17
+typedef struct {
+    pd_PoolId_t pool_id;
+    pd_OptionTuplePerbillAccountId_t new_commission;
+} pd_nominationpools_set_commission_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_SET_COMMISSION_MAX_V10 18
+typedef struct {
+    pd_PoolId_t pool_id;
+    pd_Perbill_t max_commission;
+} pd_nominationpools_set_commission_max_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_SET_COMMISSION_CHANGE_RATE_V10 19
+typedef struct {
+    pd_PoolId_t pool_id;
+    pd_CommissionChangeRateBlockNumber_t change_rate;
+} pd_nominationpools_set_commission_change_rate_V10_t;
+
+#define PD_CALL_NOMINATIONPOOLS_CLAIM_COMMISSION_V10 20
+typedef struct {
+    pd_PoolId_t pool_id;
+} pd_nominationpools_claim_commission_V10_t;
+
 #endif
 
 typedef union {
@@ -1075,6 +1215,23 @@ typedef union {
     pd_multisig_as_multi_V10_t multisig_as_multi_V10;
     pd_multisig_approve_as_multi_V10_t multisig_approve_as_multi_V10;
     pd_multisig_cancel_as_multi_V10_t multisig_cancel_as_multi_V10;
+    pd_nominationpools_join_V10_t nominationpools_join_V10;
+    pd_nominationpools_bond_extra_V10_t nominationpools_bond_extra_V10;
+    pd_nominationpools_claim_payout_V10_t nominationpools_claim_payout_V10;
+    pd_nominationpools_unbond_V10_t nominationpools_unbond_V10;
+    pd_nominationpools_withdraw_unbonded_V10_t nominationpools_withdraw_unbonded_V10;
+    pd_nominationpools_create_V10_t nominationpools_create_V10;
+    pd_nominationpools_nominate_V10_t nominationpools_nominate_V10;
+    pd_nominationpools_set_state_V10_t nominationpools_set_state_V10;
+    pd_nominationpools_set_metadata_V10_t nominationpools_set_metadata_V10;
+    pd_nominationpools_update_roles_V10_t nominationpools_update_roles_V10;
+    pd_nominationpools_chill_V10_t nominationpools_chill_V10;
+    pd_nominationpools_set_claim_permission_V10_t nominationpools_set_claim_permission_V10;
+    pd_nominationpools_claim_payout_other_V10_t nominationpools_claim_payout_other_V10;
+    pd_nominationpools_set_commission_V10_t nominationpools_set_commission_V10;
+    pd_nominationpools_set_commission_max_V10_t nominationpools_set_commission_max_V10;
+    pd_nominationpools_set_commission_change_rate_V10_t nominationpools_set_commission_change_rate_V10;
+    pd_nominationpools_claim_commission_V10_t nominationpools_claim_commission_V10;
 #endif
 } pd_MethodNested_V10_t;
 
