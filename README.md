@@ -25,7 +25,7 @@ Please:
 - **Do not use a Ledger device with funds for development purposes.**
 - **Have a separate and marked device that is used ONLY for development and testing**
 
-# DENTNet 10.9230.x
+# DENTNet 10.9241.x
 
 ## System
 
@@ -80,7 +80,7 @@ Please:
 
 | Name        | Light | XL | Nesting | Arguments | 
 | :---------- |:------------:|:--------:|:--------:|:--------|
-|Bond | :heavy_check_mark:  | :heavy_check_mark: |   | `LookupasStaticLookupSource` controller <br/>`CompactBalance` amount <br/>`RewardDestination` payee <br/> | 
+|Bond | :heavy_check_mark:  | :heavy_check_mark: |   | `CompactBalance` amount <br/>`RewardDestination` payee <br/> | 
 |Bond extra | :heavy_check_mark:  | :heavy_check_mark: |   | `CompactBalance` amount <br/> | 
 |Unbond | :heavy_check_mark:  | :heavy_check_mark: |   | `CompactBalance` amount <br/> | 
 |Withdraw Unbonded | :heavy_check_mark:  | :heavy_check_mark: |   | `u32` num_slashing_spans <br/> | 
@@ -246,3 +246,38 @@ Please:
 |Set emergency election result |    |   |   | `SupportsAccountId` supports <br/> |
 |Submit |    |   |   | `BoxRawSolutionSolutionOfMinerConfig` raw_solution <br/> |
 |Governance fallback |    | :heavy_check_mark: |   | `Optionu32` maybe_max_voters <br/>`Optionu32` maybe_max_targets <br/> |
+
+## NominationPools
+
+| Name                       | Nano S | Nano S / XL        | Nesting            | Arguments                                                                                                                                                                                                               |
+| -------------------------- | ------ | ------------------ | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Join                       |        | :heavy_check_mark: | :heavy_check_mark: | `CompactBalance`amount<br/>`PoolId`pool_id<br/>                                                                                                                                                                         |
+| Bond extra                 |        | :heavy_check_mark: | :heavy_check_mark: | `BondExtraBalanceOfT`extra<br/>                                                                                                                                                                                         |
+| Claim payout               |        | :heavy_check_mark: | :heavy_check_mark: |                                                                                                                                                                                                                         |
+| Unbond                     |        | :heavy_check_mark: | :heavy_check_mark: | `AccountIdLookupOfT`member_account<br/>`CompactBalance`unbonding_points<br/>                                                                                                                                            |
+| Pool withdraw unbonded     |        | :heavy_check_mark: |                    | `PoolId`pool_id<br/>`u32`num_slashing_spans<br/>                                                                                                                                                                        |
+| Withdraw Unbonded          |        | :heavy_check_mark: | :heavy_check_mark: | `AccountIdLookupOfT`member_account<br/>`u32`num_slashing_spans<br/>                                                                                                                                                     |
+| Create                     |        | :heavy_check_mark: | :heavy_check_mark: | `CompactBalance`amount<br/>`AccountIdLookupOfT`root<br/>`AccountIdLookupOfT`nominator<br/>`AccountIdLookupOfT`bouncer<br/>                                                                                              |
+| Create with pool id        |        | :heavy_check_mark: |                    | `CompactBalance`amount<br/>`AccountIdLookupOfT`root<br/>`AccountIdLookupOfT`nominator<br/>`AccountIdLookupOfT`bouncer<br/>`PoolId`pool_id<br/>                                                                          |
+| Nominate                   |        | :heavy_check_mark: | :heavy_check_mark: | `PoolId`pool_id<br/>`VecAccountId`validators<br/>                                                                                                                                                                       |
+| Set state                  |        | :heavy_check_mark: | :heavy_check_mark: | `PoolId`pool_id<br/>`PoolState`state<br/>                                                                                                                                                                               |
+| Set metadata               |        | :heavy_check_mark: | :heavy_check_mark: | `PoolId`pool_id<br/>`Vecu8`metadata<br/>                                                                                                                                                                                |
+| Set configs                |        | :heavy_check_mark: |                    | `ConfigOpBalanceOfT`min_join_bond<br/>`ConfigOpBalanceOfT`min_create_bond<br/>`ConfigOpu32`max_pools<br/>`ConfigOpu32`max_members<br/>`ConfigOpu32`max_members_per_pool<br/>`ConfigOpPerbill`global_max_commission<br/> |
+| Update roles               |        | :heavy_check_mark: | :heavy_check_mark: | `PoolId`pool_id<br/>`ConfigOpAccountId`new_root<br/>`ConfigOpAccountId`new_nominator<br/>`ConfigOpAccountId`new_bouncer<br/>                                                                                            |
+| Chill                      |        | :heavy_check_mark: | :heavy_check_mark: | `PoolId`pool_id<br/>                                                                                                                                                                                                    |
+| Bond extra other           |        | :heavy_check_mark: |                    | `AccountIdLookupOfT`member<br/>`BondExtraBalanceOfT`extra<br/>                                                                                                                                                          |
+| Set claim permission       |        | :heavy_check_mark: | :heavy_check_mark: | `ClaimPermission`permission<br/>                                                                                                                                                                                        |
+| Claim payout other         |        | :heavy_check_mark: | :heavy_check_mark: | `AccountId`other<br/>                                                                                                                                                                                                   |
+| Set commission             |        | :heavy_check_mark: | :heavy_check_mark: | `PoolId`pool_id<br/>`OptionTuplePerbillAccountId`new_commission<br/>                                                                                                                                                    |
+| Set commission max         |        | :heavy_check_mark: | :heavy_check_mark: | `PoolId`pool_id<br/>`Perbill`max_commission<br/>                                                                                                                                                                        |
+| Set commission change rate |        | :heavy_check_mark: | :heavy_check_mark: | `PoolId`pool_id<br/>`CommissionChangeRateBlockNumber`change_rate<br/>                                                                                                                                                   |
+| Claim commission           |        | :heavy_check_mark: | :heavy_check_mark: | `PoolId`pool_id<br/>                                                                                                                                                                                                    |
+| Adjust pool deposit        |        | :heavy_check_mark: |                    | `PoolId`pool_id<br/>     
+
+
+## Sponsor 
+
+| Name                  | Nano S | Nano S / XL        |  Nesting | Arguments                                                                                |
+| --------------------- | ------ | ------------------ |  ------- | ---------------------------------------------------------------------------------------- |
+| Register Sponsor      |        | :heavy_check_mark: |          | `AccountId`account<br/>                                                                  |
+| Remove Sponsor        |        | :heavy_check_mark: |          | `AccountId`account<br/>                                                                  |

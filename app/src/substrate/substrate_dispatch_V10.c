@@ -814,6 +814,201 @@ __Z_INLINE parser_error_t _readMethod_electionprovidermultiphase_governance_fall
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_sponsor_register_sponsor_V10(
+    parser_context_t* c, pd_sponsor_register_sponsor_V10_t* m)
+{
+    CHECK_ERROR(_readAccountId(c, &m->account))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_sponsor_remove_sponsor_V10(
+    parser_context_t* c, pd_sponsor_remove_sponsor_V10_t* m)
+{
+    CHECK_ERROR(_readAccountId(c, &m->account))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_join_V10(
+    parser_context_t* c, pd_nominationpools_join_V10_t* m)
+{
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_bond_extra_V10(
+    parser_context_t* c, pd_nominationpools_bond_extra_V10_t* m)
+{
+    CHECK_ERROR(_readBondExtraBalanceOfT(c, &m->extra))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_claim_payout_V10(
+    parser_context_t* c, pd_nominationpools_claim_payout_V10_t* m)
+{
+    UNUSED(c);
+    UNUSED(m);
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_unbond_V10(
+    parser_context_t* c, pd_nominationpools_unbond_V10_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->member_account))
+    CHECK_ERROR(_readCompactBalance(c, &m->unbonding_points))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_pool_withdraw_unbonded_V10(
+    parser_context_t* c, pd_nominationpools_pool_withdraw_unbonded_V10_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readu32(c, &m->num_slashing_spans))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_withdraw_unbonded_V10(
+    parser_context_t* c, pd_nominationpools_withdraw_unbonded_V10_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->member_account))
+    CHECK_ERROR(_readu32(c, &m->num_slashing_spans))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_create_V10(
+    parser_context_t* c, pd_nominationpools_create_V10_t* m)
+{
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->root))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->nominator))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->bouncer))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_create_with_pool_id_V10(
+    parser_context_t* c, pd_nominationpools_create_with_pool_id_V10_t* m)
+{
+    CHECK_ERROR(_readCompactBalance(c, &m->amount))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->root))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->nominator))
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->bouncer))
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_nominate_V10(
+    parser_context_t* c, pd_nominationpools_nominate_V10_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readVecAccountId(c, &m->validators))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_set_state_V10(
+    parser_context_t* c, pd_nominationpools_set_state_V10_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readPoolState(c, &m->state))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_set_metadata_V10(
+    parser_context_t* c, pd_nominationpools_set_metadata_V10_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readVecu8(c, &m->metadata))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_set_configs_V10(
+    parser_context_t* c, pd_nominationpools_set_configs_V10_t* m)
+{
+    CHECK_ERROR(_readConfigOpBalanceOfT(c, &m->min_join_bond))
+    CHECK_ERROR(_readConfigOpBalanceOfT(c, &m->min_create_bond))
+    CHECK_ERROR(_readConfigOpu32(c, &m->max_pools))
+    CHECK_ERROR(_readConfigOpu32(c, &m->max_members))
+    CHECK_ERROR(_readConfigOpu32(c, &m->max_members_per_pool))
+    CHECK_ERROR(_readConfigOpPerbill(c, &m->global_max_commission))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_update_roles_V10(
+    parser_context_t* c, pd_nominationpools_update_roles_V10_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readConfigOpAccountId(c, &m->new_root))
+    CHECK_ERROR(_readConfigOpAccountId(c, &m->new_nominator))
+    CHECK_ERROR(_readConfigOpAccountId(c, &m->new_bouncer))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_chill_V10(
+    parser_context_t* c, pd_nominationpools_chill_V10_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_bond_extra_other_V10(
+    parser_context_t* c, pd_nominationpools_bond_extra_other_V10_t* m)
+{
+    CHECK_ERROR(_readAccountIdLookupOfT(c, &m->member))
+    CHECK_ERROR(_readBondExtraBalanceOfT(c, &m->extra))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_set_claim_permission_V10(
+    parser_context_t* c, pd_nominationpools_set_claim_permission_V10_t* m)
+{
+    CHECK_ERROR(_readClaimPermission(c, &m->permission))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_claim_payout_other_V10(
+    parser_context_t* c, pd_nominationpools_claim_payout_other_V10_t* m)
+{
+    CHECK_ERROR(_readAccountId(c, &m->other))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_set_commission_V10(
+    parser_context_t* c, pd_nominationpools_set_commission_V10_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readOptionTuplePerbillAccountId(c, &m->new_commission))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_set_commission_max_V10(
+    parser_context_t* c, pd_nominationpools_set_commission_max_V10_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readPerbill(c, &m->max_commission))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_set_commission_change_rate_V10(
+    parser_context_t* c, pd_nominationpools_set_commission_change_rate_V10_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    CHECK_ERROR(_readCommissionChangeRateBlockNumber(c, &m->change_rate))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_claim_commission_V10(
+    parser_context_t* c, pd_nominationpools_claim_commission_V10_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    return parser_ok;
+}
+
+__Z_INLINE parser_error_t _readMethod_nominationpools_adjust_pool_deposit_V10(
+    parser_context_t* c, pd_nominationpools_adjust_pool_deposit_V10_t* m)
+{
+    CHECK_ERROR(_readPoolId(c, &m->pool_id))
+    return parser_ok;
+}
+
 #endif
 
 parser_error_t _readMethod_V10(
@@ -1128,6 +1323,79 @@ parser_error_t _readMethod_V10(
     case 10243: /* module 40 call 3 */
         CHECK_ERROR(_readMethod_preimage_unrequest_preimage_V10(c, &method->basic.preimage_unrequest_preimage_V10))
         break;
+    case 12032: /* module 47 call 0 */
+        CHECK_ERROR(_readMethod_nominationpools_join_V10(c, &method->nested.nominationpools_join_V10))
+        break;
+    case 12033: /* module 47 call 1 */
+        CHECK_ERROR(_readMethod_nominationpools_bond_extra_V10(c, &method->nested.nominationpools_bond_extra_V10))
+        break;
+    case 12034: /* module 47 call 2 */
+        CHECK_ERROR(_readMethod_nominationpools_claim_payout_V10(c, &method->nested.nominationpools_claim_payout_V10))
+        break;
+    case 12035: /* module 47 call 3 */
+        CHECK_ERROR(_readMethod_nominationpools_unbond_V10(c, &method->nested.nominationpools_unbond_V10))
+        break;
+    case 12036: /* module 47 call 4 */
+        CHECK_ERROR(_readMethod_nominationpools_pool_withdraw_unbonded_V10(c, &method->basic.nominationpools_pool_withdraw_unbonded_V10))
+        break;
+    case 12037: /* module 47 call 5 */
+        CHECK_ERROR(_readMethod_nominationpools_withdraw_unbonded_V10(c, &method->nested.nominationpools_withdraw_unbonded_V10))
+        break;
+    case 12038: /* module 47 call 6 */
+        CHECK_ERROR(_readMethod_nominationpools_create_V10(c, &method->nested.nominationpools_create_V10))
+        break;
+    case 12039: /* module 47 call 7 */
+        CHECK_ERROR(_readMethod_nominationpools_create_with_pool_id_V10(c, &method->basic.nominationpools_create_with_pool_id_V10))
+        break;
+    case 12040: /* module 47 call 8 */
+        CHECK_ERROR(_readMethod_nominationpools_nominate_V10(c, &method->nested.nominationpools_nominate_V10))
+        break;
+    case 12041: /* module 47 call 9 */
+        CHECK_ERROR(_readMethod_nominationpools_set_state_V10(c, &method->nested.nominationpools_set_state_V10))
+        break;
+    case 12042: /* module 47 call 10 */
+        CHECK_ERROR(_readMethod_nominationpools_set_metadata_V10(c, &method->nested.nominationpools_set_metadata_V10))
+        break;
+    case 12043: /* module 47 call 11 */
+        CHECK_ERROR(_readMethod_nominationpools_set_configs_V10(c, &method->basic.nominationpools_set_configs_V10))
+        break;
+    case 12044: /* module 47 call 12 */
+        CHECK_ERROR(_readMethod_nominationpools_update_roles_V10(c, &method->nested.nominationpools_update_roles_V10))
+        break;
+    case 12045: /* module 47 call 13 */
+        CHECK_ERROR(_readMethod_nominationpools_chill_V10(c, &method->nested.nominationpools_chill_V10))
+        break;
+    case 12046: /* module 47 call 14 */
+        CHECK_ERROR(_readMethod_nominationpools_bond_extra_other_V10(c, &method->basic.nominationpools_bond_extra_other_V10))
+        break;
+    case 12047: /* module 47 call 15 */
+        CHECK_ERROR(_readMethod_nominationpools_set_claim_permission_V10(c, &method->nested.nominationpools_set_claim_permission_V10))
+        break;
+    case 12048: /* module 47 call 16 */
+        CHECK_ERROR(_readMethod_nominationpools_claim_payout_other_V10(c, &method->nested.nominationpools_claim_payout_other_V10))
+        break;
+    case 12049: /* module 47 call 17 */
+        CHECK_ERROR(_readMethod_nominationpools_set_commission_V10(c, &method->nested.nominationpools_set_commission_V10))
+        break;
+    case 12050: /* module 47 call 18 */
+        CHECK_ERROR(_readMethod_nominationpools_set_commission_max_V10(c, &method->nested.nominationpools_set_commission_max_V10))
+        break;
+    case 12051: /* module 47 call 19 */
+        CHECK_ERROR(_readMethod_nominationpools_set_commission_change_rate_V10(c, &method->nested.nominationpools_set_commission_change_rate_V10))
+        break;
+    case 12052: /* module 47 call 20 */
+        CHECK_ERROR(_readMethod_nominationpools_claim_commission_V10(c, &method->nested.nominationpools_claim_commission_V10))
+        break;
+    case 12053: /* module 47 call 21 */
+        CHECK_ERROR(_readMethod_nominationpools_adjust_pool_deposit_V10(c, &method->basic.nominationpools_adjust_pool_deposit_V10))
+        break;
+    case 26112: /* module 102 call 0 */
+        CHECK_ERROR(_readMethod_sponsor_register_sponsor_V10(c, &method->basic.sponsor_register_sponsor_V10))
+        break;
+    case 26113: /* module 102 call 1 */
+        CHECK_ERROR(_readMethod_sponsor_remove_sponsor_V10(c, &method->basic.sponsor_remove_sponsor_V10))
+        break;
+
 #endif
     default:
         return parser_unexpected_callIndex;
@@ -1185,6 +1453,10 @@ const char* _getMethod_ModuleName_V10(uint8_t moduleIdx)
         return STR_MO_VOTERLIST;
     case 40:
         return STR_MO_PREIMAGE;
+    case 47:
+        return STR_MO_NOMINATIONPOOLS;
+    case 102:
+        return STR_MO_SPONSOR;
 #endif
     default:
         return NULL;
@@ -1549,6 +1821,54 @@ const char* _getMethod_Name_V10_ParserFull(uint16_t callPrivIdx)
         return STR_ME_SLASH_TIP;
     case 9220: /* module 36 call 4 */
         return STR_ME_GOVERNANCE_FALLBACK;
+    case 12032: /* module 47 call 0 */
+        return STR_ME_JOIN;
+    case 12033: /* module 47 call 1 */
+        return STR_ME_BOND_EXTRA;
+    case 12034: /* module 47 call 2 */
+        return STR_ME_CLAIM_PAYOUT;
+    case 12035: /* module 47 call 3 */
+        return STR_ME_UNBOND;
+    case 12036: /* module 47 call 4 */
+        return STR_ME_POOL_WITHDRAW_UNBONDED;
+    case 12037: /* module 47 call 5 */
+        return STR_ME_WITHDRAW_UNBONDED;
+    case 12038: /* module 47 call 6 */
+        return STR_ME_CREATE;
+    case 12039: /* module 47 call 7 */
+        return STR_ME_CREATE_WITH_POOL_ID;
+    case 12040: /* module 47 call 8 */
+        return STR_ME_NOMINATE;
+    case 12041: /* module 47 call 9 */
+        return STR_ME_SET_STATE;
+    case 12042: /* module 47 call 10 */
+        return STR_ME_SET_METADATA;
+    case 12043: /* module 47 call 11 */
+        return STR_ME_SET_CONFIGS;
+    case 12044: /* module 47 call 12 */
+        return STR_ME_UPDATE_ROLES;
+    case 12045: /* module 47 call 13 */
+        return STR_ME_CHILL;
+    case 12046: /* module 47 call 14 */
+        return STR_ME_BOND_EXTRA_OTHER;
+    case 12047: /* module 47 call 15 */
+        return STR_ME_SET_CLAIM_PERMISSION;
+    case 12048: /* module 39 call 16 */
+        return STR_ME_CLAIM_PAYOUT_OTHER;
+    case 12049: /* module 39 call 17 */
+        return STR_ME_SET_COMMISSION;
+    case 12050: /* module 39 call 18 */
+        return STR_ME_SET_COMMISSION_MAX;
+    case 12051: /* module 39 call 19 */
+        return STR_ME_SET_COMMISSION_CHANGE_RATE;
+    case 12052: /* module 39 call 20 */
+        return STR_ME_CLAIM_COMMISSION;
+    case 12053: /* module 39 call 21 */
+        return STR_ME_ADJUST_POOL_DEPOSIT;
+    case 26112: /* module 102 call 0 */
+        return STR_ME_SPONSOR_REGISTER;
+    case 26113: /* module 102 call 1 */
+        return STR_ME_SPONSOR_REMOVE;
 #endif
     default:
         return NULL;
@@ -1885,6 +2205,54 @@ uint8_t _getMethod_NumItems_V10(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 9220: /* module 36 call 4 */
         return 2;
+    case 12032: /* module 47 call 0 */
+        return 2;
+    case 12033: /* module 47 call 1 */
+        return 1;
+    case 12034: /* module 47 call 2 */
+        return 0;
+    case 12035: /* module 47 call 3 */
+        return 2;
+    case 12036: /* module 47 call 4 */
+        return 2;
+    case 12037: /* module 47 call 5 */
+        return 2;
+    case 12038: /* module 47 call 6 */
+        return 4;
+    case 12039: /* module 47 call 7 */
+        return 5;
+    case 12040: /* module 47 call 8 */
+        return 2;
+    case 12041: /* module 47 call 9 */
+        return 2;
+    case 12042: /* module 47 call 10 */
+        return 2;
+    case 12043: /* module 47 call 11 */
+        return 6;
+    case 12044: /* module 47 call 12 */
+        return 4;
+    case 12045: /* module 47 call 13 */
+        return 1;
+    case 12046: /* module 47 call 14 */
+        return 2;
+    case 12047: /* module 47 call 15 */
+        return 1;
+    case 12048: /* module 47 call 16 */
+        return 1;
+    case 12049: /* module 47 call 17 */
+        return 2;
+    case 12050: /* module 47 call 18 */
+        return 2;
+    case 12051: /* module 47 call 19 */
+        return 2;
+    case 12052: /* module 47 call 20 */
+        return 1;
+    case 12053: /* module 47 call 21 */
+        return 1;
+    case 26112: /* module 102 call 0 */
+        return 1;
+    case 26113: /* module 102 call 1 */
+        return 1;
 #endif
     default:
         return 0;
@@ -3170,6 +3538,224 @@ const char* _getMethod_ItemName_V10(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
             return STR_IT_maybe_max_voters;
         case 1:
             return STR_IT_maybe_max_targets;
+        default:
+            return NULL;
+        }
+    case 12032: /* module 47 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_amount;
+        case 1:
+            return STR_IT_pool_id;
+        default:
+            return NULL;
+        }
+    case 12033: /* module 47 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_extra;
+        default:
+            return NULL;
+        }
+    case 12034: /* module 47 call 2 */
+        switch (itemIdx) {
+        default:
+            return NULL;
+        }
+    case 12035: /* module 47 call 4 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_member_account;
+        case 1:
+            return STR_IT_unbonding_points;
+        default:
+            return NULL;
+        }
+    case 12036: /* module 47 call 4 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_pool_id;
+        case 1:
+            return STR_IT_num_slashing_spans;
+        default:
+            return NULL;
+        }
+    case 12037: /* module 47 call 5 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_member_account;
+        case 1:
+            return STR_IT_num_slashing_spans;
+        default:
+            return NULL;
+        }
+    case 12038: /* module 47 call 6 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_amount;
+        case 1:
+            return STR_IT_root;
+        case 2:
+            return STR_IT_nominator;
+        case 3:
+            return STR_IT_bouncer;
+        default:
+            return NULL;
+        }
+    case 12039: /* module 47 call 7 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_amount;
+        case 1:
+            return STR_IT_root;
+        case 2:
+            return STR_IT_nominator;
+        case 3:
+            return STR_IT_bouncer;
+        case 4:
+            return STR_IT_pool_id;
+        default:
+            return NULL;
+        }
+    case 12040: /* module 47 call 8 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_pool_id;
+        case 1:
+            return STR_IT_validators;
+        default:
+            return NULL;
+        }
+    case 12041: /* module 47 call 9 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_pool_id;
+        case 1:
+            return STR_IT_state;
+        default:
+            return NULL;
+        }
+    case 12042: /* module 47 call 10 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_pool_id;
+        case 1:
+            return STR_IT_metadata;
+        default:
+            return NULL;
+        }
+    case 12043: /* module 47 call 11 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_min_join_bond;
+        case 1:
+            return STR_IT_min_create_bond;
+        case 2:
+            return STR_IT_max_pools;
+        case 3:
+            return STR_IT_max_members;
+        case 4:
+            return STR_IT_max_members_per_pool;
+        case 5:
+            return STR_IT_global_max_commission;
+        default:
+            return NULL;
+        }
+    case 12044: /* module 47 call 12 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_pool_id;
+        case 1:
+            return STR_IT_new_root;
+        case 2:
+            return STR_IT_new_nominator;
+        case 3:
+            return STR_IT_new_bouncer;
+        default:
+            return NULL;
+        }
+    case 12045: /* module 47 call 13 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_pool_id;
+        default:
+            return NULL;
+        }
+    case 12046: /* module 47 call 14 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_member;
+        case 1:
+            return STR_IT_extra;
+        default:
+            return NULL;
+        }
+    case 12047: /* module 47 call 15 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_permission;
+        default:
+            return NULL;
+        }
+    case 12048: /* module 47 call 16 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_other;
+        default:
+            return NULL;
+        }
+    case 12049: /* module 47 call 17 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_pool_id;
+        case 1:
+            return STR_IT_new_commission;
+        default:
+            return NULL;
+        }
+    case 12050: /* module 47 call 18 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_pool_id;
+        case 1:
+            return STR_IT_max_commission;
+        default:
+            return NULL;
+        }
+    case 12051: /* module 47 call 19 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_pool_id;
+        case 1:
+            return STR_IT_change_rate;
+        default:
+            return NULL;
+        }
+    case 12052: /* module 47 call 20 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_pool_id;
+        default:
+            return NULL;
+        }
+    case 12053: /* module 47 call 21 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_pool_id;
+        default:
+            return NULL;
+        }
+    case 26112: /* module 102 call 0 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_account;
+        default:
+            return NULL;
+        }
+    case 26113: /* module 102 call 1 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_account;
         default:
             return NULL;
         }
@@ -4539,7 +5125,6 @@ parser_error_t _getMethod_ItemValue_V10(
         default:
             return parser_no_data;
         }
-
     case 9220: /* module 36 call 4 */
         switch (itemIdx) {
         case 0: /* electionprovidermultiphase_governance_fallback_V10 - maybe_max_voters */;
@@ -4550,6 +5135,371 @@ parser_error_t _getMethod_ItemValue_V10(
         case 1: /* electionprovidermultiphase_governance_fallback_V10 - maybe_max_targets */;
             return _toStringOptionu32(
                 &m->basic.electionprovidermultiphase_governance_fallback_V10.maybe_max_targets,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12032: /* module 47 call 0 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_join_V10 - amount */;
+            return _toStringCompactBalance(
+                &m->nested.nominationpools_join_V10.amount,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* nominationpools_join_V10 - pool_id */;
+            return _toStringPoolId(
+                &m->nested.nominationpools_join_V10.pool_id,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12033: /* module 47 call 1 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_bond_extra_V10 - extra */;
+            return _toStringBondExtraBalanceOfT(
+                &m->nested.nominationpools_bond_extra_V10.extra,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12034: /* module 47 call 2 */
+        switch (itemIdx) {
+        default:
+            return parser_no_data;
+        }
+    case 12035: /* module 47 call 4 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_unbond_V10 - member_account */;
+            return _toStringAccountIdLookupOfT(
+                &m->nested.nominationpools_unbond_V10.member_account,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* nominationpools_unbond_V10 - unbonding_points */;
+            return _toStringCompactBalance(
+                &m->nested.nominationpools_unbond_V10.unbonding_points,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12036: /* module 47 call 4 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_pool_withdraw_unbonded_V10 - pool_id */;
+            return _toStringPoolId(
+                &m->basic.nominationpools_pool_withdraw_unbonded_V10.pool_id,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* nominationpools_pool_withdraw_unbonded_V10 - num_slashing_spans */;
+            return _toStringu32(
+                &m->basic.nominationpools_pool_withdraw_unbonded_V10.num_slashing_spans,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12037: /* module 47 call 5 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_withdraw_unbonded_V10 - member_account */;
+            return _toStringAccountIdLookupOfT(
+                &m->nested.nominationpools_withdraw_unbonded_V10.member_account,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* nominationpools_withdraw_unbonded_V10 - num_slashing_spans */;
+            return _toStringu32(
+                &m->nested.nominationpools_withdraw_unbonded_V10.num_slashing_spans,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12038: /* module 47 call 6 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_create_V10 - amount */;
+            return _toStringCompactBalance(
+                &m->nested.nominationpools_create_V10.amount,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* nominationpools_create_V10 - root */;
+            return _toStringAccountIdLookupOfT(
+                &m->nested.nominationpools_create_V10.root,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* nominationpools_create_V10 - nominator */;
+            return _toStringAccountIdLookupOfT(
+                &m->nested.nominationpools_create_V10.nominator,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* nominationpools_create_V10 - bouncer */;
+            return _toStringAccountIdLookupOfT(
+                &m->nested.nominationpools_create_V10.bouncer,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12039: /* module 47 call 7 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_create_with_pool_id_V10 - amount */;
+            return _toStringCompactBalance(
+                &m->basic.nominationpools_create_with_pool_id_V10.amount,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* nominationpools_create_with_pool_id_V10 - root */;
+            return _toStringAccountIdLookupOfT(
+                &m->basic.nominationpools_create_with_pool_id_V10.root,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* nominationpools_create_with_pool_id_V10 - nominator */;
+            return _toStringAccountIdLookupOfT(
+                &m->basic.nominationpools_create_with_pool_id_V10.nominator,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* nominationpools_create_with_pool_id_V10 - bouncer */;
+            return _toStringAccountIdLookupOfT(
+                &m->basic.nominationpools_create_with_pool_id_V10.bouncer,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 4: /* nominationpools_create_with_pool_id_V10 - pool_id */;
+            return _toStringPoolId(
+                &m->basic.nominationpools_create_with_pool_id_V10.pool_id,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12040: /* module 47 call 8 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_nominate_V10 - pool_id */;
+            return _toStringPoolId(
+                &m->nested.nominationpools_nominate_V10.pool_id,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* nominationpools_nominate_V10 - validators */;
+            return _toStringVecAccountId(
+                &m->nested.nominationpools_nominate_V10.validators,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12041: /* module 47 call 9 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_set_state_V10 - pool_id */;
+            return _toStringPoolId(
+                &m->nested.nominationpools_set_state_V10.pool_id,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* nominationpools_set_state_V10 - state */;
+            return _toStringPoolState(
+                &m->nested.nominationpools_set_state_V10.state,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12042: /* module 47 call 10 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_set_metadata_V10 - pool_id */;
+            return _toStringPoolId(
+                &m->nested.nominationpools_set_metadata_V10.pool_id,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* nominationpools_set_metadata_V10 - metadata */;
+            return _toStringVecu8(
+                &m->nested.nominationpools_set_metadata_V10.metadata,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12043: /* module 47 call 11 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_set_configs_V10 - min_join_bond */;
+            return _toStringConfigOpBalanceOfT(
+                &m->basic.nominationpools_set_configs_V10.min_join_bond,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* nominationpools_set_configs_V10 - min_create_bond */;
+            return _toStringConfigOpBalanceOfT(
+                &m->basic.nominationpools_set_configs_V10.min_create_bond,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* nominationpools_set_configs_V10 - max_pools */;
+            return _toStringConfigOpu32(
+                &m->basic.nominationpools_set_configs_V10.max_pools,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* nominationpools_set_configs_V10 - max_members */;
+            return _toStringConfigOpu32(
+                &m->basic.nominationpools_set_configs_V10.max_members,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 4: /* nominationpools_set_configs_V10 - max_members_per_pool */;
+            return _toStringConfigOpu32(
+                &m->basic.nominationpools_set_configs_V10.max_members_per_pool,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 5: /* nominationpools_set_configs_V10 - global_max_commission */;
+            return _toStringConfigOpPerbill(
+                &m->basic.nominationpools_set_configs_V10.global_max_commission,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12044: /* module 47 call 12 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_update_roles_V10 - pool_id */;
+            return _toStringPoolId(
+                &m->nested.nominationpools_update_roles_V10.pool_id,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* nominationpools_update_roles_V10 - new_root */;
+            return _toStringConfigOpAccountId(
+                &m->nested.nominationpools_update_roles_V10.new_root,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* nominationpools_update_roles_V10 - new_nominator */;
+            return _toStringConfigOpAccountId(
+                &m->nested.nominationpools_update_roles_V10.new_nominator,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 3: /* nominationpools_update_roles_V10 - new_bouncer */;
+            return _toStringConfigOpAccountId(
+                &m->nested.nominationpools_update_roles_V10.new_bouncer,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12045: /* module 47 call 13 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_chill_V10 - pool_id */;
+            return _toStringPoolId(
+                &m->nested.nominationpools_chill_V10.pool_id,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12046: /* module 47 call 14 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_bond_extra_other_V10 - member */;
+            return _toStringAccountIdLookupOfT(
+                &m->basic.nominationpools_bond_extra_other_V10.member,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* nominationpools_bond_extra_other_V10 - extra */;
+            return _toStringBondExtraBalanceOfT(
+                &m->basic.nominationpools_bond_extra_other_V10.extra,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12047: /* module 47 call 15 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_set_claim_permission_V10 - permission */;
+            return _toStringClaimPermission(
+                &m->nested.nominationpools_set_claim_permission_V10.permission,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12048: /* module 47 call 16 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_claim_payout_other_V10 - other */;
+            return _toStringAccountId(
+                &m->nested.nominationpools_claim_payout_other_V10.other,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12049: /* module 47 call 17 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_set_commission_V10 - pool_id */;
+            return _toStringPoolId(
+                &m->nested.nominationpools_set_commission_V10.pool_id,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* nominationpools_set_commission_V10 - new_commission */;
+            return _toStringOptionTuplePerbillAccountId(
+                &m->nested.nominationpools_set_commission_V10.new_commission,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12050: /* module 47 call 18 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_set_commission_max_V10 - pool_id */;
+            return _toStringPoolId(
+                &m->nested.nominationpools_set_commission_max_V10.pool_id,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* nominationpools_set_commission_max_V10 - max_commission */;
+            return _toStringPerbill(
+                &m->nested.nominationpools_set_commission_max_V10.max_commission,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12051: /* module 47 call 19 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_set_commission_change_rate_V10 - pool_id */;
+            return _toStringPoolId(
+                &m->nested.nominationpools_set_commission_change_rate_V10.pool_id,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* nominationpools_set_commission_change_rate_V10 - change_rate */;
+            return _toStringCommissionChangeRateBlockNumber(
+                &m->nested.nominationpools_set_commission_change_rate_V10.change_rate,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12052: /* module 47 call 20 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_claim_commission_V10 - pool_id */;
+            return _toStringPoolId(
+                &m->nested.nominationpools_claim_commission_V10.pool_id,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 12053: /* module 47 call 21 */
+        switch (itemIdx) {
+        case 0: /* nominationpools_adjust_pool_deposit_V10 - pool_id */;
+            return _toStringPoolId(
+                &m->basic.nominationpools_adjust_pool_deposit_V10.pool_id,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 26112: /* module 102 call 0 */
+        switch (itemIdx) {
+        case 0: /* sponsor_register_sponsor_V10 - account */
+            return _toStringAccountId(
+                &m->basic.sponsor_register_sponsor_V10.account,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 26113: /* module 102 call 1 */
+        switch (itemIdx) {
+        case 0: /* sponsor_remove_sponsor_V10 - account */
+            return _toStringAccountId(
+                &m->basic.sponsor_remove_sponsor_V10.account,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
@@ -4681,6 +5631,8 @@ bool _getMethod_IsNestingSupported_V10(uint8_t moduleIdx, uint8_t callIdx)
     case 10241: // Preimage:Unnote preimage
     case 10242: // Preimage:Request preimage
     case 10243: // Preimage:Unrequest preimage
+    case 26112: // Sponsor:Register sponsor
+    case 26113: // Sponsor:Remove sponsor
         return false;
     default:
         return true;

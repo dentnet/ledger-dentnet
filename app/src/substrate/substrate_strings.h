@@ -47,6 +47,8 @@ static const char* STR_MO_REGISTRAR = "Registrar";
 static const char* STR_MO_AUCTIONS = "Auctions";
 static const char* STR_MO_BAGSLIST = "Bagslist";
 static const char* STR_MO_XCMPALLET = "Xcmpallet";
+static const char* STR_MO_NOMINATIONPOOLS = "Nominationpools";
+static const char* STR_MO_SPONSOR = "Sponsor";
 
 // Methods names
 static const char* STR_ME_REMARK = "Remark";
@@ -322,6 +324,24 @@ static const char* STR_ME_FORCE_SUBSCRIBE_VERSION_NOTIFY = "Force subscribe vers
 static const char* STR_ME_FORCE_UNSUBSCRIBE_VERSION_NOTIFY = "Force unsubscribe version notify";
 static const char* STR_ME_LIMITED_RESERVE_TRANSFER_ASSETS = "Limited reserve transfer assets";
 static const char* STR_ME_LIMITED_TELEPORT_ASSETS = "Limited teleport assets";
+static const char* STR_ME_JOIN = "Join";
+static const char* STR_ME_CLAIM_PAYOUT = "Claim payout";
+static const char* STR_ME_POOL_WITHDRAW_UNBONDED = "Pool withdraw unbonded";
+static const char* STR_ME_CREATE_WITH_POOL_ID = "Create with pool id";
+static const char* STR_ME_SET_STATE = "Set state";
+static const char* STR_ME_SET_CONFIGS = "Set configs";
+static const char* STR_ME_UPDATE_ROLES = "Update roles";
+static const char* STR_ME_BOND_EXTRA_OTHER = "Bond extra other";
+static const char* STR_ME_SET_CLAIM_PERMISSION = "Set claim permission";
+static const char* STR_ME_CLAIM_PAYOUT_OTHER = "Claim payout other";
+static const char* STR_ME_SET_COMMISSION = "Set commission";
+static const char* STR_ME_SET_COMMISSION_MAX = "Set commission max";
+static const char* STR_ME_SET_COMMISSION_CHANGE_RATE = "Set commission change rate";
+static const char* STR_ME_CLAIM_COMMISSION = "Claim commission";
+static const char* STR_ME_ADJUST_POOL_DEPOSIT = "Adjust pool deposit";
+static const char* STR_ME_SET_METADATA = "Set metadata";
+static const char* STR_ME_SPONSOR_REGISTER = "Register sponsor";
+static const char* STR_ME_SPONSOR_REMOVE = "Remove sponsor";
 
 // Items names
 static const char* STR_IT_ratio = "Ratio";
@@ -487,6 +507,30 @@ static const char* STR_IT_xcm_version = "Xcm version";
 static const char* STR_IT_maybe_xcm_version = "Maybe xcm version";
 static const char* STR_IT_weight_limit = "Weight limit";
 static const char* STR_IT_asset_id = "Asset Id";
+static const char* STR_IT_state = "State";
+static const char* STR_IT_metadata = "Metadata";
+static const char* STR_IT_min_join_bond = "Min join bond";
+static const char* STR_IT_min_create_bond = "Min create bond";
+static const char* STR_IT_max_pools = "Max pools";
+static const char* STR_IT_max_members = "Max members";
+static const char* STR_IT_max_members_per_pool = "Max members per pool";
+static const char* STR_IT_global_max_commission = "Global max commission";
+static const char* STR_IT_pool_id = "Pool id";
+static const char* STR_IT_extra = "Extra";
+static const char* STR_IT_member_account = "Member account";
+static const char* STR_IT_unbonding_points = "Unbonding points";
+static const char* STR_IT_root = "Root";
+static const char* STR_IT_nominator = "Nominator";
+static const char* STR_IT_bouncer = "Bouncer";
+static const char* STR_IT_validators = "Validators";
+static const char* STR_IT_new_root = "New root";
+static const char* STR_IT_new_nominator = "New nominator";
+static const char* STR_IT_new_bouncer = "New bouncer";
+static const char* STR_IT_member = "Member";
+static const char* STR_IT_permission = "Permission";
+static const char* STR_IT_new_commission = "New commission";
+static const char* STR_IT_max_commission = "Max commission";
+static const char* STR_IT_change_rate = "Change rate";
 
 #ifdef __cplusplus
 }
