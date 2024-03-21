@@ -49,6 +49,7 @@ static const char* STR_MO_BAGSLIST = "Bagslist";
 static const char* STR_MO_XCMPALLET = "Xcmpallet";
 static const char* STR_MO_NOMINATIONPOOLS = "Nominationpools";
 static const char* STR_MO_SPONSOR = "Sponsor";
+static const char* STR_MO_EXCHANGE = "Exchange";
 
 // Methods names
 static const char* STR_ME_REMARK = "Remark";
@@ -342,6 +343,7 @@ static const char* STR_ME_ADJUST_POOL_DEPOSIT = "Adjust pool deposit";
 static const char* STR_ME_SET_METADATA = "Set metadata";
 static const char* STR_ME_SPONSOR_REGISTER = "Register sponsor";
 static const char* STR_ME_SPONSOR_REMOVE = "Remove sponsor";
+static const char* STR_ME_EXCHANGE = "Exchange";
 
 // Items names
 static const char* STR_IT_ratio = "Ratio";
@@ -531,6 +533,7 @@ static const char* STR_IT_permission = "Permission";
 static const char* STR_IT_new_commission = "New commission";
 static const char* STR_IT_max_commission = "Max commission";
 static const char* STR_IT_change_rate = "Change rate";
+static const char* STR_IT_expected_value = "Expected value";
 
 #ifdef __cplusplus
 }

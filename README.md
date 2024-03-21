@@ -281,3 +281,9 @@ Please:
 | --------------------- | ------ | ------------------ |  ------- | ---------------------------------------------------------------------------------------- |
 | Register Sponsor      |        | :heavy_check_mark: |          | `AccountId`account<br/>                                                                  |
 | Remove Sponsor        |        | :heavy_check_mark: |          | `AccountId`account<br/>                                                                  |
+
+## Exchange 
+
+| Name                  | Nano S | Nano S / XL        |  Nesting | Arguments                                                                                |
+| --------------------- | ------ | ------------------ |  ------- | ---------------------------------------------------------------------------------------- |
+| Exchange              | :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: | `Compactu32` asset_id <br />`CompactBalance` amount <br/>`CompactBalance` expected_value <br/> |

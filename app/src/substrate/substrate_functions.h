@@ -561,6 +561,12 @@ parser_error_t _toStringBalance(
     uint8_t pageIdx,
     uint8_t* pageCount);
 
+parser_error_t _toStringAssetBalance(
+    const pd_u32_t *asset,
+    const pd_Balance_t *v,
+    char *outValue, uint16_t outValueLen,
+    uint8_t pageIdx, uint8_t *pageCount);
+
 parser_error_t _toStringData(
     const pd_Data_t* v,
     char* outValue,
