@@ -3793,6 +3793,44 @@ parser_error_t _toStringBalance(
     return parser_ok;
 }
 
+parser_error_t _toStringAssetBalance(
+    const pd_u32_t *asset,
+    const pd_Balance_t *v,
+    char *outValue, uint16_t outValueLen,
+    uint8_t pageIdx, uint8_t *pageCount)
+{
+    CLEAN_AND_CHECK()
+
+    char bufferUI[200];
+    memset(outValue, 0, outValueLen);
+    memset(bufferUI, 0, sizeof(bufferUI));
+    *pageCount = 1;
+
+    uint8_t bcdOut[100];
+    const uint16_t bcdOutLen = sizeof(bcdOut);
+    const uint8_t decimals = (*asset == TOKEN_ASSET_ID) ? TOKEN_AMOUNT_DECIMAL_PLACES : 0;
+    const char *ticker = (*asset == TOKEN_ASSET_ID) ? TOKEN_TICKER : "";
+
+    bignumLittleEndian_to_bcd(bcdOut, bcdOutLen, v->_ptr, 16);
+    if (!bignumLittleEndian_bcdprint(bufferUI, sizeof(bufferUI), bcdOut, bcdOutLen)) {
+        return parser_unexpected_buffer_end;
+    }
+
+    // Format number
+    if (intstr_to_fpstr_inplace(bufferUI, sizeof(bufferUI), decimals) == 0) {
+        return parser_unexpected_value;
+    }
+
+    number_inplace_trimming(bufferUI, 1);
+    number_inplace_trimming(bufferUI, 1);
+    if (z_str3join(bufferUI, sizeof(bufferUI), ticker, "") != zxerr_ok) {
+        return parser_print_not_supported;
+    }
+
+    pageString(outValue, outValueLen, bufferUI, pageIdx, pageCount);
+    return parser_ok;
+}
+
 parser_error_t _toStringData(
     const pd_Data_t* v,
     char* outValue,

@@ -1021,6 +1021,13 @@ typedef struct {
     pd_bool_t keep_alive;
 } pd_balances_transfer_all_V10_t;
 
+#define PD_CALL_EXCHANGE_EXCHANGE_V10 2
+typedef struct {
+    pd_u32_t asset;
+    pd_Balance_t amount;
+    pd_Balance_t expected_value;
+} pd_exchange_exchange_V10_t;
+
 #ifdef SUBSTRATE_PARSER_FULL
 #define PD_CALL_SYSTEM_REMARK_V10 0
 typedef struct {
@@ -1203,6 +1210,7 @@ typedef union {
     pd_staking_payout_stakers_V10_t staking_payout_stakers_V10;
     pd_session_set_keys_V10_t session_set_keys_V10;
     pd_session_purge_keys_V10_t session_purge_keys_V10;
+    pd_exchange_exchange_V10_t exchange_exchange_V10;
 #ifdef SUBSTRATE_PARSER_FULL
     pd_system_remark_V10_t system_remark_V10;
     pd_system_set_heap_pages_V10_t system_set_heap_pages_V10;

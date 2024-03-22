@@ -187,6 +187,15 @@ __Z_INLINE parser_error_t _readMethod_utility_force_batch_V10(
     return parser_ok;
 }
 
+__Z_INLINE parser_error_t _readMethod_exchange_exchange_V10(
+    parser_context_t* c, pd_exchange_exchange_V10_t* m)
+{
+    CHECK_ERROR(_readu32(c, &m->asset))
+    CHECK_ERROR(_readBalance(c, &m->amount))
+    CHECK_ERROR(_readBalance(c, &m->expected_value))
+    return parser_ok;
+}
+
 #ifdef SUBSTRATE_PARSER_FULL
 
 __Z_INLINE parser_error_t _readMethod_system_remark_V10(
@@ -1087,6 +1096,10 @@ parser_error_t _readMethod_V10(
     case 6660: /* module 26 call 4 */
         CHECK_ERROR(_readMethod_utility_force_batch_V10(c, &method->basic.utility_force_batch_V10))
         break;
+    case 26626: /* module 104 call 2 */
+        CHECK_ERROR(_readMethod_exchange_exchange_V10(c, &method->nested.exchange_exchange_V10))
+        break;
+
 
 #ifdef SUBSTRATE_PARSER_FULL
     case 0: /* module 0 call 0 */
@@ -1422,6 +1435,8 @@ const char* _getMethod_ModuleName_V10(uint8_t moduleIdx)
         return STR_MO_ASSETS;
     case 26:
         return STR_MO_UTILITY;
+    case 104:
+        return STR_MO_EXCHANGE;
 #ifdef SUBSTRATE_PARSER_FULL
     case 0:
         return STR_MO_SYSTEM;
@@ -1532,6 +1547,8 @@ const char* _getMethod_Name_V10(uint8_t moduleIdx, uint8_t callIdx)
         return STR_ME_POKE;
     case 18696: /* module 73 call 8 */
         return STR_ME_CONTRIBUTE_ALL;
+    case 26626: /* module 104 call 2 */
+        return STR_ME_EXCHANGE;
     default:
         return _getMethod_Name_V10_ParserFull(callPrivIdx);
     }
@@ -1926,6 +1943,8 @@ uint8_t _getMethod_NumItems_V10(uint8_t moduleIdx, uint8_t callIdx)
         return 1;
     case 6660: /* module 26 call 4 */
         return 1;
+    case 26626: /* module 104 call 2 */
+        return 3;
 #ifdef SUBSTRATE_PARSER_FULL
     case 0: /* module 0 call 0 */
         return 1;
@@ -2437,6 +2456,17 @@ const char* _getMethod_ItemName_V10(uint8_t moduleIdx, uint8_t callIdx, uint8_t 
         switch (itemIdx) {
         case 0:
             return STR_IT_calls;
+        default:
+            return NULL;
+        }
+    case 26626: /* module 104 call 2 */
+        switch (itemIdx) {
+        case 0:
+            return STR_IT_asset_id;
+        case 1:
+            return STR_IT_amount;
+        case 2:
+            return STR_IT_expected_value;
         default:
             return NULL;
         }
@@ -4043,6 +4073,27 @@ parser_error_t _getMethod_ItemValue_V10(
         case 0: /* utility_force_batch_V10 - calls */;
             return _toStringVecCall(
                 &m->basic.utility_force_batch_V10.calls,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        default:
+            return parser_no_data;
+        }
+    case 26626: /* module 104 call 2 */
+        switch (itemIdx) {
+        case 0: /* exchange_exchange_V10 - asset_id */;
+            return _toStringu32(
+                &m->nested.exchange_exchange_V10.asset,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 1: /* exchange_exchange_V10 - amount */;
+            return _toStringAssetBalance(
+                &m->nested.exchange_exchange_V10.asset,
+                &m->nested.exchange_exchange_V10.amount,
+                outValue, outValueLen,
+                pageIdx, pageCount);
+        case 2: /* exchange_exchange_V10 - expected_value */;
+            return _toStringBalance(
+                &m->nested.exchange_exchange_V10.expected_value,
                 outValue, outValueLen,
                 pageIdx, pageCount);
         default:
