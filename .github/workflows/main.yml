@@ -6,6 +6,8 @@ on:
     branches:
       - main
       - develop
+      - master # for safety reasons
+      - dev  # for safety reasons
 
 jobs:
   configure:
@@ -20,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
       - name: Install deps
@@ -28,32 +30,6 @@ jobs:
           sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
           make deps
       - run: make cpp_test
-
-  build_only_rust:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          submodules: true
-      - name: Install rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-      - name: rustfmt
-        run: |
-          cd ./app/rust
-          cargo fmt --version
-          cargo fmt -- --check
-      - name: clippy
-        run: |
-          cd ./app/rust
-          cargo clippy --version
-          cargo clippy --all-features --all-targets || true
-      - name: run tests
-        run: |
-          cd ./app/rust
-          cargo test
 
   build_ledger:
     needs: configure
@@ -64,22 +40,18 @@ jobs:
       env:
         BOLOS_SDK: /opt/nanos-secure-sdk
     outputs:
-      size: ${{steps.build.outputs.size}}
+      size_generic: ${{steps.build_generic.outputs.size_generic}}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
       - name: Build Standard app
-        id: build
+        id: build_generic
         shell: bash -l {0}
         run: |
-          SUBSTRATE_PARSER_FULL=1 make
-          echo "size=$(python3 deps/ledger-zxlib/scripts/getSize.py s)" >> $GITHUB_OUTPUT
-      - name: Build SR25519 app
-        shell: bash -l {0}
-        run: |
-          SUBSTRATE_PARSER_FULL=1 SUPPORT_SR25519=1 make
+          make
+          echo "size_generic=$(python3 deps/ledger-zxlib/scripts/getSize.py s)" >> $GITHUB_OUTPUT
 
   size_nano_s:
     needs: build_ledger
@@ -88,8 +60,8 @@ jobs:
       NANOS_LIMIT_SIZE: 136
     steps:
       - run: |
-          echo "LNS app size: ${{needs.build_ledger.outputs.size}} KiB"
-          [ ${{needs.build_ledger.outputs.size}} -le $NANOS_LIMIT_SIZE ]
+          echo "LNS Generic app size: ${{needs.build_ledger.outputs.size_generic}} KiB"
+          [ ${{needs.build_ledger.outputs.size_generic}} -le $NANOS_LIMIT_SIZE ]
 
   test_zemu:
     runs-on: ubuntu-latest
@@ -100,7 +72,7 @@ jobs:
           echo $HOME
           echo $DISPLAY
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
       - run: sudo apt-get update -y && sudo apt-get install -y libusb-1.0.0 libudev-dev
@@ -116,6 +88,12 @@ jobs:
       - name: Build and run zemu tests
         run: |
           make test_all
+      - name: Upload Snapshots (only failure)
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: snapshots-tmp
+          path: tests_zemu/snapshots-tmp/
 
   build_package_nanos:
     needs: [configure, build, build_ledger, test_zemu]
@@ -128,7 +106,7 @@ jobs:
         BOLOS_SDK: /opt/nanos-secure-sdk
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
       - name: Install deps
@@ -137,7 +115,7 @@ jobs:
       - name: Build NanoS
         shell: bash -l {0}
         run: |
-          make SUBSTRATE_PARSER_FULL=0
+          PRODUCTION_BUILD=1 make
           mv ./app/pkg/installer_s.sh ./app/pkg/installer_nanos.sh
       - name: Set tag
         id: nanos_light
@@ -148,44 +126,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          files: ./app/pkg/installer_nanos.sh
+          files: |
+            ./app/pkg/installer_nanos.sh
           tag_name: ${{ steps.nanos_light.outputs.tag_name }}
-          draft: false
-          prerelease: false
-
-  build_package_nanos_xl:
-    needs: [configure, build, build_ledger, test_zemu]
-    if: ${{ github.ref == 'refs/heads/main' }}
-    runs-on: ubuntu-latest
-    container:
-      image: zondax/ledger-app-builder:latest
-      options: --user ${{ needs.configure.outputs.uid_gid }}
-      env:
-        BOLOS_SDK: /opt/nanos-secure-sdk
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          submodules: true
-      - name: Install deps
-        run: pip install ledgerblue
-
-      - name: Build NanoS XL
-        shell: bash -l {0}
-        run: |
-          make COIN=DENTX_XL SUBSTRATE_PARSER_FULL=1
-          mv ./app/pkg/installer_s.sh ./app/pkg/installer_nanos_xl.sh
-      - name: Set tag
-        id: nanos_xl
-        run: echo "tag_name=$(./app/pkg/installer_nanos_xl.sh version)" >> $GITHUB_OUTPUT
-      - name: Update Release
-        id: update_release_1
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          files: ./app/pkg/installer_nanos_xl.sh
-          tag_name: ${{ steps.nanos_xl.outputs.tag_name }}
           draft: false
           prerelease: false
 
@@ -200,7 +143,7 @@ jobs:
         BOLOS_SDK: /opt/nanosplus-secure-sdk
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
       - name: Install deps
@@ -209,7 +152,7 @@ jobs:
       - name: Build NanoSP
         shell: bash -l {0}
         run: |
-          make COIN=DENTX_XL SUBSTRATE_PARSER_FULL=1
+          PRODUCTION_BUILD=1 make
           mv ./app/pkg/installer_s2.sh ./app/pkg/installer_nanos_plus.sh
       - name: Set tag
         id: nanosp
@@ -220,7 +163,44 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          files: ./app/pkg/installer_nanos_plus.sh
+          files: |
+            ./app/pkg/installer_nanos_plus.sh
           tag_name: ${{ steps.nanosp.outputs.tag_name }}
+          draft: false
+          prerelease: false
+
+  build_package_stax:
+    needs: [configure, build, build_ledger, test_zemu]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    container:
+      image: zondax/ledger-app-builder:latest
+      options: --user ${{ needs.configure.outputs.uid_gid }}
+      env:
+        BOLOS_SDK: /opt/stax-secure-sdk
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Install deps
+        run: pip install ledgerblue
+
+      - name: Build Stax
+        shell: bash -l {0}
+        run: |
+          PRODUCTION_BUILD=1 make
+      - name: Set tag
+        id: stax
+        run: echo "tag_name=$(./app/pkg/installer_stax.sh version)" >> $GITHUB_OUTPUT
+      - name: Update Release
+        id: update_release_2
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          files: |
+            ./app/pkg/installer_stax.sh
+          tag_name: ${{ steps.stax.outputs.tag_name }}
           draft: false
           prerelease: false

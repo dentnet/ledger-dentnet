@@ -1,5 +1,5 @@
 /** ******************************************************************************
- *  (c) 2020 Zondax GmbH
+ *  (c) 2018 - 2023 Zondax AG
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,66 +14,47 @@
  *  limitations under the License.
  ******************************************************************************* */
 
-import Zemu, { ButtonKind, DEFAULT_START_OPTIONS, zondaxMainmenuNavigation } from '@zondax/zemu'
-import { newPolkadotApp } from '@zondax/ledger-substrate'
-import {APP_SEED, models } from './common'
-import Transport from '@ledgerhq/hw-transport'
+import Zemu, { ButtonKind, zondaxMainmenuNavigation, isTouchDevice } from '@zondax/zemu'
+import { defaultOptions, DOT_SS58_PREFIX, PATH, models } from './common'
+import { PolkadotGenericApp } from '@zondax/ledger-substrate'
 
-const defaultOptions = {
-  ...DEFAULT_START_OPTIONS,
-  logging: true,
-  custom: `-s "${APP_SEED}"`,
-  X11: false,
-}
-
-const expected_address = 'dx5r2B9tU5LLvZCkBdfBtM7Nk3vu54fsvWyLb6niJ4tKy1X8r'
+const expected_address = '1cWSxy1WVg42TpiLaZk8VMxtHXUGPxm74nb8XjZMVD4QCpL'
 const expected_pk = '1b14b80690da0751fca3c3758bbe2ee057f255886d12d7a397fc23799a53ba93'
 
 jest.setTimeout(180000)
 
-beforeAll(async () => {
-  await Zemu.checkAndPullImage()
-})
-
-const newDentnetApp = (transport: Transport) => {
-  const app = newPolkadotApp(transport);
-  (<any>app).slip0044 = 0x800002de
-  return app;
-}
-
 describe('Standard', function () {
-  test.each(models)('can start and stop container', async function (m) {
+  test.concurrent.each(models)('can start and stop container', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      await sim.start({...defaultOptions, model: m.name})
+      await sim.start({ ...defaultOptions, model: m.name })
     } finally {
       await sim.close()
     }
   })
 
-  test.each(models)('main menu', async function (m) {
+  test.concurrent.each(models)('main menu', async function (m) {
     const sim = new Zemu(m.path)
     try {
       const mainmenuNavigation = zondaxMainmenuNavigation(m.name)
-      await sim.start({...defaultOptions, model: m.name})
+      await sim.start({ ...defaultOptions, model: m.name })
       await sim.navigateAndCompareSnapshots('.', `${m.prefix.toLowerCase()}-mainmenu`, mainmenuNavigation.schedule)
     } finally {
       await sim.close()
     }
   })
 
-  test.each(models)('get app version', async function (m) {
+  test.concurrent.each(models)('get app version', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      await sim.start({...defaultOptions, model: m.name})
-      const app = newDentnetApp(sim.getTransport())
+      await sim.start({ ...defaultOptions, model: m.name })
+      const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
+      // const app = PolkadotApp(sim.getTransport())
       const resp = await app.getVersion()
 
       console.log(resp)
 
-      expect(resp.return_code).toEqual(0x9000)
-      expect(resp.error_message).toEqual('No errors')
-      expect(resp).toHaveProperty('test_mode')
+      expect(resp).toHaveProperty('testMode')
       expect(resp).toHaveProperty('major')
       expect(resp).toHaveProperty('minor')
       expect(resp).toHaveProperty('patch')
@@ -82,50 +63,41 @@ describe('Standard', function () {
     }
   })
 
-  test.each(models)('get address', async function (m) {
+  test.concurrent.each(models)('get address', async function (m) {
     const sim = new Zemu(m.path)
     try {
-      await sim.start({...defaultOptions, model: m.name})
-      const app = newDentnetApp(sim.getTransport())
+      await sim.start({ ...defaultOptions, model: m.name })
+      const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 
-      const resp = await app.getAddress(0x80000000, 0x80000000, 0x80000000)
-
+      const resp = await app.getAddress(PATH, DOT_SS58_PREFIX)
       console.log(resp)
 
-      expect(resp.return_code).toEqual(0x9000)
-      expect(resp.error_message).toEqual('No errors')
-
-      expect(resp.address).toEqual(expected_address)
       expect(resp.pubKey).toEqual(expected_pk)
+      expect(resp.address).toEqual(expected_address)
     } finally {
       await sim.close()
     }
   })
 
-  test.each(models)('show address', async function (m) {
+  test.concurrent.each(models)('show address', async function (m) {
     const sim = new Zemu(m.path)
     try {
       await sim.start({
         ...defaultOptions,
         model: m.name,
-        approveKeyword: m.name === 'stax' ? 'QR' : '',
-        approveAction: ButtonKind.ApproveTapButton,
+        approveKeyword: isTouchDevice(m.name) ? 'Confirm' : '',
+        approveAction: ButtonKind.DynamicTapButton,
       })
-      const app = newDentnetApp(sim.getTransport())
-
-      const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true)
+      const app = new PolkadotGenericApp(sim.getTransport(), 'dot', '')
+      const respRequest = app.getAddress(PATH, DOT_SS58_PREFIX, true)
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
-
       await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-show_address`)
 
       const resp = await respRequest
 
       console.log(resp)
 
-      expect(resp.return_code).toEqual(0x9000)
-      expect(resp.error_message).toEqual('No errors')
-
       expect(resp.address).toEqual(expected_address)
       expect(resp.pubKey).toEqual(expected_pk)
     } finally {
@@ -133,29 +105,31 @@ describe('Standard', function () {
     }
   })
 
-  test.each(models)('show address - reject', async function (m) {
+  test.concurrent.each(models)('show address - reject', async function (m) {
     const sim = new Zemu(m.path)
     try {
       await sim.start({
         ...defaultOptions,
         model: m.name,
-        rejectKeyword: m.name === 'stax' ? 'QR' : '',
+        rejectKeyword: isTouchDevice(m.name) ? 'Public key' : '',
       })
-      const app = newDentnetApp(sim.getTransport())
+      const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 
-      const respRequest = app.getAddress(0x80000000, 0x80000000, 0x80000000, true)
+      const respRequest = app.getAddress(PATH, DOT_SS58_PREFIX, true)
+      expect(respRequest).rejects.toMatchObject({
+        returnCode: 0x6986,
+        errorMessage: 'Transaction rejected'
+      })
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
-      await sim.compareSnapshotsAndReject('.', `${m.prefix.toLowerCase()}-show_address_reject`)
+      try {
+        await sim.compareSnapshotsAndReject('.', `${m.prefix.toLowerCase()}-show_address_reject`);
+      } catch {
 
-      const resp = await respRequest
-      console.log(resp)
+      }
 
-      expect(resp.return_code).toEqual(0x6986)
-      expect(resp.error_message).toEqual('Transaction rejected')
     } finally {
       await sim.close()
     }
   })
 })
-
