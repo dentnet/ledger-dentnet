@@ -67,7 +67,7 @@ node_modules
 fuzz/corpora
 
 !build/.gitkeep
-build/*
+build
 app/build
 cmake-build-debug
 
@@ -76,3 +76,5 @@ tests_zemu/yarn.lock
 tests_tools/target
 fuzz-*.log
 /scan-build
+
+.DS_Store

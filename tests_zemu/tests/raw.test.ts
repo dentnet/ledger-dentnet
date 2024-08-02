@@ -1,5 +1,5 @@
 /** ******************************************************************************
- *  (c) 2020 Zondax GmbH
+ *  (c) 2018 - 2023 Zondax AG
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,27 +14,14 @@
  *  limitations under the License.
  ******************************************************************************* */
 
-import Zemu, { DEFAULT_START_OPTIONS } from '@zondax/zemu'
-import { newPolkadotApp } from '@zondax/ledger-substrate'
-import { APP_SEED, models } from './common'
-import Transport from '@ledgerhq/hw-transport'
+import Zemu from '@zondax/zemu'
+import { defaultOptions, DOT_SS58_PREFIX, PATH, models } from './common'
 
 // @ts-expect-error missing typings
 import ed25519 from 'ed25519-supercop'
 import { blake2bFinal, blake2bInit, blake2bUpdate } from 'blakejs'
-
-const newDentnetApp = (transport: Transport) => {
-  const app = newPolkadotApp(transport);
-  (<any>app).slip0044 = 0x800002de
-  return app;
-}
-
-const defaultOptions = {
-  ...DEFAULT_START_OPTIONS,
-  logging: true,
-  custom: `-s "${APP_SEED}"`,
-  X11: false,
-}
+import { PolkadotGenericApp } from '@zondax/ledger-substrate'
+import { ResponseError } from "@zondax/ledger-js";
 
 jest.setTimeout(180000)
 
@@ -54,29 +41,21 @@ describe.each(TESTS)('Raw signing', function (data) {
     const sim = new Zemu(m.path)
     try {
       await sim.start({ ...defaultOptions, model: m.name })
-      const app = newDentnetApp(sim.getTransport())
-      const pathAccount = 0x80000000
-      const pathChange = 0x80000000
-      const pathIndex = 0x80000000
+      const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 
       const txBlob = Buffer.from(data.text)
-
-      const responseAddr = await app.getAddress(pathAccount, pathChange, pathIndex)
-      const pubKey = Buffer.from(responseAddr.pubKey, 'hex')
+      const responseAddr = await app.getAddress(PATH, DOT_SS58_PREFIX)
+      const pubKey = responseAddr.pubKey
 
       // do not wait here.. we need to navigate
-      const signatureRequest = app.signRaw(pathAccount, pathChange, pathIndex, txBlob)
+      const signatureRequest = app.signRaw(PATH, txBlob)
 
       // Wait until we are not in the main menu
       await sim.waitUntilScreenIsNot(sim.getMainMenuSnapshot())
-
       await sim.compareSnapshotsAndApprove('.', `${m.prefix.toLowerCase()}-${data.name}`)
 
       const signatureResponse = await signatureRequest
       console.log(signatureResponse)
-
-      expect(signatureResponse.return_code).toEqual(0x9000)
-      expect(signatureResponse.error_message).toEqual('No errors')
 
       // Now verify the signature
       let prehash = txBlob
@@ -93,24 +72,37 @@ describe.each(TESTS)('Raw signing', function (data) {
   })
 })
 
-test.concurrent.each(models)('raw signing - incorrect', async function (m) {
+test.concurrent.each(models)('Raw signing - incorrect', async function (m) {
   const sim = new Zemu(m.path)
   try {
     await sim.start({ ...defaultOptions, model: m.name })
-    const app = newDentnetApp(sim.getTransport())
-    const pathAccount = 0x80000000
-    const pathChange = 0x80000000
-    const pathIndex = 0x80000000
+    const app = new PolkadotGenericApp(sim.getTransport(), 'dot')
 
     const txBlob = Buffer.from('<Bytes>Incorrect blob/Bytes>')
 
-    const signatureResponse = await app.signRaw(pathAccount, pathChange, pathIndex, txBlob)
+    let errorFound: any = undefined
+    try {
+      await app.signRaw(PATH, txBlob)
+    } catch (error) {
+      errorFound = error
+    }
 
-    console.log(signatureResponse)
+    console.log(errorFound)
 
-    expect(signatureResponse.return_code).toEqual(0x6984)
-    expect(signatureResponse.error_message).toEqual('Unexpected value')
+    expect(errorFound).toBeDefined()
+    expect('returnCode' in errorFound).toBeTruthy()
+    expect('errorMessage' in errorFound).toBeTruthy()
+
+    if ('returnCode' in errorFound) {
+      expect(errorFound.returnCode).toBe(27012)
+    }
+    if ('errorMessage' in errorFound) {
+      expect(errorFound.errorMessage).toBe("Data is invalid : Unexpected value")
+    }
+
   } finally {
     await sim.close()
   }
 })
+
+// TODO: add a test for the legacy wrapper to ensure we don't throw
