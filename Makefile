@@ -25,7 +25,7 @@ ifeq ($(BOLOS_SDK),)
 ZXLIB_COMPILE_STAX ?= 1
 PRODUCTION_BUILD ?= 1
 $(info ************ COIN  = [$(COIN)])
-include $(CURDIR)/deps/ledger-zxlib/dockerized_build.mk
+include $(CURDIR)/deps/dockerized_build.mk
 
 else
 default:
