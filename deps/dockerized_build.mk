@@ -356,7 +356,7 @@ rust_test:
 
 .PHONY: cpp_test
 cpp_test:
-	mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE=Debug .. && make
+	mkdir -p build && cd build && cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_BUILD_TYPE=Debug .. && make
 	cd build && GTEST_COLOR=1 ASAN_OPTIONS=detect_leaks=0 ctest -VV
 
 ########################## FUZZING Section ###############################
