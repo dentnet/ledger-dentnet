@@ -109,9 +109,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
-      - name: Install deps
-        run: pip install ledgerblue
-
       - name: Build NanoS
         shell: bash -l {0}
         run: |
@@ -146,9 +143,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
-      - name: Install deps
-        run: pip install ledgerblue
-
       - name: Build NanoSP
         shell: bash -l {0}
         run: |
@@ -183,9 +177,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
-      - name: Install deps
-        run: pip install ledgerblue
-
       - name: Build Stax
         shell: bash -l {0}
         run: |
